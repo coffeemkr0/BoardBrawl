@@ -15,7 +15,8 @@ namespace VideoChatWithPeerJs.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            //Redirect to the Room action with a new roomId
+            return Redirect($"/{Guid.NewGuid()}");
         }
 
         public IActionResult Privacy()
@@ -27,6 +28,13 @@ namespace VideoChatWithPeerJs.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpGet("/{roomId}")]
+        public IActionResult Room(string roomId)
+        {
+            ViewBag.RoomId = roomId;
+            return View();
         }
     }
 }
