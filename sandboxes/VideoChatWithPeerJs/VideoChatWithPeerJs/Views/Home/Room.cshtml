@@ -6,4 +6,14 @@
 <script>
     const connection = new signalR.HubConnectionBuilder()
                                 .withUrl("/meeting").build();
+
+    const joinRoom = async () => {
+        await connection.start();
+        await connection.invoke("JoinRoom", '@ViewBag.roomId', '10')
+        connection.on('user-connected', id => {
+            console.log(`User connected : ${id}`)
+        })
+    }
+    
+    joinRoom();
 </script>
