@@ -1,1 +1,9 @@
-﻿<h1 style="text-align: center">@ViewBag.roomId</h1>
+﻿<script src="~/js/signalr/dist/browser/signalr.js"></script>
+@*<script src="~/js/signalr/dist/browser/signalr.min.js"></script>*@
+
+<h1 style="text-align: center">@ViewBag.roomId</h1>
+
+<script>
+    const connection = new signalR.HubConnectionBuilder()
+                                .withUrl("/meeting").build();
+</script>
