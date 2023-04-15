@@ -2,12 +2,15 @@
 @*<script src="~/js/signalr/dist/browser/signalr.min.js"></script>*@
 
 <h1 style="text-align: center">@ViewBag.roomId</h1>
+<div video-container></div>
 
 <script>
     var _connection = null;
 
     InitializeSignalRConnection();
     JoinRoom();
+    InitializeLocalVideoStream();
+
 
     function InitializeSignalRConnection()
     {
@@ -22,5 +25,27 @@
         _connection.on('user-connected', id => {
             console.log(`User connected : ${id}`)
         });
+    }
+
+    function InitializeLocalVideoStream() {
+        navigator.mediaDevices.getUserMedia({
+            audio: true,
+            video: true
+        }).then(stream => {
+            AddVideoStreamToVideoContainer(stream)
+        })
+    }
+
+    function AddVideoStreamToVideoContainer(stream) {
+        var videoContainer = document.querySelector('[video-container]');
+        var videoElement = document.createElement('video');
+        videoElement.muted = true;
+
+        videoElement.srcObject = stream;
+        videoElement.addEventListener('loadedmetadata', () => {
+            videoElement.play()
+        })
+
+        videoContainer.appendChild(videoElement)
     }
 </script>
