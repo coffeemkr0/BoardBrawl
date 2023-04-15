@@ -1,18 +1,11 @@
 ﻿<script src="~/js/signalr/dist/browser/signalr.js"></script>
 @*<script src="~/js/signalr/dist/browser/signalr.min.js"></script>*@
-<script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
 
 <h1 style="text-align: center">@ViewBag.roomId</h1>
 
 <script>
     const connection = new signalR.HubConnectionBuilder()
                                 .withUrl("/meeting").build();
-
-    var peerJsObject = new Peer();
-
-    peerJsObject.on('open', function (id) {
-        console.log('Peer object session Id is: ' + id);
-    });
 
     const joinRoom = async () => {
         await connection.start();
