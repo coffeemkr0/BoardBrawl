@@ -4,16 +4,23 @@
 <h1 style="text-align: center">@ViewBag.roomId</h1>
 
 <script>
-    const connection = new signalR.HubConnectionBuilder()
-                                .withUrl("/meeting").build();
+    var _connection = null;
 
-    const joinRoom = async () => {
-        await connection.start();
-        await connection.invoke("JoinRoom", '@ViewBag.roomId', '10')
-        connection.on('user-connected', id => {
-            console.log(`User connected : ${id}`)
-        })
+    InitializeSignalRConnection();
+    JoinRoom();
+
+    function InitializeSignalRConnection()
+    {
+        _connection = new signalR.HubConnectionBuilder().withUrl("/meeting").build();
     }
-    
-    joinRoom();
+
+    async function JoinRoom()
+    {
+        await _connection.start();
+        await _connection.invoke("JoinRoom", '@ViewBag.roomId', '10');
+
+        _connection.on('user-connected', id => {
+            console.log(`User connected : ${id}`)
+        });
+    }
 </script>
