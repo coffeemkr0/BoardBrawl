@@ -1,11 +1,14 @@
 ﻿<script src="~/js/signalr/dist/browser/signalr.js"></script>
 @*<script src="~/js/signalr/dist/browser/signalr.min.js"></script>*@
+<script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
 
 <h1 style="text-align: center">@ViewBag.roomId</h1>
 <div video-container></div>
 
 <script>
     var _connection = null;
+    var _peerJsObject;
+    var _peerJsConnectionId;
 
     InitializeSignalRConnection();
     JoinRoom();
@@ -19,8 +22,19 @@
 
     async function JoinRoom()
     {
+        _peerJsObject = new Peer();
+
+        _peerJsObject.on('open', id =>{
+            OnPeerJsOpen(id);
+        });
+    }
+
+    async function OnPeerJsOpen(peerJsConnectionId)
+    {
+        _peerJsConnectionId = peerJsConnectionId;
+
         await _connection.start();
-        await _connection.invoke("JoinRoom", '@ViewBag.roomId', '10');
+        await _connection.invoke("JoinRoom", '@ViewBag.roomId', _peerJsConnectionId);
 
         _connection.on('user-connected', id => {
             console.log(`User connected : ${id}`)
