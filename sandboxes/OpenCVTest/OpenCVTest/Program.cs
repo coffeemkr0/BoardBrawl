@@ -127,7 +127,9 @@ namespace OpenCVTest
             {
                 //Send no camera image
             }
-            
+
+            Program.DetectCardInVideo();
+
             //MemoryStream ms = frame.ToMemoryStream();
 
             return new FileContentResult(ms.ToArray(), "image/jpeg");
