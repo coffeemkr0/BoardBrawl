@@ -3,12 +3,14 @@
 <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
 
 <h1 style="text-align: center">@ViewBag.roomId</h1>
-<div video-container></div>
+<video id="local-video" muted></video>
+<video id="remote-video"></video>
 
 <script>
     var _connection = null;
     var _peerJsObject;
     var _peerJsConnectionId;
+    var _localVideoStream;
 
     InitializeSignalRConnection();
     JoinRoom();
@@ -31,35 +33,88 @@
 
     async function OnPeerJsOpen(peerJsConnectionId)
     {
+        console.log('Peer Js Opened: ' + peerJsConnectionId);
+
         _peerJsConnectionId = peerJsConnectionId;
 
         await _connection.start();
         await _connection.invoke("JoinRoom", '@ViewBag.roomId', _peerJsConnectionId);
 
         _connection.on('user-connected', id => {
-            console.log(`User connected : ${id}`)
+            console.log(`Another user connected : ${id}`);
+            CallUser(id);
+        });
+
+        _peerJsObject.on("call", (call) => {
+            if (confirm(`Accept call from ${call.peer}?`)) {
+                // grab the camera and mic
+                navigator.mediaDevices
+                    .getUserMedia({ video: true, audio: true })
+                    .then((stream) => {
+                        // play the local preview
+                        document.querySelector("#local-video").srcObject = stream;
+                        document.querySelector("#local-video").play();
+                        // answer the call
+                        call.answer(stream);
+                        // save the close function
+                        currentCall = call;
+                        // change to the video view
+                        document.querySelector("#menu").style.display = "none";
+                        document.querySelector("#live").style.display = "block";
+                        call.on("stream", (remoteStream) => {
+                            // when we receive the remote stream, play it
+                            document.getElementById("remote-video").srcObject = remoteStream;
+                            document.getElementById("remote-video").play();
+                        });
+                    })
+                    .catch((err) => {
+                        console.log("Failed to get local stream:", err);
+                    });
+            } else {
+                // user rejected the call, close it
+                call.close();
+            }
         });
     }
 
-    function InitializeLocalVideoStream() {
+    function InitializeLocalVideoStream() 
+    {
         navigator.mediaDevices.getUserMedia({
             audio: true,
             video: true
         }).then(stream => {
-            AddVideoStreamToVideoContainer(stream)
+            _localVideoStream = stream;
+            var videoElement = document.getElementById("local-video");
+
+            videoElement.srcObject = stream;
+            videoElement.addEventListener('loadedmetadata', () => {
+                videoElement.play()
+            })
         })
     }
 
-    function AddVideoStreamToVideoContainer(stream) {
-        var videoContainer = document.querySelector('[video-container]');
-        var videoElement = document.createElement('video');
-        videoElement.muted = true;
+    async function CallUser(userId) 
+    {
+        // make the call
+        const call = _peerJsObject.call(userId, _localVideoStream);
 
-        videoElement.srcObject = stream;
-        videoElement.addEventListener('loadedmetadata', () => {
-            videoElement.play()
+        call.on("stream", (stream) => {
+            document.getElementById("remote-video").srcObject = stream;
+            document.getElementById("remote-video").play();
+        });
+
+        call.on("data", (stream) => {
+            document.querySelector("#remote-video").srcObject = stream;
+        });
+
+        call.on("error", (err) => {
+            console.log(err);
+        });
+        call.on('close', () => {
+            console.log('close');
         })
 
-        videoContainer.appendChild(videoElement)
+        // save the close function
+        //currentCall = call;
     }
 </script>
