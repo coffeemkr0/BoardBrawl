@@ -37,6 +37,7 @@ namespace OpenCVTest
             Console.WriteLine("DetectCardInVideo Method invoked.");
 
             VideoCapture capture = new VideoCapture(0);
+            
             Mat frame = new Mat();
             Mat gray = new Mat();
             Mat corners = new Mat();
@@ -117,7 +118,17 @@ namespace OpenCVTest
             _capture.Read(frame);
 
             MemoryStream ms = new MemoryStream();
-            frame.ImEncode(".jpg", new[] { (int)ImwriteFlags.JpegQuality, 90 }).CopyTo(ms.ToArray(),0);
+
+            if (!frame.Empty())
+            {
+                frame.ImEncode(".jpg", new[] { (int)ImwriteFlags.JpegQuality, 90 }).CopyTo(ms.ToArray(), 0);
+            }
+            else
+            {
+                //Send no camera image
+            }
+            
+            //MemoryStream ms = frame.ToMemoryStream();
 
             return new FileContentResult(ms.ToArray(), "image/jpeg");
         }
