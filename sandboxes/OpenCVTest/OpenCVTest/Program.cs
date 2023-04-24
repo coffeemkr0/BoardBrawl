@@ -1,21 +1,28 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using OpenCvSharp;
 
 
+
 namespace OpenCVTest
 {
     public class Program
     {
+        public VideoCapture capture = new VideoCapture(0);
+
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
+
+            DetectCardInVideo();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -25,7 +32,7 @@ namespace OpenCVTest
                     webBuilder.UseStartup<Startup>();
                 });
 
-        public void DetectCardInVideo()
+        public static void DetectCardInVideo()
         {
             Console.WriteLine("DetectCardInVideo Method invoked.");
 
@@ -91,6 +98,28 @@ namespace OpenCVTest
 
             capture.Release();
             Cv2.DestroyAllWindows();
+        }
+    }
+
+    public class VideoController : Controller
+    {
+        private readonly VideoCapture _capture;
+
+        public VideoController()
+        {
+            _capture = new VideoCapture(0);
+        }
+
+        [HttpGet]
+        public ActionResult GetFrame()
+        {
+            Mat frame = new Mat();
+            _capture.Read(frame);
+
+            MemoryStream ms = new MemoryStream();
+            frame.ImEncode(".jpg", new[] { (int)ImwriteFlags.JpegQuality, 90 }).CopyTo(ms.ToArray(),0);
+
+            return new FileContentResult(ms.ToArray(), "image/jpeg");
         }
     }
 }

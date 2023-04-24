@@ -46,6 +46,13 @@ namespace OpenCVTest
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+
+                endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller}/{action}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "video",
+                    pattern: "Video/GetFrame");
             });
         }
     }
