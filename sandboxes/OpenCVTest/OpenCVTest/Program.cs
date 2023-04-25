@@ -111,31 +111,45 @@ namespace OpenCVTest
             _capture = new VideoCapture(0);
         }
 
+        //[HttpGet]
+        //public ActionResult<byte[]> GetFrame()
+        //{
+        //    Mat frame = new Mat();
+        //    _capture.Read(frame);
+
+        //    //MemoryStream ms = new MemoryStream();
+
+        //    if (!frame.Empty())
+        //    {
+        //        byte[] encodedImage = frame.ImEncode(".jpg", new[] { (int)ImwriteFlags.JpegQuality, 90 });
+        //        //ms = new MemoryStream(encodedImage);
+        //        return encodedImage;
+        //    }
+        //    else
+        //    {
+        //        //Send no camera image
+        //        return null;
+        //    }
+
+        //    //Program.DetectCardInVideo();
+
+        //}
+
         [HttpGet]
-        public ActionResult<byte[]> GetFrame()
+        public IActionResult GetFrame()
         {
             Mat frame = new Mat();
             _capture.Read(frame);
 
-            //MemoryStream ms = new MemoryStream();
-           
-            if (!frame.Empty())
+            if (frame.Empty())
             {
-                byte[] encodedImage = frame.ImEncode(".jpg", new[] { (int)ImwriteFlags.JpegQuality, 90 });
-                //ms = new MemoryStream(encodedImage);
-                return encodedImage;
-            }
-            else
-            {
-                //Send no camera image
-                return null;
+                // Send no camera image
+                return new EmptyResult();
             }
 
-            //Program.DetectCardInVideo();
+            byte[] encodedImage = frame.ImEncode(".jpg", new[] { (int)ImwriteFlags.JpegQuality, 90 });
 
-            //MemoryStream ms = frame.ToMemoryStream();
-
-            //return new FileContentResult(ms.ToArray(), "image/jpeg");
+            return File(encodedImage, "image/jpeg");
         }
     }
 }
