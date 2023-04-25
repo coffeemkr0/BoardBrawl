@@ -9,9 +9,20 @@
     <img id="video-stream" width="640" height="480" />
 </div>
 
-<script>
+@*<script>
     var videoStream = document.getElementById('video-stream');
     setInterval(function() {
-        videoStream.src = '/Video/GetFrame?' + new Date().getTime(); // Add timestamp to prevent caching
+        videoStream.src = 'Video/GetFrame?' + new Date().getTime(); // Add timestamp to prevent caching
         }, 30); // Set interval to match the desired frame rate (e.g., 30 fps)
+</script>*@
+
+<script>
+    var videoStream = document.getElementById('video-stream');
+    setInterval(function () {
+        fetch('/Video/GetFrame?' + new Date().getTime())
+            .then(response => response.blob())
+            .then(blob => {
+                videoStream.src = URL.createObjectURL(blob);
+            });
+    }, 30); // Set interval to match the desired frame rate (e.g., 30 fps)
 </script>
