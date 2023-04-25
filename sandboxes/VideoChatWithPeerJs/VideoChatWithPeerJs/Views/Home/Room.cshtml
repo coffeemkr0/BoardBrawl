@@ -11,6 +11,7 @@
     var _peerJsObject;
     var _peerJsConnectionId;
     var _localVideoStream;
+    var _currentCall;
 
     InitializeSignalRConnection();
     InitializeLocalVideoStream();
@@ -69,35 +70,51 @@
     async function CallUser(userId) 
     {
         // make the call
-        const call = _peerJsObject.call(userId, _localVideoStream);
+        _currentCall = _peerJsObject.call(userId, _localVideoStream);
 
-        call.on("stream", (stream) => {
-            document.getElementById("remote-video").srcObject = stream;
-            document.getElementById("remote-video").play();
+        _currentCall.on("stream", (stream) => {
+            AddRemoteStream(stream);
         });
 
-        call.on("data", (stream) => {
+        _currentCall.on("data", (stream) => {
             document.querySelector("#remote-video").srcObject = stream;
         });
 
-        call.on("error", (err) => {
+        _currentCall.on("error", (err) => {
             console.log(err);
         });
-        call.on('close', () => {
-            console.log('close');
-        })
 
-        // save the close function
-        //currentCall = call;
+        _currentCall.on('close', () => {
+            endcall();
+        })
     }
 
     function AnswerCall(call)
     {
+        console.log('Answering call');
+
         call.answer(_localVideoStream);
 
         call.on("stream", (remoteStream) => {
-            document.getElementById("remote-video").srcObject = remoteStream;
-            document.getElementById("remote-video").play();
+            AddRemoteStream(remoteStream);
+        });
+    }
+
+    function EndCall() 
+    {
+        console.log('Ending call');
+
+        _currentCall.close();
+        _currentCall = undefined;
+    }
+
+    function AddRemoteStream(remoteStream)
+    {
+        var remoteVideoElemtn = document.getElementById("remote-video");
+
+        remoteVideoElemtn.srcObject = remoteStream;
+        remoteVideoElemtn.addEventListener('loadedmetadata', () => {
+            remoteVideoElemtn.play();
         });
     }
 </script>
