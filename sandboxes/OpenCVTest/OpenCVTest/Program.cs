@@ -118,17 +118,19 @@ namespace OpenCVTest
             _capture.Read(frame);
 
             MemoryStream ms = new MemoryStream();
-
+           
             if (!frame.Empty())
             {
-                frame.ImEncode(".jpg", new[] { (int)ImwriteFlags.JpegQuality, 90 }).CopyTo(ms.ToArray(), 0);
+                //frame.ImEncode(".jpg", new[] { (int)ImwriteFlags.JpegQuality, 90 }).CopyTo(ms.ToArray(), 0);
+                byte[] encodedImage = frame.ImEncode(".jpg", new[] { (int)ImwriteFlags.JpegQuality, 90 });
+                ms = new MemoryStream(encodedImage);
             }
             else
             {
                 //Send no camera image
             }
 
-            Program.DetectCardInVideo();
+            //Program.DetectCardInVideo();
 
             //MemoryStream ms = frame.ToMemoryStream();
 
