@@ -2,5 +2,7 @@
 {
     public interface IRepository
     {
+        string GetPlayerName();
+        void SetPlayerName(string playerName);
     }
 }

@@ -2,5 +2,7 @@
 {
     public interface IService
     {
+        string GetPlayerName();
+        void SetPlayerName(string playerName);
     }
 }

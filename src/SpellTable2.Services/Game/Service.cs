@@ -10,5 +10,15 @@ namespace SpellTable2.Services.Game
         {
             _repository = repository;
         }
+
+        public string GetPlayerName()
+        {
+            return _repository.GetPlayerName();
+        }
+
+        public void SetPlayerName(string playerName)
+        {
+            _repository.SetPlayerName(playerName);
+        }
     }
 }

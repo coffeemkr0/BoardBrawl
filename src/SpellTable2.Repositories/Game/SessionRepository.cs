@@ -10,5 +10,15 @@ namespace SpellTable2.Repositories.Game
         {
             _httpContextAccessor = httpContextAccessor;
         }
+
+        public string GetPlayerName()
+        {
+            return _httpContextAccessor.HttpContext.Session.GetString("PlayerName");
+        }
+
+        public void SetPlayerName(string playerName)
+        {
+            _httpContextAccessor.HttpContext.Session.SetString("PlayerName", playerName);
+        }
     }
 }
