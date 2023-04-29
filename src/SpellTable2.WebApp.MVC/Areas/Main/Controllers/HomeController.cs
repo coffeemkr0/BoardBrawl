@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace SpellTable2.WebApp.MVC.Controllers
+namespace SpellTable2.WebApp.MVC.Areas.Main.Controllers
 {
+    [Area("Main")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
