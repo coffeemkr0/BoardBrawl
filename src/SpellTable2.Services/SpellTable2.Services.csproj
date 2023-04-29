@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SpellTable2.Repositories\SpellTable2.Repositories.csproj" />
+  </ItemGroup>
+
 </Project>

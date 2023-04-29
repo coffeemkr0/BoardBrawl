@@ -12,4 +12,9 @@
     <Folder Include="Areas\Main\Models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SpellTable2.Repositories\SpellTable2.Repositories.csproj" />
+    <ProjectReference Include="..\SpellTable2.Services\SpellTable2.Services.csproj" />
+  </ItemGroup>
+
 </Project>
