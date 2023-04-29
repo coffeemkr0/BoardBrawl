@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Game\Models\" />
+    <Folder Include="Areas\CreateGame\Models\" />
     <Folder Include="Areas\Main\Models\" />
   </ItemGroup>
 
