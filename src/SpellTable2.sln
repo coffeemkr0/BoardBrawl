@@ -5,6 +5,10 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpellTable2.WebApp.MVC", "SpellTable2.WebApp.MVC\SpellTable2.WebApp.MVC.csproj", "{F567FBC2-5E59-49AF-8C24-744F7C0C16AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpellTable2.Services", "SpellTable2.Services\SpellTable2.Services.csproj", "{9364765B-3317-4D7E-9B22-D5CA8CEE00FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpellTable2.Repositories", "SpellTable2.Repositories\SpellTable2.Repositories.csproj", "{945F6353-4DDF-4A7D-AE52-549FED090A4D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{F567FBC2-5E59-49AF-8C24-744F7C0C16AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F567FBC2-5E59-49AF-8C24-744F7C0C16AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F567FBC2-5E59-49AF-8C24-744F7C0C16AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9364765B-3317-4D7E-9B22-D5CA8CEE00FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9364765B-3317-4D7E-9B22-D5CA8CEE00FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9364765B-3317-4D7E-9B22-D5CA8CEE00FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9364765B-3317-4D7E-9B22-D5CA8CEE00FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{945F6353-4DDF-4A7D-AE52-549FED090A4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{945F6353-4DDF-4A7D-AE52-549FED090A4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{945F6353-4DDF-4A7D-AE52-549FED090A4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{945F6353-4DDF-4A7D-AE52-549FED090A4D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
