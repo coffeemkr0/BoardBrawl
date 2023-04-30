@@ -15,8 +15,10 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
             _service = service;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(Guid id)
         {
+            var gameInfo = _service.GetGameInfo(id);
+            
             var playerName = _service.GetPlayerName();
             if (string.IsNullOrEmpty(playerName))
             {
@@ -26,6 +28,7 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
             }
 
             ViewBag.PlayerName = playerName;
+            ViewBag.GameId = id;
 
             return View();
         }

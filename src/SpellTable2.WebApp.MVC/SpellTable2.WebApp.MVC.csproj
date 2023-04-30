@@ -7,9 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Game\Models\" />
-    <Folder Include="Areas\CreateGame\Models\" />
-    <Folder Include="Areas\Main\Models\" />
+    <Compile Remove="Areas\CreateGame\Models\**" />
+    <Compile Remove="Areas\Game\Models\**" />
+    <Compile Remove="Areas\Main\Models\**" />
+    <Content Remove="Areas\CreateGame\Models\**" />
+    <Content Remove="Areas\Game\Models\**" />
+    <Content Remove="Areas\Main\Models\**" />
+    <EmbeddedResource Remove="Areas\CreateGame\Models\**" />
+    <EmbeddedResource Remove="Areas\Game\Models\**" />
+    <EmbeddedResource Remove="Areas\Main\Models\**" />
+    <None Remove="Areas\CreateGame\Models\**" />
+    <None Remove="Areas\Game\Models\**" />
+    <None Remove="Areas\Main\Models\**" />
   </ItemGroup>
 
   <ItemGroup>

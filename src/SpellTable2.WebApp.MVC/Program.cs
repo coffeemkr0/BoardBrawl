@@ -12,7 +12,7 @@ builder.Services.AddSession(options =>
 });
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<SpellTable2.Repositories.Game.IRepository, SpellTable2.Repositories.Game.SessionRepository>();
+builder.Services.AddScoped<SpellTable2.Repositories.Game.IRepository, SpellTable2.Repositories.Game.MemoryRepository>();
 builder.Services.AddScoped<SpellTable2.Services.Game.IService, SpellTable2.Services.Game.Service>();
 
 var app = builder.Build();
