@@ -14,7 +14,7 @@ namespace SpellTable2.WebApp.MVC.Areas.Main.Controllers
 
         public IActionResult Index()
         {
-            return Redirect("CreateGame");
+            return Redirect("Lobby");
         }
     }
 }

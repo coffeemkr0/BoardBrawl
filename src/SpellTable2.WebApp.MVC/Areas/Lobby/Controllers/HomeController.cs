@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace SpellTable2.WebApp.MVC.Areas.CreateGame.Controllers
+namespace SpellTable2.WebApp.MVC.Areas.Lobby.Controllers
 {
-    [Area("CreateGame")]
+    [Area("Lobby")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
