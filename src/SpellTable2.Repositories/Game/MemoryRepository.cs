@@ -34,16 +34,6 @@ namespace SpellTable2.Repositories.Game
             return GetGames().FirstOrDefault(i => i.GameId == id);
         }
 
-        public string GetPlayerName()
-        {
-            return _httpContextAccessor.HttpContext.Session.GetString("PlayerName");
-        }
-
-        public void SetPlayerName(string playerName)
-        {
-            _httpContextAccessor.HttpContext.Session.SetString("PlayerName", playerName);
-        }
-
         private List<GameInfo> GetGames()
         {
             return _memoryCache.GetValueOrDefault<List<GameInfo>>("Games");

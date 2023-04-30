@@ -19,16 +19,8 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
         {
             var gameInfo = _service.GetGameInfo(id);
             
-            var playerName = _service.GetPlayerName();
-            if (string.IsNullOrEmpty(playerName))
-            {
-                _logger.LogInformation("Initializing player name");
-                playerName = "Magic Mike";
-                _service.SetPlayerName(playerName);
-            }
-
-            ViewBag.PlayerName = playerName;
             ViewBag.GameId = id;
+            ViewBag.GameName = gameInfo?.Name;
 
             return View();
         }
