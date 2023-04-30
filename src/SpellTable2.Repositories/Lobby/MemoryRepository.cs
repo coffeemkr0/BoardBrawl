@@ -19,7 +19,8 @@ namespace SpellTable2.Repositories.Lobby
             if (!games.Any(i => i.GameId == gameInfo.GameId))
             {
                 games.Add(gameInfo);
-                _memoryCache.Set("Games", games);
+
+                _memoryCache.SerailizeObject("Games", games);
             }
         }
 
