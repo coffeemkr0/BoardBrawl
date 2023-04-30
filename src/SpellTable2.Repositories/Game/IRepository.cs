@@ -4,8 +4,7 @@ namespace SpellTable2.Repositories.Game
 {
     public interface IRepository
     {
-        List<GameInfo> GetGames();
-        void CreateGame(GameInfo gameInfo);
+        GameInfo? GetGameInfo(Guid id);
         void CloseGame(GameInfo gameInfo);
         string GetPlayerName();
         void SetPlayerName(string playerName);

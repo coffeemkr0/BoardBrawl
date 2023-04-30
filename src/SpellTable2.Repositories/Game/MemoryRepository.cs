@@ -20,6 +20,7 @@ namespace SpellTable2.Repositories.Game
             var games = GetGames();
 
             var game = games.FirstOrDefault(i => i.GameId == gameInfo.GameId);
+
             if (game != null)
             {
                 games.Remove(game);
@@ -28,16 +29,9 @@ namespace SpellTable2.Repositories.Game
             _memoryCache.Set("Games", games);
         }
 
-        public void CreateGame(GameInfo gameInfo)
+        public GameInfo? GetGameInfo(Guid id)
         {
-            var games = GetGames();
-
-            if(!games.Any(i=>i.GameId == gameInfo.GameId))
-            {
-                games.Add(gameInfo);
-            }
-
-            _memoryCache.Set("Games", games);
+            return GetGames().FirstOrDefault(i => i.GameId == id);
         }
 
         public string GetPlayerName()
@@ -45,14 +39,14 @@ namespace SpellTable2.Repositories.Game
             return _httpContextAccessor.HttpContext.Session.GetString("PlayerName");
         }
 
-        public List<GameInfo> GetGames()
-        {
-            return _memoryCache.GetValueOrDefault< List<GameInfo>>("Games");
-        }
-
         public void SetPlayerName(string playerName)
         {
             _httpContextAccessor.HttpContext.Session.SetString("PlayerName", playerName);
+        }
+
+        private List<GameInfo> GetGames()
+        {
+            return _memoryCache.GetValueOrDefault<List<GameInfo>>("Games");
         }
     }
 }

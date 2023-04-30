@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using SpellTable2.Repositories;
 
-namespace SpellTable2.Repositories.Game
+namespace SpellTable2.Repositories
 {
     internal static class MemoryCacheExtensions
     {
@@ -8,7 +9,7 @@ namespace SpellTable2.Repositories.Game
         {
             var cacheValue = cache.Get(key);
 
-            if(cacheValue == null) { return new T(); }
+            if (cacheValue == null) { return new T(); }
 
             return (T)cacheValue;
         }

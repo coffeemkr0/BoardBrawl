@@ -14,7 +14,7 @@ namespace SpellTable2.Services.Game
 
         public GameInfo? GetGameInfo(Guid id)
         {
-            var repoGameInfo = _repository.GetGames().FirstOrDefault(i=>i.GameId== id);
+            var repoGameInfo = _repository.GetGameInfo(id);
             if (repoGameInfo != null)
             {
                 return new GameInfo

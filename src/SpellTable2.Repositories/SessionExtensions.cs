@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpellTable2.Repositories.Game
+namespace SpellTable2.Repositories
 {
     /// <summary>
     /// Extension methods for <see cref="ISession"/>.
@@ -23,8 +23,8 @@ namespace SpellTable2.Repositories.Game
             var bytes = new byte[]
             {
                 (byte)(value >> 24),
-                (byte)(0xFF & (value >> 16)),
-                (byte)(0xFF & (value >> 8)),
+                (byte)(0xFF & value >> 16),
+                (byte)(0xFF & value >> 8),
                 (byte)(0xFF & value)
             };
             session.Set(key, bytes);

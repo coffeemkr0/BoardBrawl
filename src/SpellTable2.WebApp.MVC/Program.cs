@@ -12,6 +12,10 @@ builder.Services.AddSession(options =>
 });
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<SpellTable2.Repositories.Lobby.IRepository, SpellTable2.Repositories.Lobby.MemoryRepository>();
+builder.Services.AddScoped<SpellTable2.Services.Lobby.IService, SpellTable2.Services.Lobby.Service>();
+
 builder.Services.AddScoped<SpellTable2.Repositories.Game.IRepository, SpellTable2.Repositories.Game.MemoryRepository>();
 builder.Services.AddScoped<SpellTable2.Services.Game.IService, SpellTable2.Services.Game.Service>();
 
@@ -36,6 +40,14 @@ app.UseSession();
 
 app.MapControllerRoute(
     name: "Main",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "Lobby",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "Game",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
