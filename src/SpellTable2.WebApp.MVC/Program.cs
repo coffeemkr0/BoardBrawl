@@ -1,5 +1,8 @@
 
 
+using SpellTable2.Core.AutoMapping;
+using SpellTable2.WebApp.MVC.AutoMapping;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,6 +15,8 @@ builder.Services.AddSession(options =>
 });
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddSingleton<IMapper, AutoMapperMapper>();
 
 builder.Services.AddScoped<SpellTable2.Repositories.Lobby.IRepository, SpellTable2.Repositories.Lobby.MemoryRepository>();
 builder.Services.AddScoped<SpellTable2.Services.Lobby.IService, SpellTable2.Services.Lobby.Service>();

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using AutoMapper.Configuration;
 using IMapper = SpellTable2.Core.AutoMapping.IMapper;
 
 namespace SpellTable2.WebApp.MVC.AutoMapping
@@ -11,6 +10,9 @@ namespace SpellTable2.WebApp.MVC.AutoMapping
         public AutoMapperMapper()
         {
             var configurationExpression = new MapperConfigurationExpression();
+
+            configurationExpression.AddProfile<Services.Lobby.AutoMapperProfile>();
+            configurationExpression.AddProfile<Services.Game.AutoMapperProfile>();
 
             _mapper = new Mapper(new MapperConfiguration(configurationExpression));
         }
