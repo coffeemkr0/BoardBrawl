@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
-using SpellTable2.Repositories.Game.Models;
+using SpellTable2.Repositories.Lobby.Models;
 
 namespace SpellTable2.Repositories.Lobby
 {

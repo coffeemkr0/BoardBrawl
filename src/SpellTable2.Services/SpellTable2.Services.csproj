@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SpellTable2.Core\SpellTable2.Core.csproj" />
     <ProjectReference Include="..\SpellTable2.Repositories\SpellTable2.Repositories.csproj" />
   </ItemGroup>
 
