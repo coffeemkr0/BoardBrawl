@@ -6,6 +6,7 @@ namespace SpellTable2.Services.Game
     {
         public AutoMapperProfile()
         {
+            CreateMap<Models.GameInfo, Repositories.Game.Models.GameInfo>();
             CreateMap<Repositories.Game.Models.GameInfo, Models.GameInfo>();
         }
     }

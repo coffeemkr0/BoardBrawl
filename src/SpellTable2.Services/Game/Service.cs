@@ -1,4 +1,5 @@
-﻿using SpellTable2.Repositories.Game;
+﻿using SpellTable2.Core.AutoMapping;
+using SpellTable2.Repositories.Game;
 using SpellTable2.Repositories.Game.Models;
 
 namespace SpellTable2.Services.Game
@@ -6,10 +7,12 @@ namespace SpellTable2.Services.Game
     public class Service : IService
     {
         private readonly IRepository _repository;
+        private readonly IMapper _mapper;
 
-        public Service(IRepository repository)
+        public Service(IRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public GameInfo? GetGameInfo(Guid id)
@@ -17,13 +20,7 @@ namespace SpellTable2.Services.Game
             var repoGameInfo = _repository.GetGameInfo(id);
             if (repoGameInfo != null)
             {
-                return new GameInfo
-                {
-                    GameId = id,
-                    Name = repoGameInfo.Name,
-                    Description = repoGameInfo.Description,
-                    IsPublic = repoGameInfo.IsPublic,
-                };
+                return _mapper.Map<GameInfo>(repoGameInfo);
             }
             else
             {
