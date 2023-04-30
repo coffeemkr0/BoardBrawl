@@ -22,6 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SpellTable2.Core\SpellTable2.Core.csproj" />
     <ProjectReference Include="..\SpellTable2.Repositories\SpellTable2.Repositories.csproj" />
     <ProjectReference Include="..\SpellTable2.Services\SpellTable2.Services.csproj" />
   </ItemGroup>
