@@ -6,3 +6,32 @@
     <h1 class="display-4">Game</h1>
     <h2>@ViewBag.GameName</h2>
 </div>
+
+<button id="btnRefreshPlayers">Refresh</button>
+
+<div id="playerListContainer">
+
+</div>
+
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            refreshPlayersList();
+
+            $('#btnRefreshPlayers').click(function () {
+                refreshPlayersList();
+            });
+        });
+
+        function refreshPlayersList() {
+            $.ajax({
+                url: '/Game/Home/PlayerListPartial',
+                success: function (html) {
+                    $('#playerListContainer').html(html);
+                }
+            });
+        }
+    </script>
+}

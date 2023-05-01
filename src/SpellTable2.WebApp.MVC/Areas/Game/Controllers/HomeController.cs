@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SpellTable2.Services.Game;
+using SpellTable2.WebApp.MVC.Areas.Game.Models;
 
 namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
 {
@@ -23,6 +24,21 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
             ViewBag.GameName = gameInfo?.Name;
 
             return View();
+        }
+
+        public IActionResult PlayerListPartial()
+        {
+            var playerList = new PlayerList();
+
+            playerList.Players.AddRange(new List<PlayerInfo>
+            { 
+                new PlayerInfo { Name = "Player 1" },
+                new PlayerInfo { Name = "Player 2" },
+                new PlayerInfo { Name = "Player 3" },
+                new PlayerInfo { Name = "Player 4" }
+            });
+
+            return PartialView("_PlayerList", playerList);
         }
     }
 }

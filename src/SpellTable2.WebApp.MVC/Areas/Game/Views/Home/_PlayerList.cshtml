@@ -1,0 +1,9 @@
+﻿@using SpellTable2.WebApp.MVC.Areas.Game.Models;
+@model PlayerList
+
+<h1>Players</h1>
+
+@foreach(var playerInfo in Model.Players)
+{
+    <h2>@playerInfo.Name</h2>
+}
