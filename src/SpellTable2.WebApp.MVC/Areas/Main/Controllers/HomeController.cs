@@ -14,14 +14,10 @@ namespace SpellTable2.WebApp.MVC.Areas.Main.Controllers
 
         public IActionResult Index()
         {
-            //TODO:Simulate a random user Id that is stored in session data until we have Identity in place
-            var userId = HttpContext.Session.GetString("user_id");
-            if (userId == null)
-            {
-                HttpContext.Session.SetString("user_id", Guid.NewGuid().ToString());
-            }
+            //TODO:Simulate a random user Id until we have Identity in place
+            TempData["user_id"] = Guid.NewGuid().ToString();
 
-            return Redirect("Lobby");
+            return Redirect("/Lobby");
         }
     }
 }

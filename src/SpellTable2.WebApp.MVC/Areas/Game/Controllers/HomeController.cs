@@ -19,8 +19,8 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
         public IActionResult Index(Guid id)
         {
             var gameInfo = _service.GetGameInfo(id);
-            var userId = HttpContext.Session.GetString("user_id");
-            if(userId== null) { return Redirect("Main"); }
+            var userId = TempData["user_id"];
+            if(userId== null) { return Redirect("/Main"); }
             
             ViewBag.GameId = id;
             ViewBag.GameName = gameInfo?.Name;

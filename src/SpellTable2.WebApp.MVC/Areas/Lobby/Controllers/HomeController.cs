@@ -20,7 +20,7 @@ namespace SpellTable2.WebApp.MVC.Areas.Lobby.Controllers
         {
             Guid gameIdToJoin;
 
-            var publicGames = _service.GetPublicGames();
+           var publicGames = _service.GetPublicGames();
 
             if(!publicGames.Any())
             {
