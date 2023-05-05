@@ -22,7 +22,7 @@
             .withUrl("/GameHub").build();
 
         _gameHubConnection.on("OnPlayerJoined", function (userId) {
-            console.log('OnPlayerJoined userId:' + userId);
+            refreshPlayersList();
         });
 
         JoinGameHub();
