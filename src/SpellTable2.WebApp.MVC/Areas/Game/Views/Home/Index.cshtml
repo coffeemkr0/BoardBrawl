@@ -3,8 +3,7 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Game</h1>
-    <h2>@ViewBag.GameName</h2>
+    <h1>@ViewBag.GameName</h1>
 </div>
 
 <button id="btnRefreshPlayers">Refresh</button>
@@ -27,7 +26,7 @@
 
         function refreshPlayersList() {
             $.ajax({
-                url: '/Game/Home/PlayerListPartial',
+                url: '/Game/Home/PlayerListPartial/@ViewBag.GameId',
                 success: function (html) {
                     $('#playerListContainer').html(html);
                 }

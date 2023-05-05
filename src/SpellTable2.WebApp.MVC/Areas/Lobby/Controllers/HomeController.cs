@@ -16,19 +16,34 @@ namespace SpellTable2.WebApp.MVC.Areas.Lobby.Controllers
             _service = service;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(Guid? userId)
         {
-            var newGame = new GameInfo
+            if (userId == null) { return Redirect("/Main"); }
+
+            Guid gameIdToJoin;
+
+            var publicGames = _service.GetPublicGames();
+
+            if(!publicGames.Any())
             {
-                GameId = Guid.NewGuid(),
-                Name = "Test Game",
-                Description = "A game created by test code",
-                IsPublic = true
-            };
+                var newGame = new GameInfo
+                {
+                    GameId = Guid.NewGuid(),
+                    Name = "Test Game",
+                    Description = "A game created by test code",
+                    IsPublic = true
+                };
 
-            _service.CreateGame(newGame);
+                _service.CreateGame(newGame);
 
-            return RedirectToAction("Index", "Home", new { area = "Game", id = newGame.GameId });
+                gameIdToJoin = newGame.GameId;
+            }
+            else
+            {
+                gameIdToJoin = publicGames.First().GameId;
+            }
+
+            return RedirectToAction("Index", "Home", new { area = "Game", id = gameIdToJoin, userId });
         }
     }
 }

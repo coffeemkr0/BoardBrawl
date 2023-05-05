@@ -6,5 +6,7 @@ namespace SpellTable2.Repositories.Game
     {
         GameInfo? GetGameInfo(Guid id);
         void CloseGame(GameInfo gameInfo);
+        void AddPlayerToGame(Guid gameId, PlayerInfo playerInfo);            
+        List<PlayerInfo> GetPlayers(Guid gameId);
     }
 }

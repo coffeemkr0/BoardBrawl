@@ -1,4 +1,4 @@
-﻿namespace SpellTable2.WebApp.MVC.Areas.Game.Models
+﻿namespace SpellTable2.Repositories.Game.Models
 {
     public class PlayerInfo
     {

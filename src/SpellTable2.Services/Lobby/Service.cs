@@ -21,5 +21,12 @@ namespace SpellTable2.Services.Lobby
 
             _repository.CreateGame(repoGameInfo);
         }
+
+        public List<GameInfo> GetPublicGames()
+        {
+            var repoGames = _repository.GetGames().Where(x => x.IsPublic);
+
+            return _mapper.Map<List<GameInfo>>(repoGames);
+        }
     }
 }

@@ -8,6 +8,9 @@ namespace SpellTable2.Services.Game
         {
             CreateMap<Models.GameInfo, Repositories.Game.Models.GameInfo>();
             CreateMap<Repositories.Game.Models.GameInfo, Models.GameInfo>();
+
+            CreateMap<Repositories.Game.Models.PlayerInfo, Models.PlayerInfo>();
+            CreateMap<Models.PlayerInfo, Repositories.Game.Models.PlayerInfo>();
         }
     }
 }
