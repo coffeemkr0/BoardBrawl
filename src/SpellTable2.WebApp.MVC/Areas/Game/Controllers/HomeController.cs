@@ -16,32 +16,39 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
             _service = service;
         }
 
-        public IActionResult Index(Guid? gameId, Guid? userId)
+        public IActionResult Index(Guid? id, Guid? userId)
         {
             if (userId == null) { return Redirect("/Main"); }
-            if (gameId == null) { return Redirect("/Lobby"); }
+            if (id == null) { return Redirect("/Lobby"); }
 
-            var gameInfo = _service.GetGameInfo(gameId.Value);
+            var gameInfo = _service.GetGameInfo(id.Value);
             if (gameInfo == null) { return Redirect("/Lobby"); }
 
-            ViewBag.GameId = gameId.Value;
+            ViewBag.GameId = id.Value;
             ViewBag.GameName = gameInfo.Name;
-            ViewBag.UserId = userId;
+
+            _service.AddPlayerToGame(id.Value, new Services.Game.Models.PlayerInfo
+            {
+                UserId = userId.Value,
+                PlayerName = $"Player Name {userId.Value.ToString()[..5]}"
+            });
 
             return View();
         }
 
-        public IActionResult PlayerListPartial()
+        public IActionResult PlayerListPartial(Guid id)
         {
+            var players = _service.GetPlayers(id);
+
             var playerList = new PlayerList();
 
-            playerList.Players.AddRange(new List<PlayerInfo>
-            { 
-                new PlayerInfo { Name = "Player 1" },
-                new PlayerInfo { Name = "Player 2" },
-                new PlayerInfo { Name = "Player 3" },
-                new PlayerInfo { Name = "Player 4" }
-            });
+            foreach (var playerInfo in players)
+            {
+                playerList.Players.Add(new PlayerInfo
+                {
+                    Name = playerInfo.PlayerName
+                });
+            }
 
             return PartialView("_PlayerList", playerList);
         }

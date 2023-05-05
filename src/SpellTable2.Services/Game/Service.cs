@@ -1,6 +1,6 @@
 ﻿using SpellTable2.Core.AutoMapping;
 using SpellTable2.Repositories.Game;
-using SpellTable2.Repositories.Game.Models;
+using SpellTable2.Services.Game.Models;
 
 namespace SpellTable2.Services.Game
 {
@@ -15,6 +15,11 @@ namespace SpellTable2.Services.Game
             _mapper = mapper;
         }
 
+        public void AddPlayerToGame(Guid gameId, PlayerInfo playerInfo)
+        {
+            _repository.AddPlayerToGame(gameId, _mapper.Map<Repositories.Game.Models.PlayerInfo>(playerInfo));
+        }
+
         public GameInfo? GetGameInfo(Guid id)
         {
             var repoGameInfo = _repository.GetGameInfo(id);
@@ -26,6 +31,12 @@ namespace SpellTable2.Services.Game
             {
                 return null;
             }
+        }
+
+        public List<PlayerInfo> GetPlayers(Guid gameId)
+        {
+            var repoPlayers = _repository.GetPlayers(gameId);
+            return _mapper.Map<List<PlayerInfo>>(repoPlayers);
         }
     }
 }

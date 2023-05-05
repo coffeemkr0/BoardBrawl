@@ -43,7 +43,7 @@ namespace SpellTable2.WebApp.MVC.Areas.Lobby.Controllers
                 gameIdToJoin = publicGames.First().GameId;
             }
 
-            return RedirectToAction("Index", "Home", new { area = "Game", gameId = gameIdToJoin, userId });
+            return RedirectToAction("Index", "Home", new { area = "Game", id = gameIdToJoin, userId });
         }
     }
 }

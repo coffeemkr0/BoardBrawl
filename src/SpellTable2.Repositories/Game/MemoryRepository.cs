@@ -15,6 +15,23 @@ namespace SpellTable2.Repositories.Game
             _memoryCache = memoryCache;
         }
 
+        public void AddPlayerToGame(Guid gameId, PlayerInfo playerInfo)
+        {
+            var playerDictionary = _memoryCache.GetValueOrDefault<Dictionary<Guid, List<PlayerInfo>>>("Players");
+
+            if (!playerDictionary.ContainsKey(gameId))
+            {
+                playerDictionary.Add(gameId, new List<PlayerInfo>());
+            }
+
+            if (!playerDictionary[gameId].Any(i=>i.UserId== playerInfo.UserId))
+            {
+                playerDictionary[gameId].Add(playerInfo);
+            }
+
+            _memoryCache.Set("Players", playerDictionary);
+        }
+
         public void CloseGame(GameInfo gameInfo)
         {
             var games = GetGames();
@@ -32,6 +49,13 @@ namespace SpellTable2.Repositories.Game
         public GameInfo? GetGameInfo(Guid id)
         {
             return GetGames().FirstOrDefault(i => i.GameId == id);
+        }
+
+        public List<PlayerInfo> GetPlayers(Guid gameId)
+        {
+            var players = _memoryCache.GetValueOrDefault<Dictionary<Guid, List<PlayerInfo>>>("Players");
+
+            return players[gameId];
         }
 
         private List<GameInfo> GetGames()
