@@ -1,12 +1,15 @@
 
 
 using SpellTable2.Core.AutoMapping;
+using SpellTable2.WebApp.MVC.Areas.Game.Hubs;
 using SpellTable2.WebApp.MVC.AutoMapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSignalR();
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
@@ -58,5 +61,7 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapHub<GameHub>("/GameHub");
 
 app.Run();
