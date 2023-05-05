@@ -2,6 +2,8 @@
 {
     public class PlayerInfo
     {
-        public string Name { get; set; }
+        public Guid UserId { get; set; }
+
+        public string PlayerName { get; set; }
     }
 }

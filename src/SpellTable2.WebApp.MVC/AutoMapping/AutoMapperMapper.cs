@@ -13,6 +13,7 @@ namespace SpellTable2.WebApp.MVC.AutoMapping
 
             configurationExpression.AddProfile<Services.Lobby.AutoMapperProfile>();
             configurationExpression.AddProfile<Services.Game.AutoMapperProfile>();
+            configurationExpression.AddProfile<Areas.Game.AutoMapperProfile>();
 
             _mapper = new Mapper(new MapperConfiguration(configurationExpression));
         }

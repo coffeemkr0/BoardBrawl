@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SpellTable2.Core.AutoMapping;
 using SpellTable2.Services.Game;
 using SpellTable2.WebApp.MVC.Areas.Game.Models;
 
@@ -9,11 +10,13 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IService _service;
+        private readonly IMapper _mapper;
 
-        public HomeController(ILogger<HomeController> logger, IService service)
+        public HomeController(ILogger<HomeController> logger, IService service, IMapper mapper)
         {
             _logger = logger;
             _service = service;
+            _mapper = mapper;
         }
 
         public IActionResult Index(Guid? id, Guid? userId)
@@ -38,17 +41,9 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
 
         public IActionResult PlayerListPartial(Guid id)
         {
-            var players = _service.GetPlayers(id);
-
             var playerList = new PlayerList();
 
-            foreach (var playerInfo in players)
-            {
-                playerList.Players.Add(new PlayerInfo
-                {
-                    Name = playerInfo.PlayerName
-                });
-            }
+            playerList.Players.AddRange(_mapper.Map<List<PlayerInfo>>(_service.GetPlayers(id)));
 
             return PartialView("_PlayerList", playerList);
         }
