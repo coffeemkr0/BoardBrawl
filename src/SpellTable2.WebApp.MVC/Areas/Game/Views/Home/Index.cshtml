@@ -1,4 +1,6 @@
-﻿@{
+﻿<script src="~/js/signalr/dist/browser/signalr.js"></script>
+
+@{
     ViewData["Title"] = "Game";
 }
 
@@ -16,6 +18,15 @@
 @section Scripts
 {
     <script>
+        const _gameHubConnection = new signalR.HubConnectionBuilder()
+            .withUrl("/GameHub").build();
+
+        _gameHubConnection.on("OnPlayerJoined", function (userId) {
+            console.log('OnPlayerJoined userId:' + userId);
+        });
+
+        JoinGameHub();
+
         $(document).ready(function () {
             refreshPlayersList();
 
@@ -23,6 +34,12 @@
                 refreshPlayersList();
             });
         });
+
+        async function JoinGameHub()
+        {
+            await _gameHubConnection.start();
+            await _gameHubConnection.invoke("JoinGameHub", '@ViewBag.GameId');
+        }
 
         function refreshPlayersList() {
             $.ajax({

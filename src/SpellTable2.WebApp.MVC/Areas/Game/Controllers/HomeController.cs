@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using SpellTable2.Core.AutoMapping;
 using SpellTable2.Services.Game;
+using SpellTable2.WebApp.MVC.Areas.Game.Hubs;
 using SpellTable2.WebApp.MVC.Areas.Game.Models;
+using System.Text.RegularExpressions;
 
 namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
 {
@@ -11,15 +14,17 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IService _service;
         private readonly IMapper _mapper;
+        private readonly IHubContext<GameHub> _gameHubContext;
 
-        public HomeController(ILogger<HomeController> logger, IService service, IMapper mapper)
+        public HomeController(ILogger<HomeController> logger, IService service, IMapper mapper, IHubContext<GameHub> gameHubContext)
         {
             _logger = logger;
             _service = service;
             _mapper = mapper;
+            _gameHubContext = gameHubContext;
         }
 
-        public IActionResult Index(Guid? id, Guid? userId)
+        public async Task<IActionResult> Index(Guid? id, Guid? userId)
         {
             if (userId == null) { return Redirect("/Main"); }
             if (id == null) { return Redirect("/Lobby"); }
@@ -35,6 +40,8 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
                 UserId = userId.Value,
                 PlayerName = $"Player Name {userId.Value.ToString()[..5]}"
             });
+
+            await _gameHubContext.Clients.Group(gameInfo.GameId.ToString()).SendAsync("OnPlayerJoined", userId.Value);
 
             return View();
         }
