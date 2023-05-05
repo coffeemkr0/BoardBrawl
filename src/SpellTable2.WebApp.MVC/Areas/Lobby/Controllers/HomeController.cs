@@ -16,11 +16,13 @@ namespace SpellTable2.WebApp.MVC.Areas.Lobby.Controllers
             _service = service;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(Guid? userId)
         {
+            if (userId == null) { return Redirect("/Main"); }
+
             Guid gameIdToJoin;
 
-           var publicGames = _service.GetPublicGames();
+            var publicGames = _service.GetPublicGames();
 
             if(!publicGames.Any())
             {
@@ -41,7 +43,7 @@ namespace SpellTable2.WebApp.MVC.Areas.Lobby.Controllers
                 gameIdToJoin = publicGames.First().GameId;
             }
 
-            return RedirectToAction("Index", "Home", new { area = "Game", id = gameIdToJoin });
+            return RedirectToAction("Index", "Home", new { area = "Game", gameId = gameIdToJoin, userId });
         }
     }
 }

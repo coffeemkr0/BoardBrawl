@@ -15,9 +15,9 @@ namespace SpellTable2.WebApp.MVC.Areas.Main.Controllers
         public IActionResult Index()
         {
             //TODO:Simulate a random user Id until we have Identity in place
-            TempData["user_id"] = Guid.NewGuid().ToString();
+            var userId = Guid.NewGuid().ToString();
 
-            return Redirect("/Lobby");
+            return RedirectToAction("Index", "Home", new { area = "Lobby", userId });
         }
     }
 }

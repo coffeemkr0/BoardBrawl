@@ -16,14 +16,16 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
             _service = service;
         }
 
-        public IActionResult Index(Guid id)
+        public IActionResult Index(Guid? gameId, Guid? userId)
         {
-            var gameInfo = _service.GetGameInfo(id);
-            var userId = TempData["user_id"];
-            if(userId== null) { return Redirect("/Main"); }
-            
-            ViewBag.GameId = id;
-            ViewBag.GameName = gameInfo?.Name;
+            if (userId == null) { return Redirect("/Main"); }
+            if (gameId == null) { return Redirect("/Lobby"); }
+
+            var gameInfo = _service.GetGameInfo(gameId.Value);
+            if (gameInfo == null) { return Redirect("/Lobby"); }
+
+            ViewBag.GameId = gameId.Value;
+            ViewBag.GameName = gameInfo.Name;
             ViewBag.UserId = userId;
 
             return View();
