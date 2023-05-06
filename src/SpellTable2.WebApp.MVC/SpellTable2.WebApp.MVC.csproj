@@ -28,8 +28,4 @@
     <ProjectReference Include="..\SpellTable2.Services\SpellTable2.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Game\Views\Shared\" />
-  </ItemGroup>
-
 </Project>
