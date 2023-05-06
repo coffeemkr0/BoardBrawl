@@ -36,7 +36,8 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
             _service.AddPlayerToGame(id.Value, new Services.Game.Models.PlayerInfo
             {
                 UserId = userId.Value,
-                PlayerName = $"Player Name {userId.Value.ToString()[..5]}"
+                PlayerName = $"Player Name {userId.Value.ToString()[..5]}",
+                LifeTotal = 40
             });
 
             await _gameHubContext.Clients.Group(gameInfo.GameId.ToString()).SendAsync("OnPlayerJoined", userId.Value);
