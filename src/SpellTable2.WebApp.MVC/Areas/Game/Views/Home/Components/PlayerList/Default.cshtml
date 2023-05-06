@@ -9,7 +9,7 @@
 
     <script>
         $(document).ready(function () {
-            $('#btnDecreaseLife@(playerInfo.UserId)').click(function () {
+            $(document).on('click', '#btnDecreaseLife@(playerInfo.UserId)', function () {
                 $.ajax({
                     url: '/Game/Home/DecreaseLifeTotal',
                     data: {
@@ -23,7 +23,7 @@
                 });
             });
 
-            $('#btnIncreaseLife@(playerInfo.UserId)').click(function () {
+            $(document).on('click', '#btnIncreaseLife@(playerInfo.UserId)', function () {
                 $.ajax({
                     url: '/Game/Home/IncreaseLifeTotal',
                     data: {
