@@ -24,7 +24,17 @@
             });
 
             $('#btnIncreaseLife@(playerInfo.UserId)').click(function () {
-
+                $.ajax({
+                    url: '/Game/Home/IncreaseLifeTotal',
+                    data: {
+                        gameId: '@(Model.GameId)',
+                        userId: '@(playerInfo.UserId)',
+                        amount: 1
+                    },
+                    success: function (html) {
+                        $('#playerInfo@(playerInfo.UserId)').html(html);
+                    }
+                });
             });
         });
     </script>

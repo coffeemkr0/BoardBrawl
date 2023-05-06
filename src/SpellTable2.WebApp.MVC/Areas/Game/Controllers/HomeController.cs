@@ -56,5 +56,11 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
             var playerInfo = _mapper.Map<PlayerInfo>(_service.DecreaseLifeTotal(gameId, userId, amount));
             return ViewComponent("PlayerInfo", new { playerInfo });
         }
+
+        public IActionResult IncreaseLifeTotal(Guid gameId, Guid userId, int amount)
+        {
+            var playerInfo = _mapper.Map<PlayerInfo>(_service.IncreaseLifeTotal(gameId, userId, amount));
+            return ViewComponent("PlayerInfo", new { playerInfo });
+        }
     }
 }
