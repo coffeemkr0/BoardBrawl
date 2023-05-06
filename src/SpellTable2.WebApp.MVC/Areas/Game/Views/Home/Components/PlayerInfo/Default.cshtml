@@ -1,4 +1,6 @@
 ﻿@using SpellTable2.WebApp.MVC.Areas.Game.Models;
 @model PlayerInfo
 
-<p>@Model.PlayerName - @Model.LifeTotal</p>
+
+@Model.PlayerName <button id="btnDecreaseLife@(Model.UserId)">-</button>@Model.LifeTotal<button id="btnIncreaseLife@(Model.UserId)">+</button>
+

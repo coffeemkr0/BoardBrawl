@@ -5,5 +5,27 @@
 
 @foreach (var playerInfo in Model.Players)
 {
-    @await Component.InvokeAsync("PlayerInfo", playerInfo)
+    <div id="playerInfo@(playerInfo.UserId)">@await Component.InvokeAsync("PlayerInfo", playerInfo)</div>
+
+    <script>
+        $(document).ready(function () {
+            $('#btnDecreaseLife@(playerInfo.UserId)').click(function () {
+                $.ajax({
+                    url: '/Game/Home/DecreaseLifeTotal',
+                    data: {
+                        gameId: '@(Model.GameId)',
+                        userId: '@(playerInfo.UserId)',
+                        amount: 1
+                    },
+                    success: function (html) {
+                        $('#playerInfo@(playerInfo.UserId)').html(html);
+                    }
+                });
+            });
+
+            $('#btnIncreaseLife@(playerInfo.UserId)').click(function () {
+
+            });
+        });
+    </script>
 }

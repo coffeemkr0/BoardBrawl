@@ -8,5 +8,7 @@ namespace SpellTable2.Services.Game
         GameInfo? GetGameInfo(Guid id);
         void AddPlayerToGame(Guid gameId, PlayerInfo playerInfo);
         List<PlayerInfo> GetPlayers(Guid gameId);
+        PlayerInfo DecreaseLifeTotal(Guid gameId, Guid userId, int amount);
+        PlayerInfo IncreaseLifeTotal(Guid gameId, Guid userId, int amount);
     }
 }

@@ -20,6 +20,12 @@ namespace SpellTable2.Services.Game
             _repository.AddPlayerToGame(gameId, _mapper.Map<Repositories.Game.Models.PlayerInfo>(playerInfo));
         }
 
+        public PlayerInfo DecreaseLifeTotal(Guid gameId, Guid userId, int amount)
+        {
+            _repository.DecreaseLifeTotal(gameId, userId, amount);
+            return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));
+        }
+
         public GameInfo? GetGameInfo(Guid id)
         {
             var repoGameInfo = _repository.GetGameInfo(id);
@@ -37,6 +43,12 @@ namespace SpellTable2.Services.Game
         {
             var repoPlayers = _repository.GetPlayers(gameId);
             return _mapper.Map<List<PlayerInfo>>(repoPlayers);
+        }
+
+        public PlayerInfo IncreaseLifeTotal(Guid gameId, Guid userId, int amount)
+        {
+            _repository.IncreaseLifeTotal(gameId, userId, amount);
+            return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));
         }
     }
 }

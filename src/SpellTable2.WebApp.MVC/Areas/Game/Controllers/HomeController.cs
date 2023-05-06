@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.SignalR;
 using SpellTable2.Core.AutoMapping;
 using SpellTable2.Services.Game;
 using SpellTable2.WebApp.MVC.Areas.Game.Hubs;
+using SpellTable2.WebApp.MVC.Areas.Game.Models;
 
 namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
 {
@@ -36,7 +37,7 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
             _service.AddPlayerToGame(id.Value, new Services.Game.Models.PlayerInfo
             {
                 UserId = userId.Value,
-                PlayerName = $"Player Name {userId.Value.ToString()[..5]}",
+                PlayerName = $"Player {userId.Value.ToString()[..5]}",
                 LifeTotal = 40
             });
 
@@ -48,6 +49,12 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
         public IActionResult PlayerList(Guid id)
         {
             return ViewComponent("PlayerList", new { gameId = id});
+        }
+
+        public IActionResult DecreaseLifeTotal(Guid gameId, Guid userId, int amount)
+        {
+            var playerInfo = _mapper.Map<PlayerInfo>(_service.DecreaseLifeTotal(gameId, userId, amount));
+            return ViewComponent("PlayerInfo", new { playerInfo });
         }
     }
 }

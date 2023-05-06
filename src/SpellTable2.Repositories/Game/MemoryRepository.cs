@@ -34,7 +34,7 @@ namespace SpellTable2.Repositories.Game
 
         public void CloseGame(GameInfo gameInfo)
         {
-            var games = GetGames();
+            var games = GetGameCollection();
 
             var game = games.FirstOrDefault(i => i.GameId == gameInfo.GameId);
 
@@ -46,9 +46,15 @@ namespace SpellTable2.Repositories.Game
             _memoryCache.Set("Games", games);
         }
 
+        public void DecreaseLifeTotal(Guid gameId, Guid userId, int amount)
+        {
+            var player = GetPlayerCollection()[gameId].First(i => i.UserId == userId);
+            player.LifeTotal -= amount;
+        }
+
         public GameInfo? GetGameInfo(Guid id)
         {
-            return GetGames().FirstOrDefault(i => i.GameId == id);
+            return GetGameCollection().FirstOrDefault(i => i.GameId == id);
         }
 
         public List<PlayerInfo> GetPlayers(Guid gameId)
@@ -58,9 +64,20 @@ namespace SpellTable2.Repositories.Game
             return players[gameId];
         }
 
-        private List<GameInfo> GetGames()
+        public void IncreaseLifeTotal(Guid gameId, Guid userId, int amount)
+        {
+            var player = GetPlayerCollection()[gameId].First(i => i.UserId == userId);
+            player.LifeTotal += amount;
+        }
+
+        private List<GameInfo> GetGameCollection()
         {
             return _memoryCache.GetValueOrDefault<List<GameInfo>>("Games");
+        }
+
+        private Dictionary<Guid, List<PlayerInfo>> GetPlayerCollection()
+        {
+            return _memoryCache.GetValueOrDefault<Dictionary<Guid, List<PlayerInfo>>>("Players");
         }
     }
 }
