@@ -4,6 +4,8 @@ using SpellTable2.Core.AutoMapping;
 using SpellTable2.Services.Game;
 using SpellTable2.WebApp.MVC.Areas.Game.Hubs;
 using SpellTable2.WebApp.MVC.Areas.Game.Models;
+using System.Net.Mail;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
@@ -46,13 +48,9 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
             return View();
         }
 
-        public IActionResult PlayerListPartial(Guid id)
+        public IActionResult PlayerList(Guid id)
         {
-            var playerList = new PlayerList();
-
-            playerList.Players.AddRange(_mapper.Map<List<PlayerInfo>>(_service.GetPlayers(id)));
-
-            return PartialView("_PlayerList", playerList);
+            return ViewComponent("PlayerList", new { gameId = id});
         }
     }
 }
