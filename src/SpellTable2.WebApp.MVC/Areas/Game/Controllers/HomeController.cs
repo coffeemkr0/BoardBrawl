@@ -46,20 +46,23 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
             return View();
         }
 
+
         public IActionResult PlayerList(Guid id)
         {
             return ViewComponent("PlayerList", new { gameId = id});
         }
 
-        public IActionResult DecreaseLifeTotal(Guid gameId, Guid userId, int amount)
+        public async Task<IActionResult> DecreaseLifeTotal(Guid gameId, Guid userId, int amount)
         {
             var playerInfo = _mapper.Map<PlayerInfo>(_service.DecreaseLifeTotal(gameId, userId, amount));
+            await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfoChanged", userId);
             return ViewComponent("PlayerInfo", new { playerInfo });
         }
 
-        public IActionResult IncreaseLifeTotal(Guid gameId, Guid userId, int amount)
+        public async Task<IActionResult> IncreaseLifeTotal(Guid gameId, Guid userId, int amount)
         {
             var playerInfo = _mapper.Map<PlayerInfo>(_service.IncreaseLifeTotal(gameId, userId, amount));
+            await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfoChanged", userId);
             return ViewComponent("PlayerInfo", new { playerInfo });
         }
     }

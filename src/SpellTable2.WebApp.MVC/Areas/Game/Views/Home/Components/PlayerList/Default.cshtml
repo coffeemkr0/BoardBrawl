@@ -9,6 +9,8 @@
 
     <script>
         $(document).ready(function () {
+            $(document).off('click', '#btnDecreaseLife@(playerInfo.UserId)')
+
             $(document).on('click', '#btnDecreaseLife@(playerInfo.UserId)', function () {
                 $.ajax({
                     url: '/Game/Home/DecreaseLifeTotal',
@@ -22,6 +24,8 @@
                     }
                 });
             });
+
+            $(document).off('click', '#btnIncreaseLife@(playerInfo.UserId)')
 
             $(document).on('click', '#btnIncreaseLife@(playerInfo.UserId)', function () {
                 $.ajax({

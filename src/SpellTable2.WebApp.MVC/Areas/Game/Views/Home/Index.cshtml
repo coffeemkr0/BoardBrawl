@@ -19,20 +19,31 @@
 @section Scripts
 {
     <script>
-        const _gameHubConnection = new signalR.HubConnectionBuilder()
-            .withUrl("/GameHub").build();
+        //Fields
+        var _gameHubConnection;
 
-        _gameHubConnection.on("OnPlayerJoined", function (userId) {
-            refreshPlayersList();
-        });
-
+        //Initialization
+        InitializeGameHubConnection();
         JoinGameHub();
 
         $(document).ready(function () {
             $('#btnRefreshPlayers').click(function () {
-                refreshPlayersList();
+                btnRefreshPlayers_Clicked();
             });
         });
+
+        function InitializeGameHubConnection() {
+            _gameHubConnection = new signalR.HubConnectionBuilder()
+                .withUrl("/GameHub").build();
+
+            _gameHubConnection.on("OnPlayerJoined", function (userId) {
+                OnPlayerJoinedGame(userId);
+            });
+
+            _gameHubConnection.on("OnPlayerInfoChanged", function (userId) {
+                OnPlayerInfoChanged(userId);
+            });
+        }
 
         async function JoinGameHub()
         {
@@ -40,7 +51,27 @@
             await _gameHubConnection.invoke("JoinGameHub", '@ViewBag.GameId');
         }
 
-        function refreshPlayersList() {
+        //Game hub events
+        function OnPlayerJoinedGame(userId) 
+        {
+            RefreshPlayersList();
+        }
+
+        function OnPlayerInfoChanged(userId) 
+        {
+            //TODO:Don't refresh the entire player list, just the element that contains the player info
+            RefreshPlayersList();
+        }
+
+        //Control events
+        function btnRefreshPlayers_Clicked()
+        {
+            RefreshPlayersList();
+        }
+
+        //Methods
+        function RefreshPlayersList() 
+        {
             $.ajax({
                 url: '/Game/Home/PlayerList/@ViewBag.GameId',
                 success: function (html) {
