@@ -1,18 +1,20 @@
-﻿<script src="~/js/signalr/dist/browser/signalr.js"></script>
+﻿@using SpellTable2.WebApp.MVC.Areas.Game.Models;
+@model Model;
+
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
 
 @{
-    ViewData["Title"] = "Game";
+    ViewData["Title"] = Model.GameName;
 }
 
 <div class="text-center">
-    <h1>@ViewBag.GameName</h1>
+    <h1>@Model.GameName</h1>
 </div>
 
 <button id="btnRefreshPlayers">Refresh</button>
 
 <div id="playerListContainer">
-    @await Component.InvokeAsync("PlayerList", new {gameId = ViewBag.gameId})
-    @*TODO:Render a view component or partial here instead of waiting until the page is loaded on the client and sending a second request*@
+    @await Component.InvokeAsync("PlayerList", new {gameId = Model.GameId})
 </div>
 
 
@@ -48,7 +50,7 @@
         async function JoinGameHub()
         {
             await _gameHubConnection.start();
-            await _gameHubConnection.invoke("JoinGameHub", '@ViewBag.GameId');
+            await _gameHubConnection.invoke("JoinGameHub", '@Model.GameId');
         }
 
         //Game hub events
@@ -72,7 +74,7 @@
         function RefreshPlayersList() 
         {
             $.ajax({
-                url: '/Game/Home/PlayerList/@ViewBag.GameId',
+                url: '/Game/Home/PlayerList/@Model.GameId',
                 success: function (html) {
                     $('#playerListContainer').html(html);
                 }

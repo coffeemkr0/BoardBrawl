@@ -23,16 +23,13 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
             _gameHubContext = gameHubContext;
         }
 
-        public async Task<IActionResult> Index(Guid? id, Guid? userId)
+        public IActionResult Index(Guid? id, Guid? userId)
         {
             if (userId == null) { return Redirect("/Main"); }
             if (id == null) { return Redirect("/Lobby"); }
 
             var gameInfo = _service.GetGameInfo(id.Value);
             if (gameInfo == null) { return Redirect("/Lobby"); }
-
-            ViewBag.GameId = id.Value;
-            ViewBag.GameName = gameInfo.Name;
 
             _service.AddPlayerToGame(id.Value, new Services.Game.Models.PlayerInfo
             {
@@ -41,9 +38,15 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
                 LifeTotal = 40
             });
 
-            await _gameHubContext.Clients.Group(gameInfo.GameId.ToString()).SendAsync("OnPlayerJoined", userId.Value);
+            _gameHubContext.Clients.Group(gameInfo.GameId.ToString()).SendAsync("OnPlayerJoined", userId.Value);
 
-            return View();
+            var model = new Model
+            {
+                GameId = id.Value,
+                GameName = gameInfo.Name
+            };
+
+            return View(model);
         }
 
 
