@@ -14,7 +14,7 @@
 <button id="btnRefreshPlayers">Refresh</button>
 
 <div id="playerListContainer">
-    @await Component.InvokeAsync("PlayerList", new {gameId = Model.GameId})
+    @await Component.InvokeAsync("PlayerList", new {gameId = Model.GameId, userId = Model.UserId})
 </div>
 
 
@@ -56,7 +56,10 @@
         //Game hub events
         function OnPlayerJoinedGame(userId) 
         {
-            RefreshPlayersList();
+            if(userId != '@Model.UserId')
+            {
+                RefreshPlayersList();
+            }
         }
 
         function OnPlayerInfoChanged(userId) 
@@ -75,6 +78,10 @@
         {
             $.ajax({
                 url: '/Game/Home/PlayerList/@Model.GameId',
+                data:{
+                    gameId : '@Model.GameId',
+                    userId : '@Model.UserId'
+                },
                 success: function (html) {
                     $('#playerListContainer').html(html);
                 }

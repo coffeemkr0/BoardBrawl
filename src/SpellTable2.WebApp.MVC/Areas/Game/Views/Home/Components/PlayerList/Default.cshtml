@@ -6,6 +6,7 @@
 @foreach (var playerInfo in Model.Players)
 {
     <div id="playerInfo@(playerInfo.UserId)">@await Component.InvokeAsync("PlayerInfo", playerInfo)</div>
+    <video id="playerVideo@(playerInfo.UserId)" muted></video>
 
     <script>
         $(document).ready(function () {
@@ -41,19 +42,41 @@
                 });
             });
         });
-
-        function PlayerList_RefreshPlayerInfo(userId)
-        {
-            $.ajax({
-                url: '/Game/Home/PlayerInfo',
-                data: {
-                    gameId: '@(Model.GameId)',
-                    userId: userId
-                },
-                success: function (html) {
-                    $('#playerInfo' + userId).html(html);
-                }
-            });
-        }
     </script>
 }
+
+<script>
+    var _localVideoStream;
+
+    InitializeLocalVideoStream();
+
+    function PlayerList_RefreshPlayerInfo(userId)
+    {
+        $.ajax({
+            url: '/Game/Home/PlayerInfo',
+            data: {
+                gameId: '@(Model.GameId)',
+                userId: userId
+            },
+            success: function (html) {
+                $('#playerInfo' + userId).html(html);
+            }
+        });
+    }
+
+    function InitializeLocalVideoStream() 
+    {
+        navigator.mediaDevices.getUserMedia({
+            audio: true,
+            video: true
+        }).then(stream => {
+            _localVideoStream = stream;
+            var videoElement = document.getElementById("playerVideo@(Model.UserId)");
+
+            videoElement.srcObject = stream;
+            videoElement.addEventListener('loadedmetadata', () => {
+                videoElement.play()
+            })
+        })
+    }
+</script>

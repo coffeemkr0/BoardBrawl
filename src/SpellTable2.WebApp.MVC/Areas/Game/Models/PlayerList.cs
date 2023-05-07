@@ -4,6 +4,8 @@
     {
         public Guid GameId { get; set; }
 
+        public Guid UserId { get; set; }
+
         public List<PlayerInfo> Players { get; }
 
         public PlayerList()

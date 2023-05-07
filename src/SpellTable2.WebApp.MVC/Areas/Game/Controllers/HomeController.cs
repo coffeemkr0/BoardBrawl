@@ -43,6 +43,7 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
             var model = new Model
             {
                 GameId = id.Value,
+                UserId = userId.Value,
                 GameName = gameInfo.Name
             };
 
@@ -50,9 +51,9 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
         }
 
 
-        public IActionResult PlayerList(Guid id)
+        public IActionResult PlayerList(Guid gameId, Guid userId)
         {
-            return ViewComponent("PlayerList", new { gameId = id});
+            return ViewComponent("PlayerList", new { gameId, userId});
         }
 
         public IActionResult PlayerInfo(Guid gameId, Guid userId)
