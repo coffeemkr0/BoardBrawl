@@ -59,8 +59,7 @@
 
         function OnPlayerInfoChanged(userId) 
         {
-            //TODO:Don't refresh the entire player list, just the element that contains the player info
-            RefreshPlayersList();
+            PlayerList_RefreshPlayerInfo(userId);
         }
 
         //Control events
