@@ -50,5 +50,10 @@ namespace SpellTable2.Services.Game
             _repository.IncreaseLifeTotal(gameId, userId, amount);
             return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));
         }
+
+        public void UpdatePeerId(Guid gameId, Guid userId, Guid peerId)
+        {
+            _repository.UpdatePeerId(gameId, userId, peerId);
+        }
     }
 }

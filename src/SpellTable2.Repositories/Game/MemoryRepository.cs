@@ -17,7 +17,7 @@ namespace SpellTable2.Repositories.Game
 
         public void AddPlayerToGame(Guid gameId, PlayerInfo playerInfo)
         {
-            var playerDictionary = _memoryCache.GetValueOrDefault<Dictionary<Guid, List<PlayerInfo>>>("Players");
+            var playerDictionary = GetPlayerCollection();
 
             if (!playerDictionary.ContainsKey(gameId))
             {
@@ -48,7 +48,7 @@ namespace SpellTable2.Repositories.Game
 
         public void DecreaseLifeTotal(Guid gameId, Guid userId, int amount)
         {
-            var player = GetPlayerCollection()[gameId].First(i => i.UserId == userId);
+            var player = GetPlayer(gameId, userId);
             player.LifeTotal -= amount;
         }
 
@@ -59,15 +59,20 @@ namespace SpellTable2.Repositories.Game
 
         public List<PlayerInfo> GetPlayers(Guid gameId)
         {
-            var players = _memoryCache.GetValueOrDefault<Dictionary<Guid, List<PlayerInfo>>>("Players");
-
+            var players = GetPlayerCollection();
             return players[gameId];
         }
 
         public void IncreaseLifeTotal(Guid gameId, Guid userId, int amount)
         {
-            var player = GetPlayerCollection()[gameId].First(i => i.UserId == userId);
+            var player = GetPlayer(gameId, userId);
             player.LifeTotal += amount;
+        }
+
+        public void UpdatePeerId(Guid gameId, Guid userId, Guid peerId)
+        {
+            var player = GetPlayer(gameId, userId);
+            player.PeerId = peerId;
         }
 
         private List<GameInfo> GetGameCollection()
@@ -78,6 +83,11 @@ namespace SpellTable2.Repositories.Game
         private Dictionary<Guid, List<PlayerInfo>> GetPlayerCollection()
         {
             return _memoryCache.GetValueOrDefault<Dictionary<Guid, List<PlayerInfo>>>("Players");
+        }
+
+        private PlayerInfo GetPlayer(Guid gameId, Guid userId)
+        {
+            return GetPlayerCollection()[gameId].First(i => i.UserId == userId);
         }
     }
 }
