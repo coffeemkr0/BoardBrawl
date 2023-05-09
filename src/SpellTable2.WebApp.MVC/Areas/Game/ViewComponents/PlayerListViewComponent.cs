@@ -19,8 +19,8 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.ViewComponents
         public IViewComponentResult Invoke(Guid gameId, Guid userId)
         {
             var playerList = new PlayerList { GameId = gameId, UserId = userId };
-
-            playerList.Players.AddRange(_mapper.Map<List<PlayerInfo>>(_service.GetPlayers(gameId)));
+            var players = _service.GetPlayers(gameId);
+            playerList.Players.AddRange(_mapper.Map<List<PlayerInfo>>(players));
 
             return View(playerList);
         }

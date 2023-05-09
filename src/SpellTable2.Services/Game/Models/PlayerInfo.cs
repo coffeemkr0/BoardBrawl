@@ -1,8 +1,12 @@
-﻿namespace SpellTable2.Services.Game.Models
+﻿using System.Security.Cryptography;
+
+namespace SpellTable2.Services.Game.Models
 {
     public class PlayerInfo
     {
         public Guid UserId { get; set; }
+
+        public Guid PeerId { get; set; }
 
         public string PlayerName { get; set; }
 

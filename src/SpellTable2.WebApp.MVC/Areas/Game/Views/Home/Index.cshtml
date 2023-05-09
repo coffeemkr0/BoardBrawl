@@ -101,5 +101,15 @@
                 }
             });
         }
+
+        function AnswerCall(call) {
+            console.log('Answering call');
+
+            call.answer(_localVideoStream);
+
+            call.on("stream", (remoteStream) => {
+                AddRemoteStream(remoteStream);
+            });
+        }
     </script>
 }

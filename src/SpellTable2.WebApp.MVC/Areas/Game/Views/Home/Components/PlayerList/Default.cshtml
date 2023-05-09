@@ -9,6 +9,12 @@
     <video id="playerVideo@(playerInfo.UserId)" muted></video>
 
     <script>
+
+        @if(playerInfo.UserId != Model.UserId)
+        {
+            @:RequestRemoteStream('@playerInfo.UserId', '@playerInfo.PeerId');
+        }
+
         $(document).ready(function () {
             $(document).off('click', '#btnDecreaseLife@(playerInfo.UserId)')
 
@@ -78,5 +84,48 @@
                 videoElement.play()
             })
         })
+    }
+
+    async function RequestRemoteStream(userId, peerId) 
+    {
+        const call = _peerJsObject.call(userId, _localVideoStream);
+
+        call.on("stream", (stream) => {
+            var videoElement = document.getElementById("playerVideo" + userId);
+
+            videoElement.srcObject = remoteStream;
+            videoElement.addEventListener('loadedmetadata', () => {
+                videoElement.play();
+            });
+        });
+
+        call.on("data", (stream) => {
+            document.querySelector("#playerVideo" + userId).srcObject = stream;
+        });
+
+        call.on("error", (err) => {
+            console.log("Call error:" + err);
+        });
+
+        call.on('close', () => {
+            Endcall(call);
+        })
+    }
+
+    function AnswerCall(call)
+    {
+        console.log('Answering call');
+
+        call.answer(_localVideoStream);
+
+        call.on("stream", (remoteStream) => {
+            AddRemoteStream(remoteStream);
+        });
+    }
+
+    function EndCall(call) 
+    {
+        console.log('Ending call');
+        call.close();
     }
 </script>
