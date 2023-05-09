@@ -38,8 +38,6 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
                 LifeTotal = 40
             });
 
-            _gameHubContext.Clients.Group(gameInfo.GameId.ToString()).SendAsync("OnPlayerJoined", userId.Value);
-
             var model = new Model
             {
                 GameId = id.Value,

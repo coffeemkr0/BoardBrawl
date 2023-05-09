@@ -38,8 +38,8 @@
             _gameHubConnection = new signalR.HubConnectionBuilder()
                 .withUrl("/GameHub").build();
 
-            _gameHubConnection.on("OnPlayerJoined", function (userId) {
-                OnPlayerJoinedGame(userId);
+            _gameHubConnection.on("OnPlayerJoined", function (userId, peerId) {
+                OnPlayerJoinedGame(userId, peerId);
             });
 
             _gameHubConnection.on("OnPlayerInfoChanged", function (userId) {
@@ -50,16 +50,14 @@
         async function JoinGameHub()
         {
             await _gameHubConnection.start();
-            await _gameHubConnection.invoke("JoinGameHub", '@Model.GameId');
+            await _gameHubConnection.invoke("JoinGameHub", '@Model.GameId', '@Model.UserId', '');
         }
 
         //Game hub events
-        function OnPlayerJoinedGame(userId) 
+        function OnPlayerJoinedGame(userId, peerId) 
         {
-            if(userId != '@Model.UserId')
-            {
-                RefreshPlayersList();
-            }
+            console.log("Player joined, userId:" + userId);
+            RefreshPlayersList();
         }
 
         function OnPlayerInfoChanged(userId) 
