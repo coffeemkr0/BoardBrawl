@@ -2,6 +2,7 @@
 @model Model;
 
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
 
 @{
     ViewData["Title"] = Model.GameName;
@@ -22,11 +23,16 @@
 {
     <script>
         //Fields
+        var _peerJsObject;
+        var _peerJsConnectionId;
         var _gameHubConnection;
 
         //Initialization
         InitializeGameHubConnection();
-        JoinGameHub();
+        _peerJsObject = new Peer();
+        _peerJsObject.on('open', id => {
+            OnPeerJsOpen(id);
+        });
 
         $(document).ready(function () {
             $('#btnRefreshPlayers').click(function () {
@@ -34,7 +40,17 @@
             });
         });
 
-        function InitializeGameHubConnection() {
+        async function OnPeerJsOpen(peerJsConnectionId) 
+        {
+            console.log('Peer Js Opened: ' + peerJsConnectionId);
+
+            _peerJsConnectionId = peerJsConnectionId;
+
+            await JoinGameHub();
+        }
+
+        function InitializeGameHubConnection() 
+        {
             _gameHubConnection = new signalR.HubConnectionBuilder()
                 .withUrl("/GameHub").build();
 
@@ -50,7 +66,7 @@
         async function JoinGameHub()
         {
             await _gameHubConnection.start();
-            await _gameHubConnection.invoke("JoinGameHub", '@Model.GameId', '@Model.UserId', '');
+            await _gameHubConnection.invoke("JoinGameHub", '@Model.GameId', '@Model.UserId', _peerJsConnectionId);
         }
 
         //Game hub events
