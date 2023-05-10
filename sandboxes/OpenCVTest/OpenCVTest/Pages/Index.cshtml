@@ -4,12 +4,12 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
+@*<div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <img id="video-stream" width="640" height="480" />
 </div>
 
-@*<script>
+<script>
     var videoStream = document.getElementById('video-stream');
     setInterval(function () {
         fetch('Video/GetFrame?' + new Date().getTime())
@@ -18,7 +18,7 @@
                 videoStream.src = URL.createObjectURL(blob);
             });
     }, 1000); // Set interval to match the desired frame rate (e.g., 30 fps)
-</script>*@
+</script>
 
 <script>
     var videoStream = document.getElementById('video-stream');
@@ -26,3 +26,4 @@
         videoStream.src = '/Video/GetFrame?' + new Date().getTime(); // Add timestamp to prevent caching
     }, 1000); // Set interval to match the desired frame rate (e.g., 30 fps)
 </script>
+*@
