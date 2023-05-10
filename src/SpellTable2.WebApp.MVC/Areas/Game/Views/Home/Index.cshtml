@@ -28,13 +28,15 @@
         var _gameHubConnection;
 
         //Initialization
-        InitializeGameHubConnection();
-        _peerJsObject = new Peer();
-        _peerJsObject.on('open', id => {
-            OnPeerJsOpen(id);
-        });
+        $(document).ready(function () 
+        {
+            InitializeGameHubConnection();
 
-        $(document).ready(function () {
+            _peerJsObject = new Peer();
+            _peerJsObject.on('open', id => {
+                OnPeerJsOpen(id);
+            });
+
             $('#btnRefreshPlayers').click(function () {
                 btnRefreshPlayers_Clicked();
             });
@@ -47,6 +49,12 @@
             _peerJsConnectionId = peerJsConnectionId;
 
             await JoinGameHub();
+
+            _peerJsObject.on("call", (call) => {
+                AnswerCall(call);
+            });
+
+            PlayerList_LoadRemoteStreams(_peerJsObject);
         }
 
         function InitializeGameHubConnection() 
@@ -102,14 +110,11 @@
             });
         }
 
-        function AnswerCall(call) {
+        function AnswerCall(call) 
+        {
             console.log('Answering call');
 
             call.answer(_localVideoStream);
-
-            call.on("stream", (remoteStream) => {
-                AddRemoteStream(remoteStream);
-            });
         }
     </script>
 }

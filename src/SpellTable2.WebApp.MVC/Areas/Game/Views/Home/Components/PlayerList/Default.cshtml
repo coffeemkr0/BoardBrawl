@@ -6,14 +6,17 @@
 @foreach (var playerInfo in Model.Players)
 {
     <div id="playerInfo@(playerInfo.UserId)">@await Component.InvokeAsync("PlayerInfo", playerInfo)</div>
-    <video id="playerVideo@(playerInfo.UserId)" muted></video>
+    @if(playerInfo.UserId == Model.UserId)
+    {
+        <video class="selfVideo" muted></video>
+    }
+    else
+    {
+        <video class="playerVideo" data-userid="@playerInfo.UserId" data-peerid="@playerInfo.PeerId" muted></video>
+    }
+
 
     <script>
-
-        @if(playerInfo.UserId != Model.UserId)
-        {
-            @:RequestRemoteStream('@playerInfo.UserId', '@playerInfo.PeerId');
-        }
 
         $(document).ready(function () {
             $(document).off('click', '#btnDecreaseLife@(playerInfo.UserId)')
@@ -77,7 +80,7 @@
             video: true
         }).then(stream => {
             _localVideoStream = stream;
-            var videoElement = document.getElementById("playerVideo@(Model.UserId)");
+            var videoElement = $(".playerVideo");
 
             videoElement.srcObject = stream;
             videoElement.addEventListener('loadedmetadata', () => {
@@ -86,45 +89,35 @@
         })
     }
 
-    async function RequestRemoteStream(userId, peerId) 
+    function PlayerList_LoadRemoteStreams(peer) 
     {
-        const call = _peerJsObject.call(userId, _localVideoStream);
+        $(".playerVideo").each(function() {
+            var peerId = $(this).attr("data-peerid");
+            
+            var call = peer.call(peerId, _localVideoStream);
 
-        call.on("stream", (stream) => {
-            var videoElement = document.getElementById("playerVideo" + userId);
-
-            videoElement.srcObject = remoteStream;
-            videoElement.addEventListener('loadedmetadata', () => {
-                videoElement.play();
+            call.on("stream", (stream) => {
+                this.srcObject = remoteStream;
+                this.addEventListener('loadedmetadata', () => {
+                    this.play();
+                });
             });
-        });
 
-        call.on("data", (stream) => {
-            document.querySelector("#playerVideo" + userId).srcObject = stream;
-        });
+            call.on("data", (stream) => {
+                console.log('call on data');
+            });
 
-        call.on("error", (err) => {
-            console.log("Call error:" + err);
-        });
+            call.on("error", (err) => {
+                console.log("Call error:" + err);
+            });
 
-        call.on('close', () => {
-            Endcall(call);
-        })
-    }
-
-    function AnswerCall(call)
-    {
-        console.log('Answering call');
-
-        call.answer(_localVideoStream);
-
-        call.on("stream", (remoteStream) => {
-            AddRemoteStream(remoteStream);
+            call.on('close', () => {
+                Endcall(call);
+            })
         });
     }
 
-    function EndCall(call) 
-    {
+    function EndCall(call) {
         console.log('Ending call');
         call.close();
     }
