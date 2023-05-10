@@ -33,15 +33,17 @@ namespace CardDetectionExample
                             Cv2.Canny(blurred, edges, 75, 125, 7, false);
 
                             // Find contours in the image
-                            Point[][] contours;
-                            HierarchyIndex[] hierarchy;
+                                Point[][] contours;
+                                HierarchyIndex[] hierarchy;
 
-                            // changing the approximation parameter can affect the detection of edges
-                            Cv2.FindContours(edges, out contours, out hierarchy, RetrievalModes.External, ContourApproximationModes.ApproxSimple);
-                            //Cv2.FindContours(edges, out contours, out hierarchy, RetrievalModes.External, ContourApproximationModes.ApproxTC89KCOS);
+                                // changing the approximation parameter can affect the detection of edges
+                                Cv2.FindContours(edges, out contours, out hierarchy, RetrievalModes.External, ContourApproximationModes.ApproxSimple);
+                                //Cv2.FindContours(edges, out contours, out hierarchy, RetrievalModes.External, ContourApproximationModes.ApproxTC89KCOS);
 
 
                             // Find the contour with the largest area, which is likely the card
+                            //
+                            // TODO: If user clicks on the image and the area includes the coordinates where the user clicked, it should be the area used for recognition
                             double maxArea = 0;
                             int maxAreaIdx = -1;
                             for (int i = 0; i < contours.Length; i++)
@@ -57,9 +59,19 @@ namespace CardDetectionExample
                             // Draw the contour on the image for visualization
                             Cv2.DrawContours(image, contours, maxAreaIdx, Scalar.Red, 2);
 
-                            // Display the result
-                            Cv2.ImShow("Card Detection Result", image);
-                            Cv2.WaitKey(0);
+                            // TODO: Send area of image within selected contour for Recognition
+                            Rect boundingRect = Cv2.BoundingRect(contours[maxAreaIdx]);
+
+                            //Crop the image to the bounding rectangle
+                            using (Mat cropped = new Mat(image, boundingRect))
+                            {
+                                // Display the result
+                                Cv2.ImShow("Card Detection Result", image);
+                                Cv2.WaitKey(0);
+
+                                Cv2.ImShow("Cropped Card Image", cropped);
+                                Cv2.WaitKey(0);
+                            }
                         }
                     }
                 }
