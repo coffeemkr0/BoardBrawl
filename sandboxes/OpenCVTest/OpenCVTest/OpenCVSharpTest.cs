@@ -59,23 +59,100 @@ namespace CardDetectionExample
                             // Draw the contour on the image for visualization
                             Cv2.DrawContours(image, contours, maxAreaIdx, Scalar.Red, 2);
 
-                            // TODO: Send area of image within selected contour for Recognition
+                            // Get the cropping area
                             Rect boundingRect = Cv2.BoundingRect(contours[maxAreaIdx]);
 
-                            //Crop the image to the bounding rectangle
+                            // Crop the image to the bounding rectangle
                             using (Mat cropped = new Mat(image, boundingRect))
                             {
                                 // Display the result
                                 Cv2.ImShow("Card Detection Result", image);
-                                Cv2.WaitKey(0);
+                                //Cv2.WaitKey(0);
 
                                 Cv2.ImShow("Cropped Card Image", cropped);
                                 Cv2.WaitKey(0);
+                            }
+
+                            // TODO: Prepare and send the cropped image for recognition
+
+                        }
+                    }
+                }
+            }
+        }
+
+        public void DetectCardShapes(string imagePath)
+        {
+            // Load the image using OpenCVSharp4
+            using (Mat image = Cv2.ImRead(imagePath))
+            {
+                // Convert the image to grayscale
+                using (Mat gray = new Mat())
+                {
+                    Cv2.CvtColor(image, gray, ColorConversionCodes.BGR2GRAY);
+
+                    // Blur the image to reduce noise
+                    using (Mat blurred = new Mat())
+                    {
+                        Cv2.GaussianBlur(gray, blurred, new Size(5, 5), 0);
+
+                        // Detect edges in the image using the Canny algorithm
+                        using (Mat edges = new Mat())
+                        {
+                            Cv2.Canny(blurred, edges, 75, 125, 7, false);
+
+                            // Find contours in the image
+                            Point[][] contours;
+                            HierarchyIndex[] hierarchy;
+                            Cv2.FindContours(edges, out contours, out hierarchy, RetrievalModes.External, ContourApproximationModes.ApproxSimple);
+
+                            // Find all the card-shaped contours
+                            double aspectRatio = 2.5 / 3.5;
+                            List<Rect> cardRects = new List<Rect>();
+                            foreach (var contour in contours)
+                            {
+                                double area = Cv2.ContourArea(contour);
+                                if (area < 750) // Ignore small contours
+                                    continue;
+
+                                // Find the bounding rectangle of the contour
+                                var rect = Cv2.BoundingRect(contour);
+
+                                // Calculate the aspect ratio of the rectangle
+                                double rectAspectRatio = (double)rect.Width / rect.Height;
+
+                                // Calculate the difference between the aspect ratios
+                                double aspectRatioDiff = Math.Abs(aspectRatio - rectAspectRatio);
+
+                                // If the difference is small enough, we assume the contour is a card
+                                if (aspectRatioDiff < 0.2)
+                                {
+                                    cardRects.Add(rect);
+                                }
+                            }
+
+                            // Crop the image to each of the card-shaped contours and display the result
+                            foreach (var cardRect in cardRects)
+                            {
+                                // Draw the contour on the image for visualization
+                                Cv2.Rectangle(image, cardRect, Scalar.Red, 2);
+
+                                // Crop the image to the bounding rectangle
+                                using (Mat cropped = new Mat(image, cardRect))
+                                {
+                                    // Display the result
+                                    Cv2.ImShow("Card Detection Result", image);
+
+                                    // Display the cropped image
+                                    Cv2.ImShow("Cropped Card Image", cropped);
+                                    Cv2.WaitKey(0);
+                                }
                             }
                         }
                     }
                 }
             }
         }
+
     }
 }
