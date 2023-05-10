@@ -67,8 +67,11 @@ namespace CardDetectionExample
                             {
                                 // Display the result
                                 Cv2.ImShow("Card Detection Result", image);
-                                //Cv2.WaitKey(0);
 
+                                // Display the greyscale version
+                                Cv2.ImShow("Greyscale Result", gray);
+
+                                // Display the cropped image
                                 Cv2.ImShow("Cropped Card Image", cropped);
                                 Cv2.WaitKey(0);
                             }
@@ -142,6 +145,9 @@ namespace CardDetectionExample
                                 {
                                     // Display the result
                                     Cv2.ImShow("Card Detection Result", image);
+
+                                    // Display the greyscale version
+                                    Cv2.ImShow("Greyscale Result", gray);
 
                                     // Display the cropped image
                                     Cv2.ImShow("Cropped Card Image", cropped);
