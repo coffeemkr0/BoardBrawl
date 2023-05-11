@@ -170,6 +170,8 @@ namespace CardDetectionExample
 
         public Mat AutoOrientCroppedImage(Mat croppedImage)
         {
+            // TODO: Add parameters to define which way to orient an image
+
             // Convert the image to grayscale
             using (Mat gray = new Mat())
             {
