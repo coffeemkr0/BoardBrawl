@@ -44,8 +44,6 @@
 
         async function OnPeerJsOpen(peerJsConnectionId) 
         {
-            console.log('Peer Js Opened: ' + peerJsConnectionId);
-
             _peerJsConnectionId = peerJsConnectionId;
 
             await JoinGameHub();
@@ -80,7 +78,6 @@
         //Game hub events
         function OnPlayerJoinedGame(userId, peerId) 
         {
-            console.log("Player joined, userId:" + userId);
             RefreshPlayersList();
         }
 
@@ -106,14 +103,13 @@
                 },
                 success: function (html) {
                     $('#playerListContainer').html(html);
+                    PlayerList_LoadRemoteStreams(_peerJsObject);
                 }
             });
         }
 
         function AnswerCall(call) 
         {
-            console.log('Answering call');
-
             call.answer(_localVideoStream);
         }
     </script>

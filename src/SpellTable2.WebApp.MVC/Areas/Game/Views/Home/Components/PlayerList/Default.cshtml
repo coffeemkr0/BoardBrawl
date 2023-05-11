@@ -12,7 +12,7 @@
     }
     else
     {
-        <video class="playerVideo" data-userid="@playerInfo.UserId" data-peerid="@playerInfo.PeerId" muted></video>
+        <video class="playerVideo" data-userid="@playerInfo.UserId" data-peerid="@playerInfo.PeerId"></video>
     }
 
 
@@ -80,12 +80,12 @@
             video: true
         }).then(stream => {
             _localVideoStream = stream;
-            var videoElement = $(".playerVideo");
+            var videoElement = $(".selfVideo")[0]; 
 
             videoElement.srcObject = stream;
-            videoElement.addEventListener('loadedmetadata', () => {
-                videoElement.play()
-            })
+            $(videoElement).on('loadedmetadata', function() {
+                videoElement.play();
+            });
         })
     }
 
@@ -97,14 +97,10 @@
             var call = peer.call(peerId, _localVideoStream);
 
             call.on("stream", (stream) => {
-                this.srcObject = remoteStream;
+                this.srcObject = stream;
                 this.addEventListener('loadedmetadata', () => {
                     this.play();
                 });
-            });
-
-            call.on("data", (stream) => {
-                console.log('call on data');
             });
 
             call.on("error", (err) => {
@@ -118,7 +114,6 @@
     }
 
     function EndCall(call) {
-        console.log('Ending call');
         call.close();
     }
 </script>
