@@ -12,6 +12,7 @@ using OpenCvSharp;
 
 
 
+
 namespace OpenCVTest
 {
     public class Program
@@ -22,7 +23,8 @@ namespace OpenCVTest
         {
             CreateHostBuilder(args).Build().Run();
 
-            DetectCardInVideo();
+            //DetectCardInVideo();
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
