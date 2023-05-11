@@ -14,8 +14,8 @@
 
 <button id="btnRefreshPlayers">Refresh</button>
 
-<div id="playerListContainer">
-    @await Component.InvokeAsync("PlayerList", new {gameId = Model.GameId, userId = Model.UserId})
+<div id="playerBoardContainer" class="container">
+        @await Component.InvokeAsync("PlayerBoard", new {gameId = Model.GameId, userId = Model.UserId})
 </div>
 
 
@@ -52,7 +52,7 @@
                 AnswerCall(call);
             });
 
-            PlayerList_LoadRemoteStreams(_peerJsObject);
+            PlayerBoard_LoadRemoteStreams(_peerJsObject);
         }
 
         function InitializeGameHubConnection() 
@@ -83,7 +83,7 @@
 
         function OnPlayerInfoChanged(userId) 
         {
-            PlayerList_RefreshPlayerInfo(userId);
+            PlayerBoard_RefreshPlayerInfo(userId);
         }
 
         //Control events
@@ -96,14 +96,14 @@
         function RefreshPlayersList() 
         {
             $.ajax({
-                url: '/Game/Home/PlayerList/@Model.GameId',
+                url: '/Game/Home/PlayerBoard/@Model.GameId',
                 data:{
                     gameId : '@Model.GameId',
                     userId : '@Model.UserId'
                 },
                 success: function (html) {
-                    $('#playerListContainer').html(html);
-                    PlayerList_LoadRemoteStreams(_peerJsObject);
+                    $('#playerBoardContainer').html(html);
+                    PlayerBoard_LoadRemoteStreams(_peerJsObject);
                 }
             });
         }

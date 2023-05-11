@@ -5,12 +5,12 @@ using SpellTable2.WebApp.MVC.Areas.Game.Models;
 
 namespace SpellTable2.WebApp.MVC.Areas.Game.ViewComponents
 {
-    public class PlayerListViewComponent : ViewComponent
+    public class PlayerBoardViewComponent : ViewComponent
     {
         private readonly IService _service;
         private readonly IMapper _mapper;
 
-        public PlayerListViewComponent(IService service, IMapper mapper)
+        public PlayerBoardViewComponent(IService service, IMapper mapper)
         {
             _service = service;
             _mapper = mapper;
@@ -18,11 +18,11 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.ViewComponents
 
         public IViewComponentResult Invoke(Guid gameId, Guid userId)
         {
-            var playerList = new PlayerList { GameId = gameId, UserId = userId };
+            var model = new PlayerBoard { GameId = gameId, UserId = userId };
             var players = _service.GetPlayers(gameId);
-            playerList.Players.AddRange(_mapper.Map<List<PlayerInfo>>(players));
+            model.Players.AddRange(_mapper.Map<List<PlayerInfo>>(players));
 
-            return View(playerList);
+            return View(model);
         }
     }
 }

@@ -49,9 +49,9 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
         }
 
 
-        public IActionResult PlayerList(Guid gameId, Guid userId)
+        public IActionResult PlayerBoard(Guid gameId, Guid userId)
         {
-            return ViewComponent("PlayerList", new { gameId, userId});
+            return ViewComponent("PlayerBoard", new { gameId, userId});
         }
 
         public IActionResult PlayerInfo(Guid gameId, Guid userId)

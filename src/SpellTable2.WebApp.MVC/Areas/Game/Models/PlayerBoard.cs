@@ -1,6 +1,6 @@
 ﻿namespace SpellTable2.WebApp.MVC.Areas.Game.Models
 {
-    public class PlayerList
+    public class PlayerBoard
     {
         public Guid GameId { get; set; }
 
@@ -8,7 +8,7 @@
 
         public List<PlayerInfo> Players { get; }
 
-        public PlayerList()
+        public PlayerBoard()
         {
             Players = new List<PlayerInfo>();
         }
