@@ -9,6 +9,7 @@
             @if (playerInfo.UserId == Model.UserId)
             {
                 <video class="selfVideo" muted style="width:100%"></video>
+                <div class="errorImage" style="display:none"><img src="~/images/game/error-image-generic.png" /></div>
             }
             else
             {
@@ -81,18 +82,25 @@
 
     function InitializeLocalVideoStream() 
     {
+        var videoElement = $(".selfVideo")[0]; 
+
         navigator.mediaDevices.getUserMedia({
             audio: true,
             video: true
         }).then(stream => {
             _localVideoStream = stream;
-            var videoElement = $(".selfVideo")[0]; 
 
             videoElement.srcObject = stream;
             $(videoElement).on('loadedmetadata', function() {
                 videoElement.play();
             });
         })
+        .catch(error => {
+            console.error('Error accessing webcam:', error);
+            videoElement.style.display = "none";
+            var errorImageElement = $(".errorImage")[0];
+            errorImageElement.style.display = "block";
+        });
     }
 
     function PlayerBoard_LoadRemoteStreams(peer) 
