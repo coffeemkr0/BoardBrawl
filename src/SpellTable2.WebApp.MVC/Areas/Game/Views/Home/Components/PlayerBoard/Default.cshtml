@@ -1,6 +1,12 @@
 ﻿@using SpellTable2.WebApp.MVC.Areas.Game.Models;
 @model PlayerBoard
 
+<style>
+    .focusedPlayerVideoHighlight {
+        outline: 2px solid yellow;
+    }
+</style>
+
 <div class="row">
     <div class="col">
         @foreach (var playerInfo in Model.Players)
@@ -138,6 +144,12 @@
     function OnPlayerVideoClicked(videoElement) {
         var stream = videoElement.srcObject;
         var focusedPlayerVideo = $('#focusedPlayerVideo')[0];
+
+        // Remove the highlight class from all other video elements
+        $('.playerVideo').not(videoElement).removeClass('focusedPlayerVideoHighlight');
+
+        // Add the highlight class to the clicked videoElement
+        $(videoElement).addClass('focusedPlayerVideoHighlight');
 
         focusedPlayerVideo.srcObject = stream;
         focusedPlayerVideo.play();
