@@ -2,7 +2,7 @@
 @model PlayerBoard
 
 <style>
-    .focusedPlayerVideoHighlight {
+    .focusedPlayer {
         outline: 2px solid yellow;
     }
 </style>
@@ -11,7 +11,7 @@
     <div class="col">
         @foreach (var playerInfo in Model.Players)
         {
-            var isFocusedPlayer = Model.ActivePlayerUserId == playerInfo.UserId ? "focusedPlayerVideoHighlight" : "";
+            var isFocusedPlayer = Model.ActivePlayerUserId == playerInfo.UserId ? "focusedPlayer" : "";
 
             <div id="playerInfo@(playerInfo.UserId)">@await Component.InvokeAsync("PlayerInfo", playerInfo)</div>
             @if (playerInfo.UserId == Model.UserId)
@@ -71,11 +71,14 @@
 <script>
     var _localVideoStream;
 
-    InitializeLocalVideoStream();
+    $(document).ready(function () {
+        InitializeLocalVideoStream();
+        SetFocusedVideo();
 
-    $(document).off('click', '.playerVideo');
-    $(document).on('click', '.playerVideo', function () {
-        OnPlayerVideoClicked(this);
+        $(document).off('click', '.playerVideo');
+        $(document).on('click', '.playerVideo', function () {
+            OnPlayerVideoClicked(this);
+        });
     });
 
     function PlayerBoard_RefreshPlayerInfo(userId)
@@ -114,6 +117,26 @@
             errorImageElement.style.display = "block";
         });
     }
+
+    function SetFocusedVideo() {
+        var focusedVideoElement = $(".focusedPlayer")[0];
+        var focusedPlayerVideo = $('#focusedPlayerVideo')[0];
+
+        if (focusedPlayerVideo.readyState >= focusedPlayerVideo.HAVE_CURRENT_DATA) 
+        {
+            focusedPlayerVideo.srcObject = focusedVideoElement.srcObject;
+            focusedPlayerVideo.play();
+        }
+        else
+        {
+            focusedVideoElement.addEventListener('loadedmetadata', function () 
+                {
+                    focusedPlayerVideo.srcObject = focusedVideoElement.srcObject;
+                    focusedPlayerVideo.play();
+                });
+        }
+    }
+
 
     function PlayerBoard_LoadRemoteStreams(peer) 
     {

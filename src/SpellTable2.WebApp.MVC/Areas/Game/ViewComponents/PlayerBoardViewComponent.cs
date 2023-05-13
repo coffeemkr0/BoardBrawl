@@ -23,7 +23,7 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.ViewComponents
             model.Players.AddRange(_mapper.Map<List<PlayerInfo>>(players));
 
             //TODO:Replace with real game state
-            model.ActivePlayerUserId = model.Players.FirstOrDefault()?.UserId;
+            model.ActivePlayerUserId = model.Players.Count>1? model.Players[1].UserId : model.Players.FirstOrDefault()?.UserId;
 
             return View(model);
         }
