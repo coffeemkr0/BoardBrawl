@@ -20,6 +20,11 @@ namespace SpellTable2.Services.Game
             _repository.AddPlayerToGame(gameId, _mapper.Map<Repositories.Game.Models.PlayerInfo>(playerInfo));
         }
 
+        public void ClearPlayers()
+        {
+            _repository.ClearPlayers();
+        }
+
         public PlayerInfo DecreaseLifeTotal(Guid gameId, Guid userId, int amount)
         {
             _repository.DecreaseLifeTotal(gameId, userId, amount);

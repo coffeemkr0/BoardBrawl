@@ -89,5 +89,10 @@ namespace SpellTable2.Repositories.Game
         {
             return GetPlayerCollection()[gameId].First(i => i.UserId == userId);
         }
+
+        public void ClearPlayers()
+        {
+            GetPlayerCollection().Clear();
+        }
     }
 }

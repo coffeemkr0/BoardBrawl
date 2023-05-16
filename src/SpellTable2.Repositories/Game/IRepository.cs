@@ -11,5 +11,6 @@ namespace SpellTable2.Repositories.Game
         void UpdatePeerId(Guid gameId, Guid userId, Guid peerId);
         void DecreaseLifeTotal(Guid gameId, Guid userId, int amount);
         void IncreaseLifeTotal(Guid gameId, Guid userId, int amount);
+        void ClearPlayers();
     }
 }

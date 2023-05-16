@@ -48,6 +48,12 @@ namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
             return View(model);
         }
 
+        public IActionResult Clear()
+        {
+            _service.ClearPlayers();
+            return Redirect("Index");
+        }
+
 
         public IActionResult PlayerBoard(Guid gameId, Guid userId)
         {
