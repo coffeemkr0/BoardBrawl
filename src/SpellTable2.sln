@@ -9,7 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpellTable2.Services", "Spe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpellTable2.Repositories", "SpellTable2.Repositories\SpellTable2.Repositories.csproj", "{945F6353-4DDF-4A7D-AE52-549FED090A4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpellTable2.Core", "SpellTable2.Core\SpellTable2.Core.csproj", "{608C2155-3522-44A6-B855-B1CA83C95D02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpellTable2.Core", "SpellTable2.Core\SpellTable2.Core.csproj", "{608C2155-3522-44A6-B855-B1CA83C95D02}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D3B391F7-A3DD-4664-BD0A-C9FAD8D3F3B5}"
+	ProjectSection(SolutionItems) = preProject
+		ReadMe.txt = ReadMe.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
