@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "SpellTable2.WebApp.MVC": {
+    "BoardBrawl.WebApp.MVC": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
