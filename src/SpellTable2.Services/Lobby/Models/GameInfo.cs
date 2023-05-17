@@ -1,4 +1,4 @@
-﻿namespace SpellTable2.Services.Lobby.Models
+﻿namespace BoardBrawl.Services.Lobby.Models
 {
     public class GameInfo
     {

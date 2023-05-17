@@ -1,8 +1,8 @@
 
 
-using SpellTable2.Core.AutoMapping;
-using SpellTable2.WebApp.MVC.Areas.Game.Hubs;
-using SpellTable2.WebApp.MVC.AutoMapping;
+using BoardBrawl.Core.AutoMapping;
+using BoardBrawl.WebApp.MVC.Areas.Game.Hubs;
+using BoardBrawl.WebApp.MVC.AutoMapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,11 +21,11 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSingleton<IMapper, AutoMapperMapper>();
 
-builder.Services.AddScoped<SpellTable2.Repositories.Lobby.IRepository, SpellTable2.Repositories.Lobby.MemoryRepository>();
-builder.Services.AddScoped<SpellTable2.Services.Lobby.IService, SpellTable2.Services.Lobby.Service>();
+builder.Services.AddScoped<BoardBrawl.Repositories.Lobby.IRepository, BoardBrawl.Repositories.Lobby.MemoryRepository>();
+builder.Services.AddScoped<BoardBrawl.Services.Lobby.IService, BoardBrawl.Services.Lobby.Service>();
 
-builder.Services.AddScoped<SpellTable2.Repositories.Game.IRepository, SpellTable2.Repositories.Game.MemoryRepository>();
-builder.Services.AddScoped<SpellTable2.Services.Game.IService, SpellTable2.Services.Game.Service>();
+builder.Services.AddScoped<BoardBrawl.Repositories.Game.IRepository, BoardBrawl.Repositories.Game.MemoryRepository>();
+builder.Services.AddScoped<BoardBrawl.Services.Game.IService, BoardBrawl.Services.Game.Service>();
 
 var app = builder.Build();
 

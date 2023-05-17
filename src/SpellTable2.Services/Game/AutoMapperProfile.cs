@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace SpellTable2.Services.Game
+namespace BoardBrawl.Services.Game
 {
     public class AutoMapperProfile : Profile
     {

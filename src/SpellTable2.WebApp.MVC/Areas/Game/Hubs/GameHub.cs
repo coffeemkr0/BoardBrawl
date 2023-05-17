@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using SpellTable2.Services.Game;
+using BoardBrawl.Services.Game;
 
-namespace SpellTable2.WebApp.MVC.Areas.Game.Hubs
+namespace BoardBrawl.WebApp.MVC.Areas.Game.Hubs
 {
     public class GameHub : Hub
     {

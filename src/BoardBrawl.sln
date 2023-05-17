@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpellTable2.WebApp.MVC", "SpellTable2.WebApp.MVC\SpellTable2.WebApp.MVC.csproj", "{F567FBC2-5E59-49AF-8C24-744F7C0C16AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BoardBrawl.WebApp.MVC", "SpellTable2.WebApp.MVC\BoardBrawl.WebApp.MVC.csproj", "{F567FBC2-5E59-49AF-8C24-744F7C0C16AE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpellTable2.Services", "SpellTable2.Services\SpellTable2.Services.csproj", "{9364765B-3317-4D7E-9B22-D5CA8CEE00FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BoardBrawl.Services", "SpellTable2.Services\BoardBrawl.Services.csproj", "{9364765B-3317-4D7E-9B22-D5CA8CEE00FC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpellTable2.Repositories", "SpellTable2.Repositories\SpellTable2.Repositories.csproj", "{945F6353-4DDF-4A7D-AE52-549FED090A4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BoardBrawl.Repositories", "SpellTable2.Repositories\BoardBrawl.Repositories.csproj", "{945F6353-4DDF-4A7D-AE52-549FED090A4D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpellTable2.Core", "SpellTable2.Core\SpellTable2.Core.csproj", "{608C2155-3522-44A6-B855-B1CA83C95D02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BoardBrawl.Core", "SpellTable2.Core\BoardBrawl.Core.csproj", "{608C2155-3522-44A6-B855-B1CA83C95D02}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D3B391F7-A3DD-4664-BD0A-C9FAD8D3F3B5}"
 	ProjectSection(SolutionItems) = preProject

@@ -1,8 +1,8 @@
-﻿using SpellTable2.Core.AutoMapping;
-using SpellTable2.Repositories.Game;
-using SpellTable2.Services.Game.Models;
+﻿using BoardBrawl.Core.AutoMapping;
+using BoardBrawl.Repositories.Game;
+using BoardBrawl.Services.Game.Models;
 
-namespace SpellTable2.Services.Game
+namespace BoardBrawl.Services.Game
 {
     public class Service : IService
     {

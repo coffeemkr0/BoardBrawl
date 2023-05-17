@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
-using SpellTable2.Repositories.Game.Models;
+using BoardBrawl.Repositories.Game.Models;
 
-namespace SpellTable2.Repositories.Game
+namespace BoardBrawl.Repositories.Game
 {
     public class MemoryRepository : IRepository
     {

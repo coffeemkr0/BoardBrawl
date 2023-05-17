@@ -1,6 +1,6 @@
-﻿using SpellTable2.Services.Lobby.Models;
+﻿using BoardBrawl.Services.Lobby.Models;
 
-namespace SpellTable2.Services.Lobby
+namespace BoardBrawl.Services.Lobby
 {
     public interface IService
     {

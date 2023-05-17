@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -23,9 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SpellTable2.Core\SpellTable2.Core.csproj" />
-    <ProjectReference Include="..\SpellTable2.Repositories\SpellTable2.Repositories.csproj" />
-    <ProjectReference Include="..\SpellTable2.Services\SpellTable2.Services.csproj" />
+    <ProjectReference Include="..\SpellTable2.Core\BoardBrawl.Core.csproj" />
+    <ProjectReference Include="..\SpellTable2.Repositories\BoardBrawl.Repositories.csproj" />
+    <ProjectReference Include="..\SpellTable2.Services\BoardBrawl.Services.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using IMapper = SpellTable2.Core.AutoMapping.IMapper;
+using IMapper = BoardBrawl.Core.AutoMapping.IMapper;
 
-namespace SpellTable2.WebApp.MVC.AutoMapping
+namespace BoardBrawl.WebApp.MVC.AutoMapping
 {
     public class AutoMapperMapper : IMapper
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace SpellTable2.WebApp.MVC.Areas.Main.Controllers
+namespace BoardBrawl.WebApp.MVC.Areas.Main.Controllers
 {
     [Area("Main")]
     public class HomeController : Controller

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpellTable2.Repositories
+namespace BoardBrawl.Repositories
 {
     /// <summary>
     /// Extension methods for <see cref="ISession"/>.

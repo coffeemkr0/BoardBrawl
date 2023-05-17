@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SpellTable2.Core.AutoMapping;
-using SpellTable2.Services.Game;
-using SpellTable2.WebApp.MVC.Areas.Game.Models;
+using BoardBrawl.Core.AutoMapping;
+using BoardBrawl.Services.Game;
+using BoardBrawl.WebApp.MVC.Areas.Game.Models;
 
-namespace SpellTable2.WebApp.MVC.Areas.Game.ViewComponents
+namespace BoardBrawl.WebApp.MVC.Areas.Game.ViewComponents
 {
     public class PlayerBoardViewComponent : ViewComponent
     {

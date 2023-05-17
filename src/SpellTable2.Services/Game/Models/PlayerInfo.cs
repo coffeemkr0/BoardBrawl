@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace SpellTable2.Services.Game.Models
+namespace BoardBrawl.Services.Game.Models
 {
     public class PlayerInfo
     {

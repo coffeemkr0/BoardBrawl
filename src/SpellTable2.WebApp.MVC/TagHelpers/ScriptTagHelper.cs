@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Text;
 
-namespace SpellTable2.WebApp.MVC.TagHelpers
+namespace BoardBrawl.WebApp.MVC.TagHelpers
 {
     [HtmlTargetElement("script", Attributes = "on-content-loaded")]
     public class ScriptTagHelper : TagHelper

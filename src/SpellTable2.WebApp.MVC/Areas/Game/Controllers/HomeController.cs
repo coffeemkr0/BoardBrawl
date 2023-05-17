@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using SpellTable2.Core.AutoMapping;
-using SpellTable2.Services.Game;
-using SpellTable2.WebApp.MVC.Areas.Game.Hubs;
-using SpellTable2.WebApp.MVC.Areas.Game.Models;
+using BoardBrawl.Core.AutoMapping;
+using BoardBrawl.Services.Game;
+using BoardBrawl.WebApp.MVC.Areas.Game.Hubs;
+using BoardBrawl.WebApp.MVC.Areas.Game.Models;
 
-namespace SpellTable2.WebApp.MVC.Areas.Game.Controllers
+namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 {
     [Area("Game")]
     public class HomeController : Controller

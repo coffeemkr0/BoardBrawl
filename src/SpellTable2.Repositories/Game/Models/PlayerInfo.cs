@@ -1,4 +1,4 @@
-﻿namespace SpellTable2.Repositories.Game.Models
+﻿namespace BoardBrawl.Repositories.Game.Models
 {
     public class PlayerInfo
     {

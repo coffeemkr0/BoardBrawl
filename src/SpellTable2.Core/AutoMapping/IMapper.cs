@@ -1,4 +1,4 @@
-﻿namespace SpellTable2.Core.AutoMapping
+﻿namespace BoardBrawl.Core.AutoMapping
 {
     public interface IMapper
     {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SpellTable2.Services.Lobby;
-using SpellTable2.Services.Lobby.Models;
+using BoardBrawl.Services.Lobby;
+using BoardBrawl.Services.Lobby.Models;
 
-namespace SpellTable2.WebApp.MVC.Areas.Lobby.Controllers
+namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
 {
     [Area("Lobby")]
     public class HomeController : Controller

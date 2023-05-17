@@ -1,6 +1,6 @@
-﻿using SpellTable2.Repositories.Lobby.Models;
+﻿using BoardBrawl.Repositories.Lobby.Models;
 
-namespace SpellTable2.Repositories.Lobby
+namespace BoardBrawl.Repositories.Lobby
 {
     public interface IRepository
     {

@@ -1,7 +1,7 @@
 ﻿
-using SpellTable2.Services.Game.Models;
+using BoardBrawl.Services.Game.Models;
 
-namespace SpellTable2.Services.Game
+namespace BoardBrawl.Services.Game
 {
     public interface IService
     {

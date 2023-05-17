@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
-using SpellTable2.Repositories;
+using BoardBrawl.Repositories;
 
-namespace SpellTable2.Repositories
+namespace BoardBrawl.Repositories
 {
     internal static class MemoryCacheExtensions
     {
