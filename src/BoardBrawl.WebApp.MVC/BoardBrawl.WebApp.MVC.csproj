@@ -23,9 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SpellTable2.Core\BoardBrawl.Core.csproj" />
-    <ProjectReference Include="..\SpellTable2.Repositories\BoardBrawl.Repositories.csproj" />
-    <ProjectReference Include="..\SpellTable2.Services\BoardBrawl.Services.csproj" />
+    <ProjectReference Include="..\BoardBrawl.Core\BoardBrawl.Core.csproj" />
+    <ProjectReference Include="..\BoardBrawl.Repositories\BoardBrawl.Repositories.csproj" />
+    <ProjectReference Include="..\BoardBrawl.Services\BoardBrawl.Services.csproj" />
   </ItemGroup>
 
 </Project>
