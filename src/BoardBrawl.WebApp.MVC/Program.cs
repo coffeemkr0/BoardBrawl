@@ -3,8 +3,18 @@
 using BoardBrawl.Core.AutoMapping;
 using BoardBrawl.WebApp.MVC.Areas.Game.Hubs;
 using BoardBrawl.WebApp.MVC.AutoMapping;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using BoardBrawl.WebApp.MVC.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -41,6 +51,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();;
 
 app.UseAuthorization();
 
@@ -61,6 +72,8 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
 
 app.MapHub<GameHub>("/GameHub");
 
