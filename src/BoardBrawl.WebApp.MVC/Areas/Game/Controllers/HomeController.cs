@@ -4,9 +4,11 @@ using BoardBrawl.Core.AutoMapping;
 using BoardBrawl.Services.Game;
 using BoardBrawl.WebApp.MVC.Areas.Game.Hubs;
 using BoardBrawl.WebApp.MVC.Areas.Game.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 {
+    [Authorize]
     [Area("Game")]
     public class HomeController : Controller
     {
