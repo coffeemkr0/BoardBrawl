@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Card Detection</title>
+    <script async src="https://docs.opencv.org/master/opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
+    <style>
+      #canvas {
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="file" id="fileInput" accept="image/jpeg, image/png" />
+    <canvas id="canvas"></canvas>
+
+    <script type="text/javascript">
+            let canvas, context, fileInput;
+
+      // Callback function when OpenCV.js is ready
+		function onOpenCvReady() {
+		  // Initialize canvas and file input elements
+		  canvas = document.getElementById("canvas");
+		  context = canvas.getContext("2d");
+		  fileInput = document.getElementById("fileInput");
+		  fileInput.addEventListener("change", handleFileSelect, false);
+		}
+
+      // Handle file selection from the file input
+		function handleFileSelect(event) {
+		  const file = event.target.files[0];
+		  const reader = new FileReader();
+		  reader.onload = function (event) {
+			const img = new Image();
+			img.onload = function () {
+			  // Resize the image to fit the canvas
+			  const maxWidth = canvas.clientWidth;
+			  const maxHeight = canvas.clientHeight;
+			  const { width, height } = calculateAspectRatioFit(img.width, img.height, maxWidth, maxHeight);
+			  canvas.width = width;
+			  canvas.height = height;
+			  context.drawImage(img, 0, 0, width, height);
+
+			  // Perform card detection on the image
+			  console.log("detectCard");
+			  detectCard();
+			};
+			img.src = event.target.result;
+		  };
+		  reader.readAsDataURL(file);
+		}
+
+      // Perform card detection on the image
+		function detectCard() {
+		  // Convert the canvas image to an OpenCV matrix
+		  const src = cv.imread(canvas);
+
+		  // Convert the image to grayscale
+		  const gray = new cv.Mat();
+		  cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
+
+		  // Blur the image to reduce noise
+		  const blurred = new cv.Mat();
+		  cv.GaussianBlur(gray, blurred, new cv.Size(5, 5), 0);
+
+		  // Perform edge detection using the Canny algorithm
+		  const edges = new cv.Mat();
+		  cv.Canny(blurred, edges, 75, 125, 7, false);
+
+		  // Detect lines using the Hough Line Transform
+		  const lines = new cv.Mat();
+		  cv.HoughLinesP(edges, lines, 1, Math.PI / 180, 100, 100, 10);
+
+		  // Find the longest line segment as the card boundary
+		  let longestLineLength = 0;
+		  let cardBoundary = null;
+		  for (let i = 0; i < lines.rows; i++) {
+			const line = lines.data32S.slice(i * 4, i * 4 + 4);
+			const x1 = line[0];
+			const y1 = line[1];
+			const x2 = line[2];
+			const y2 = line[3];
+			const lineLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+			if (lineLength > longestLineLength) {
+			  longestLineLength = lineLength;
+			  cardBoundary = [x1, y1, x2, y2];
+			}
+		  }
+
+		  if (cardBoundary) {
+			// Draw the card boundary on the image
+			const boundaryColor = new cv.Scalar(255, 0, 0); // Blue color
+			const boundaryPoint1 = new cv.Point(cardBoundary[0], cardBoundary[1]);
+			const boundaryPoint2 = new cv.Point(cardBoundary[2], cardBoundary[3]);
+			cv.line(src, boundaryPoint1, boundaryPoint2, boundaryColor, 2);
+
+			// Crop the card from the original image based on the boundary points
+			const cardImage = new cv.Mat();
+			const rect = new cv.Rect(
+			  Math.min(cardBoundary[0], cardBoundary[2]),
+			  Math.min(cardBoundary[1], cardBoundary[3]),
+			  Math.abs(cardBoundary[2] - cardBoundary[0]),
+			  Math.abs(cardBoundary[3] - cardBoundary[1])
+			);
+			src.roi = rect;
+			src.copyTo(cardImage);
+
+			// Show the cropped card image on the canvas
+			cv.imshow(canvas, cardImage);
+		  }
+
+		  // Clean up
+		  src.delete();
+		  gray.delete();
+		  blurred.delete();
+		  edges.delete();
+		  lines.delete();
+		}
+
+
+		// Calculate aspect ratio for resizing the image
+		function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
+		  const ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+		  return { width: srcWidth * ratio, height: srcHeight * ratio };
+		}
+
+	</script>
+	</body>
+</html>
