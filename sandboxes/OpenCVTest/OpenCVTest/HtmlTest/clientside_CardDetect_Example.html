@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Card Detection</title>
+    <script async src="https://docs.opencv.org/master/opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
+    <style>
+      #canvas {
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="file" id="fileInput" accept="image/jpeg, image/png" />
+    <canvas id="canvas"></canvas>
+
+    <script type="text/javascript">
+            let canvas, context, fileInput;
+
+      // Callback function when OpenCV.js is ready
+		function onOpenCvReady() {
+		  // Initialize canvas and file input elements
+		  canvas = document.getElementById("canvas");
+		  context = canvas.getContext("2d");
+		  fileInput = document.getElementById("fileInput");
+		  fileInput.addEventListener("change", handleFileSelect, false);
+		}
+
+      // Handle file selection from the file input
+		function handleFileSelect(event) {
+		  const file = event.target.files[0];
+		  const reader = new FileReader();
+		  reader.onload = function (event) {
+			const img = new Image();
+			img.onload = function () {
+			  // Resize the image to fit the canvas
+			  const maxWidth = canvas.clientWidth;
+			  const maxHeight = canvas.clientHeight;
+			  const { width, height } = calculateAspectRatioFit(img.width, img.height, maxWidth, maxHeight);
+			  canvas.width = width;
+			  canvas.height = height;
+			  context.drawImage(img, 0, 0, width, height);
+
+			  // Perform card detection on the image
+			  console.log("detectCard");
+			  detectCard();
+			};
+			img.src = event.target.result;
+		  };
+		  reader.readAsDataURL(file);
+		}
+
+      // Perform card detection on the image
+		function detectCard() {
+		  console.log("detecting card");
+		  
+		  // Convert the canvas image to an OpenCV matrix
+		  console.log("reading canvas");
+		  const src = cv.imread(canvas);
+	
+		  // Convert the image to grayscale
+		  const gray = new cv.Mat();
+		  console.log("grayscale conversion");
+		  cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
+
+			
+			
+		  // Blur the image to reduce noise
+		  const blurred = new cv.Mat();
+		  console.log("blurred image");
+		  cv.GaussianBlur(gray, blurred, new cv.Size(7, 7), 0);
+
+		  // Perform edge detection using the Canny algorithm
+		  const edges = new cv.Mat();
+		  console.log("edge detection");
+		  cv.Canny(blurred, edges, 75, 125, 7, false);
+
+		  // Find contours in the image
+		  const contours = new cv.MatVector();
+		  const hierarchy = new cv.Mat();
+		  console.log("find contours");
+		  cv.findContours(edges, contours, hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
+
+		  // Find the card-shaped contours in the image
+		  const cardContours = [];
+		  console.log("card shaped contours?");
+		  for (let i = 0; i < contours.Length; i++) {
+			  const contour = contours[i];
+			  const perimeter = CvInvoke.ArcLength(contour, true);
+			  var approxCurve = new VectorOfPoint();
+			  CvInvoke.ApproxPolyDP(contour, approxCurve, 0.02 * perimeter, true);
+			  
+			  if (approxCurve.Size == 4) {
+				cardContours.push(approxCurve);
+			  }
+			}
+
+			
+		  console.log("More than one contour?");
+		  if (cardContours.length > 0) {
+			console.log("sorting contours be by size");
+			// Sort the card contours by area (largest to smallest)
+			cardContours.sort((contourA, contourB) => {
+			  const areaA = cv.contourArea(contourA, false);
+			  const areaB = cv.contourArea(contourB, false);
+			  return areaB - areaA;
+			});
+
+			// Get the largest card contour
+			const largestContour = cardContours[0];
+
+			// Draw a rectangle around the detected card
+			console.log("drawing a rectangle");
+			const rect = cv.boundingRect(largestContour);
+			const rectColor = new cv.Scalar(255, 0, 0); // Blue color
+			const rectPoint1 = new cv.Point(rect.x, rect.y);
+			const rectPoint2 = new cv.Point(rect.x + rect.width, rect.y + rect.height);
+			cv.rectangle(src, rectPoint1, rectPoint2, rectColor, 2);
+
+			// Crop the card from the original image based on the bounding rectangle
+			const cardImage = new cv.Mat();
+			src.roi = rect;
+			src.copyTo(cardImage);
+
+			console.log("card cropped");
+
+			// Show the cropped card image on the canvas
+			console.log("Show cropped card");
+			cv.imshow(canvas, cardImage);
+		  }
+
+		  // Clean up
+		  console.log("cleaning up");
+		  src.delete();
+		  gray.delete();
+		  blurred.delete();
+		  edges.delete();
+		  contours.delete();
+		  hierarchy.delete();
+		}
+
+
+		// Calculate aspect ratio for resizing the image
+		function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
+		  const ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+		  return { width: srcWidth * ratio, height: srcHeight * ratio };
+		}
+
+	</script>
+	</body>
+</html>
