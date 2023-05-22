@@ -12,8 +12,6 @@
     <h1>@Model.GameName</h1>
 </div>
 
-<button id="btnRefreshPlayers">Refresh</button>
-
 <div id="playerBoardContainer">
         @await Component.InvokeAsync("PlayerBoard", new {gameId = Model.GameId, userId = Model.UserId})
 </div>
@@ -35,10 +33,6 @@
             _peerJsObject = new Peer();
             _peerJsObject.on('open', id => {
                 OnPeerJsOpen(id);
-            });
-
-            $('#btnRefreshPlayers').click(function () {
-                btnRefreshPlayers_Clicked();
             });
         });
 
