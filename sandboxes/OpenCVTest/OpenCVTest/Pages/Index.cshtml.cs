@@ -41,6 +41,10 @@ namespace OpenCVTest.Pages
             cardDetector.DetectCard_Sobel(".\\images\\test2.jpg");
             //cardDetector.DetectCard_Sobel(".\\images\\test3.jpg");
 
+            //cardDetector.DetectCard_SobelXY(".\\images\\test.jpg");
+            cardDetector.DetectCard_SobelXY(".\\images\\test2.jpg");
+            //cardDetector.DetectCard_SobelXY(".\\images\\test3.jpg");
+
         }
     }
 }
