@@ -88,6 +88,79 @@ namespace CardDetectionExample
             
         }
 
+        public void DetectCard_HoughLineTransform(string imagePath)
+        {
+            Mat image = Cv2.ImRead(imagePath);
+            using (Mat gray = new Mat())
+            {
+                Cv2.CvtColor(image, gray, ColorConversionCodes.BGR2GRAY);
+                using (Mat blurred = new Mat())
+                {
+                    Cv2.GaussianBlur(gray, blurred, new Size(5, 5), 0);
+
+                    // Apply Hough Line Transform
+                    LineSegmentPolar[] lines = Cv2.HoughLines(blurred, 1, Math.PI / 180, threshold: 150);
+
+                    // Find the most prominent line using the longest length
+                    LineSegmentPolar longestLine = lines.OrderByDescending(line => Math.Sqrt(line.Rho * line.Rho + line.Theta * line.Theta)).FirstOrDefault();
+
+                    if (longestLine != null)
+                    {
+                        double angle = longestLine.Theta * 180 / Math.PI;
+
+                        // Rotate the image to align the most prominent line with the vertical axis
+                        //Mat rotationMatrix = Cv2.GetRotationMatrix2D(new Point2f(image.Width / 2f, image.Height / 2f), angle - 90, 1);
+                        //Cv2.WarpAffine(image, image, rotationMatrix, image.Size());
+
+                        using (Mat edges = new Mat())
+                        {
+                            Cv2.Canny(blurred, edges, 75, 125, 7, false);
+
+                            Point[][] contours;
+                            HierarchyIndex[] hierarchy;
+
+                            Cv2.FindContours(edges, out contours, out hierarchy, RetrievalModes.External, ContourApproximationModes.ApproxSimple);
+
+                            double maxArea = 0;
+                            int maxAreaIdx = -1;
+                            for (int i = 0; i < contours.Length; i++)
+                            {
+                                double area = Cv2.ContourArea(contours[i]);
+                                if (area > maxArea)
+                                {
+                                    maxArea = area;
+                                    maxAreaIdx = i;
+                                }
+                            }
+
+                            Cv2.DrawContours(image, contours, maxAreaIdx, Scalar.Red, 2);
+
+                            Rect boundingRect = Cv2.BoundingRect(contours[maxAreaIdx]);
+
+                            using (Mat cropped = new Mat(image, boundingRect))
+                            {
+                                Cv2.ImShow("Card Detection Result", image);
+                                Cv2.ImShow("Greyscale Result", gray);
+                                Cv2.ImShow("Cropped Card Image", cropped);
+                                Cv2.ImShow("Auto-rotated Cropped Card Image", AutoOrientCroppedImage(cropped));
+
+                                Cv2.WaitKey(0);
+                            }
+
+                            // TODO: Prepare and send the cropped image for recognition/classification
+                        }
+                    }
+                    else
+                    {
+                        // No prominent line found, display the original image
+                        Cv2.ImShow("No Card Detection Result", image);
+                        Cv2.WaitKey(0);
+                    }
+                }
+            }
+        }
+
+
         public void DetectCardShapes(string imagePath)
         {
             // Load the image using OpenCVSharp4
@@ -132,7 +205,7 @@ namespace CardDetectionExample
                                 double aspectRatioDiff = Math.Abs(aspectRatio - rectAspectRatio);
 
                                 // If the difference is small enough, we assume the contour is a card
-                                if (aspectRatioDiff < 0.2)
+                                if (aspectRatioDiff < 0.15)
                                 {
                                     cardRects.Add(rect);
                                 }
