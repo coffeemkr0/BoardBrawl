@@ -175,7 +175,7 @@ namespace CardDetectionExample
                     // Apply Laplacian edge detection
                     using (Mat edges = new Mat())
                     {
-                        Cv2.Laplacian(blurred, edges, MatType.CV_8U, ksize: 3, scale: 1, delta: 0, BorderTypes.Isolated);
+                        Cv2.Laplacian(blurred, edges, MatType.CV_8U, ksize: 3, scale: 1, delta: 0, BorderTypes.Default);
 
                         // Find contours in the image
                         Point[][] contours;
@@ -221,10 +221,73 @@ namespace CardDetectionExample
                 }
             }
         }
-    
 
+        public void DetectCard_Sobel(string imagePath)
+        {
+            // Load the image using OpenCVSharp4
+            Mat image = Cv2.ImRead(imagePath);
 
-    public void DetectCardShapes(string imagePath)
+            // Convert the image to grayscale
+            using (Mat gray = new Mat())
+            {
+                Cv2.CvtColor(image, gray, ColorConversionCodes.BGR2GRAY);
+
+                // Apply Gaussian blur to reduce noise
+                using (Mat blurred = new Mat())
+                {
+                    Cv2.GaussianBlur(gray, blurred, new Size(5, 5), 0);
+
+                    // Apply Sobel edge detection
+                    using (Mat edges = new Mat())
+                    {
+                        Cv2.Sobel(blurred, edges, MatType.CV_8U, 1, 1, ksize: 3, scale: 1, delta: 0, BorderTypes.Default);
+
+                        // Find contours in the image
+                        Point[][] contours;
+                        HierarchyIndex[] hierarchy;
+                        Cv2.FindContours(edges, out contours, out hierarchy, RetrievalModes.External, ContourApproximationModes.ApproxSimple);
+
+                        // Filter contours based on area and aspect ratio
+                        const double minArea = 1000; // Minimum area of the card contour
+                        const double minAspectRatio = 0.8; // Minimum aspect ratio of the card contour
+                        const double maxAspectRatio = 1.2; // Maximum aspect ratio of the card contour
+
+                        foreach (var contour in contours)
+                        {
+                            double area = Cv2.ContourArea(contour);
+                            if (area < minArea)
+                                continue;
+
+                            Rect boundingRect = Cv2.BoundingRect(contour);
+                            double aspectRatio = (double)boundingRect.Width / boundingRect.Height;
+                            if (aspectRatio < minAspectRatio || aspectRatio > maxAspectRatio)
+                                continue;
+
+                            // Draw the card contour on the original image
+                            Cv2.DrawContours(image, new[] { contour }, 0, Scalar.Red, 2);
+
+                            // Display the cropped card image
+                            using (Mat croppedCard = new Mat(image, boundingRect))
+                            {
+                                Cv2.ImShow("Cropped Card Image", croppedCard);
+                                Cv2.WaitKey(0);
+                            }
+
+                            // TODO: Process the cropped card image (e.g., perform recognition/classification)
+
+                            // Break after detecting the first suitable card contour
+                            break;
+                        }
+
+                        // Display the image with card contour(s)
+                        Cv2.ImShow("Card Detection Result", image);
+                        Cv2.WaitKey(0);
+                    }
+                }
+            }
+        }
+
+        public void DetectCardShapes(string imagePath)
         {
             // Load the image using OpenCVSharp4
             using (Mat image = Cv2.ImRead(imagePath))
