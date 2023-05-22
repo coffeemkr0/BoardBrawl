@@ -14,7 +14,7 @@
 
 <button id="btnRefreshPlayers">Refresh</button>
 
-<div id="playerBoardContainer" class="container">
+<div id="playerBoardContainer">
         @await Component.InvokeAsync("PlayerBoard", new {gameId = Model.GameId, userId = Model.UserId})
 </div>
 

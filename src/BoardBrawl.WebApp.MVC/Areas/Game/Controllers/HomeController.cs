@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 {
-    [Authorize]
     [Area("Game")]
     public class HomeController : Controller
     {
