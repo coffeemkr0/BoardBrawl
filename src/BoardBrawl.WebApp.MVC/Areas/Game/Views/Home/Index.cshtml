@@ -8,12 +8,31 @@
     ViewData["Title"] = Model.GameName;
 }
 
-<div class="text-center">
-    <h1>@Model.GameName</h1>
-</div>
+<div class="row">
+    <header class="bg-primary text-white text-center py-3">
+        <!-- Header content -->
+        <h1>@Model.GameName</h1>
+    </header>
 
-<div id="playerBoardContainer">
-        @await Component.InvokeAsync("PlayerBoard", new {gameId = Model.GameId, userId = Model.UserId})
+    <div class="col-3 bg-primary">
+        <!-- Side panel content -->
+        <h3>Side Panel</h3>
+        <!-- Buttons and commands here -->
+    </div>
+
+    <div class="col-6">
+        <!-- Middle section content -->
+        <h3>Middle Section</h3>
+        <div id="playerBoardContainer" class="h-100">
+            @await Component.InvokeAsync("PlayerBoard", new {gameId = Model.GameId, userId = Model.UserId})
+        </div>
+    </div>
+
+    <div class="col-3 bg-light">
+        <!-- Panel on the right content -->
+        <h3>Right Panel</h3>
+        <!-- List of items here -->
+    </div>
 </div>
 
 
