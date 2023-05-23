@@ -7,64 +7,62 @@
     }
 </style>
 
-<div class="border border-primary">
-    <div class="col">
-        @foreach (var playerInfo in Model.Players)
+<div class="col-3">
+    @foreach (var playerInfo in Model.Players)
+    {
+        var isFocusedPlayer = Model.ActivePlayerUserId == playerInfo.UserId ? "focusedPlayer" : "";
+
+        <div id="playerInfo@(playerInfo.UserId)">@await Component.InvokeAsync("PlayerInfo", playerInfo)</div>
+        @if (playerInfo.UserId == Model.UserId)
         {
-            var isFocusedPlayer = Model.ActivePlayerUserId == playerInfo.UserId ? "focusedPlayer" : "";
+            <video class="playerVideo localVideo @(isFocusedPlayer)" muted style="width:100%"></video>
+            <div class="errorImage" style="display:none"><img src="~/images/game/error-image-generic.png" /></div>
+        }
+        else
+        {
+            <video class="playerVideo remoteVideo @(isFocusedPlayer)" style="width:100%" data-userid="@playerInfo.UserId" data-peerid="@playerInfo.PeerId"></video>
+        }
 
-            <div id="playerInfo@(playerInfo.UserId)">@await Component.InvokeAsync("PlayerInfo", playerInfo)</div>
-            @if (playerInfo.UserId == Model.UserId)
-            {
-                <video class="playerVideo localVideo @(isFocusedPlayer)" muted style="width:100%"></video>
-                <div class="errorImage" style="display:none"><img src="~/images/game/error-image-generic.png" /></div>
-            }
-            else
-            {
-                <video class="playerVideo remoteVideo @(isFocusedPlayer)" style="width:100%" data-userid="@playerInfo.UserId" data-peerid="@playerInfo.PeerId"></video>
-            }
+        <script>
 
-            <script>
+            $(document).ready(function () {
+                $(document).off('click', '#btnDecreaseLife@(playerInfo.UserId)')
 
-                $(document).ready(function () {
-                    $(document).off('click', '#btnDecreaseLife@(playerInfo.UserId)')
-
-                    $(document).on('click', '#btnDecreaseLife@(playerInfo.UserId)', function () {
-                        $.ajax({
-                            url: '/Game/Home/DecreaseLifeTotal',
-                            data: {
-                                gameId: '@(Model.GameId)',
-                                userId: '@(playerInfo.UserId)',
-                                amount: 1
-                            },
-                            success: function (html) {
-                                $('#playerInfo@(playerInfo.UserId)').html(html);
-                            }
-                        });
-                    });
-
-                    $(document).off('click', '#btnIncreaseLife@(playerInfo.UserId)')
-
-                    $(document).on('click', '#btnIncreaseLife@(playerInfo.UserId)', function () {
-                        $.ajax({
-                            url: '/Game/Home/IncreaseLifeTotal',
-                            data: {
-                                gameId: '@(Model.GameId)',
-                                userId: '@(playerInfo.UserId)',
-                                amount: 1
-                            },
-                            success: function (html) {
-                                $('#playerInfo@(playerInfo.UserId)').html(html);
-                            }
-                        });
+                $(document).on('click', '#btnDecreaseLife@(playerInfo.UserId)', function () {
+                    $.ajax({
+                        url: '/Game/Home/DecreaseLifeTotal',
+                        data: {
+                            gameId: '@(Model.GameId)',
+                            userId: '@(playerInfo.UserId)',
+                            amount: 1
+                        },
+                        success: function (html) {
+                            $('#playerInfo@(playerInfo.UserId)').html(html);
+                        }
                     });
                 });
-            </script>
-        }
-    </div>
-    <div class="col-8">
-        <video id="focusedPlayerVideo" style="width:100%" muted></video>
-    </div>
+
+                $(document).off('click', '#btnIncreaseLife@(playerInfo.UserId)')
+
+                $(document).on('click', '#btnIncreaseLife@(playerInfo.UserId)', function () {
+                    $.ajax({
+                        url: '/Game/Home/IncreaseLifeTotal',
+                        data: {
+                            gameId: '@(Model.GameId)',
+                            userId: '@(playerInfo.UserId)',
+                            amount: 1
+                        },
+                        success: function (html) {
+                            $('#playerInfo@(playerInfo.UserId)').html(html);
+                        }
+                    });
+                });
+            });
+        </script>
+    }
+</div>
+<div class="col-9">
+    <video id="focusedPlayerVideo" style="width:100%;" muted></video>
 </div>
 
 

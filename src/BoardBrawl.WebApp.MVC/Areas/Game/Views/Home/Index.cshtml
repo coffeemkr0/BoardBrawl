@@ -8,29 +8,29 @@
     ViewData["Title"] = Model.GameName;
 }
 
-<div class="row">
-    <header class="bg-primary text-white text-center py-3">
-        <!-- Header content -->
-        <h1>@Model.GameName</h1>
-    </header>
+@*TODO:This adds height to the container making the page scroll. Without it, everything fits perfectly*@
+<header class="row bg-primary text-white text-center py-3">
+    <!-- Header content -->
+    <h1>@Model.GameName</h1>
+</header>
 
-    <div class="col-3 bg-primary">
+<div class="row h-100">
+    <div class="col-2 bg-primary">
         <!-- Side panel content -->
-        <h3>Side Panel</h3>
+        <h5>Command Panel</h5>
         <!-- Buttons and commands here -->
     </div>
 
-    <div class="col-6">
+    <div class="col-7">
         <!-- Middle section content -->
-        <h3>Middle Section</h3>
-        <div id="playerBoardContainer" class="h-100">
+        <div id="playerBoardContainer" class="row h-100 border border-primary">
             @await Component.InvokeAsync("PlayerBoard", new {gameId = Model.GameId, userId = Model.UserId})
         </div>
     </div>
 
     <div class="col-3 bg-light">
         <!-- Panel on the right content -->
-        <h3>Right Panel</h3>
+        <h3>Card History</h3>
         <!-- List of items here -->
     </div>
 </div>
