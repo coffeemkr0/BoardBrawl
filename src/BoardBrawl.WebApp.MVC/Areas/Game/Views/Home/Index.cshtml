@@ -8,13 +8,12 @@
     ViewData["Title"] = Model.GameName;
 }
 
-@*TODO:This adds height to the container making the page scroll. Without it, everything fits perfectly*@
-<header class="row bg-primary text-white text-center py-3">
+<header class="row bg-primary text-white text-center py-3" style="height:10%;">
     <!-- Header content -->
     <h1>@Model.GameName</h1>
 </header>
 
-<div class="row h-100">
+<div class="row" style="height:90%;">
     <div class="col-2 bg-primary">
         <!-- Side panel content -->
         <h5>Command Panel</h5>
