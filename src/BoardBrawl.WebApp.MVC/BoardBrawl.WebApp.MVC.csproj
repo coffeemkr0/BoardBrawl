@@ -9,12 +9,16 @@
   <ItemGroup>
     <Compile Remove="Areas\Lobby\Models\**" />
     <Compile Remove="Areas\Main\Models\**" />
+    <Compile Remove="Logs\**" />
     <Content Remove="Areas\Lobby\Models\**" />
     <Content Remove="Areas\Main\Models\**" />
+    <Content Remove="Logs\**" />
     <EmbeddedResource Remove="Areas\Lobby\Models\**" />
     <EmbeddedResource Remove="Areas\Main\Models\**" />
+    <EmbeddedResource Remove="Logs\**" />
     <None Remove="Areas\Lobby\Models\**" />
     <None Remove="Areas\Main\Models\**" />
+    <None Remove="Logs\**" />
   </ItemGroup>
 
   <ItemGroup>
