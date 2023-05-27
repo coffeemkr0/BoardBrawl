@@ -14,13 +14,11 @@
 </header>
 
 <div class="row" style="height:90%;">
-    <div class="col-2 bg-primary">
-        <!-- Side panel content -->
-        <h5>Command Panel</h5>
-        <!-- Buttons and commands here -->
+    <div class="col-1 bg-primary d-flex flex-column" style="max-height: 100%; overflow-y:auto; overflow-x:clip; min-width: 94px; max-width: 94px;">
+        @await Html.PartialAsync("_CommandBar", null)
     </div>
 
-    <div class="col-7">
+    <div class="col">
         <!-- Middle section content -->
         <div id="playerBoardContainer" class="row h-100 border border-primary">
             @await Component.InvokeAsync("PlayerBoard", new {gameId = Model.GameId, userId = Model.UserId})
