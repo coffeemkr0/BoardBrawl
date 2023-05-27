@@ -9,6 +9,18 @@
         "dist/browser/signalr.js",
         "dist/browser/signalr.min.js"
       ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "bootstrap-icons@1.10.5",
+      "destination": "wwwroot/lib/bootstrap-icons/",
+      "files": [
+        "font/fonts/bootstrap-icons.woff",
+        "font/fonts/bootstrap-icons.woff2",
+        "font/bootstrap-icons.css",
+        "font/bootstrap-icons.json",
+        "font/bootstrap-icons.min.css"
+      ]
     }
   ]
 }
