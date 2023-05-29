@@ -1,0 +1,32 @@
+﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models;
+@model PlayerBoard
+
+<style>
+    .focusedPlayer {
+        outline: 2px solid yellow;
+    }
+</style>
+
+<div class="d-flex flex-column justify-content-center h-100">
+    <ul class="nav">
+        @foreach (var playerInfo in Model.Players)
+        {
+            <li class="nav-item">
+                @{
+                    <div id="playerInfo@(playerInfo.UserId)">@await Component.InvokeAsync("PlayerInfo", playerInfo)</div>
+
+                    var isFocusedPlayer = Model.ActivePlayerUserId == playerInfo.UserId ? "focusedPlayer" : "";
+                    @if (playerInfo.UserId == Model.UserId)
+                    {
+                        <video class="playerVideo localVideo @(isFocusedPlayer)" muted style="width:100%"></video>
+                        <div class="errorImage" style="display:none"><img src="~/images/game/error-image-generic.png" /></div>
+                    }
+                    else
+                    {
+                        <video class="playerVideo remoteVideo @(isFocusedPlayer)" style="width:100%" data-userid="@playerInfo.UserId" data-peerid="@playerInfo.PeerId"></video>
+                    }
+                }
+            </li>
+        }
+    </ul>
+</div>
