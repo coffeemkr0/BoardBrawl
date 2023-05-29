@@ -14,17 +14,17 @@
 </header>
 
 <div class="row bg-dark text-white" style="height:90%;">
-    <div class="col-1" style="max-height: 100%; overflow-y:auto; overflow-x:clip; min-width: 94px; max-width: 94px;">
+    <div class="col-1 h-100" style="overflow-y:auto; overflow-x:clip; min-width: 94px; max-width: 94px;">
         @await Html.PartialAsync("_CommandBar", null)
     </div>
 
-    <div class="col">
+    <div class="col h-100">
         <div id="playerBoardContainer" class="row h-100 border border-primary">
             @await Component.InvokeAsync("PlayerBoard", new {gameId = Model.GameId, userId = Model.UserId})
         </div>
     </div>
 
-    <div class="col-2" style="max-height: 100%; overflow-y:auto; overflow-x:clip;">
+    <div class="col-2 h-100" style="overflow-y:auto; overflow-x:clip;">
         @await Html.PartialAsync("_GameHistoryPanel", null)
     </div>
 </div>
