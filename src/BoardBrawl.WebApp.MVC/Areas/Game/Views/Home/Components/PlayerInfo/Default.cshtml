@@ -2,5 +2,5 @@
 @model PlayerInfo
 
 
-@Model.PlayerName <button id="btnDecreaseLife@(Model.UserId)">-</button>@Model.LifeTotal<button id="btnIncreaseLife@(Model.UserId)">+</button>
+@Model.PlayerName <button data-userid="@Model.UserId" class="btnDecreaseLife">-</button>@Model.LifeTotal<button data-userid="@Model.UserId" class="btnIncreaseLife">+</button>
 

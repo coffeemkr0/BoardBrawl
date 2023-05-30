@@ -49,6 +49,42 @@
             });
         });
 
+        $(document).ready(function () {
+            $(document).on('click', '.btnDecreaseLife', function () {
+                var userId = $(this).data('userid');
+
+                $.ajax({
+                    url: '/Game/Home/DecreaseLifeTotal',
+                    data: {
+                        gameId: '@(Model.GameId)',
+                        userId: userId,
+                        amount: 1
+                    },
+                    success: function (html) {
+                        var playerInfoElement = $('.playerInfo[data-userid="' + userId + '"]:first');
+                        playerInfoElement.html(html);
+                    }
+                });
+            });
+
+            $(document).on('click', '.btnIncreaseLife', function () {
+                var userId = $(this).data('userid');
+
+                $.ajax({
+                    url: '/Game/Home/IncreaseLifeTotal',
+                    data: {
+                        gameId: '@(Model.GameId)',
+                        userId: userId,
+                        amount: 1
+                    },
+                    success: function (html) {
+                        var playerInfoElement = $('.playerInfo[data-userid="' + userId + '"]:first');
+                        playerInfoElement.html(html);
+                    }
+                });
+            });
+        });
+
         async function OnPeerJsOpen(peerJsConnectionId) 
         {
             _peerJsConnectionId = peerJsConnectionId;
