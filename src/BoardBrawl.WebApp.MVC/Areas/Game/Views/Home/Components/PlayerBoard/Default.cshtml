@@ -16,9 +16,9 @@
         InitializeLocalVideoStream();
         SetFocusedVideo();
 
-        $(document).off('click', '.playerVideo');
-        $(document).on('click', '.playerVideo', function () {
-            OnPlayerVideoClicked(this);
+        $(document).off('click', '.playerListPlayer');
+        $(document).on('click', '.playerListPlayer', function () {
+            OnPlayerListPlayerClicked(this);
         });
     });
 
@@ -116,15 +116,15 @@
         call.close();
     }
 
-    function OnPlayerVideoClicked(videoElement) {
+    function OnPlayerListPlayerClicked(playerListPlayer) {
+        var videoElement = $(playerListPlayer).find('.playerVideo')[0];
+
         var stream = videoElement.srcObject;
         var focusedPlayerVideo = $('#focusedPlayerVideo')[0];
 
-        // Remove the highlight class from all other video elements
-        $('.playerVideo').not(videoElement).removeClass('focusedPlayerVideoHighlight');
-
-        // Add the highlight class to the clicked videoElement
-        $(videoElement).addClass('focusedPlayerVideoHighlight');
+        //Set the focused player style on the clicked player
+        $('.playerListPlayer').not(videoElement).removeClass('focusedPlayer');
+        $(playerListPlayer).addClass('focusedPlayer');
 
         focusedPlayerVideo.srcObject = stream;
         focusedPlayerVideo.play();
