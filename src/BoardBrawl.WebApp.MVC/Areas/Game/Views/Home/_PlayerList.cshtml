@@ -11,21 +11,24 @@
     <ul class="nav h-100">
         @foreach (var playerInfo in Model.Players)
         {
-            <li class="nav-item w-100">
-                @{
-                    <div class="playerInfo" data-userid="@playerInfo.UserId">@await Component.InvokeAsync("PlayerInfo", playerInfo)</div>
+            var isFocusedPlayer = Model.ActivePlayerUserId == playerInfo.UserId ? "focusedPlayer" : "";
 
-                    var isFocusedPlayer = Model.ActivePlayerUserId == playerInfo.UserId ? "focusedPlayer" : "";
-                    @if (playerInfo.UserId == Model.UserId)
-                    {
-                        <video class="playerVideo localVideo @(isFocusedPlayer)" muted style="width:100%"></video>
-                        <div class="errorImage container" data-userid="@playerInfo.UserId" style="display:none"><img class="img-fluid" src="~/images/game/error-image-generic.png" /></div>
-                    }
-                    else
-                    {
-                        <video class="playerVideo remoteVideo @(isFocusedPlayer)" style="width:100%" data-userid="@playerInfo.UserId" data-peerid="@playerInfo.PeerId"></video>
-                        <div class="errorImage container" data-userid="@playerInfo.UserId" data-peerid="@playerInfo.PeerId" style="display:none"><img class="img-fluid" src="~/images/game/error-image-generic.png" /></div>
-                    }
+            <li class="nav-item w-100 m-1">
+                @{
+                    <div class="@(isFocusedPlayer)">
+                        <div class="playerInfo" data-userid="@playerInfo.UserId">@await Component.InvokeAsync("PlayerInfo", playerInfo)</div>
+
+                        @if (playerInfo.UserId == Model.UserId)
+                        {
+                            <video class="playerVideo localVideo" muted style="width:100%"></video>
+                            <div class="errorImage container" data-userid="@playerInfo.UserId" style="display:none"><img class="img-fluid" src="~/images/game/error-image-generic.png" /></div>
+                        }
+                        else
+                        {
+                            <video class="playerVideo remoteVideo" style="width:100%" data-userid="@playerInfo.UserId" data-peerid="@playerInfo.PeerId"></video>
+                            <div class="errorImage container" data-userid="@playerInfo.UserId" data-peerid="@playerInfo.PeerId" style="display:none"><img class="img-fluid" src="~/images/game/error-image-generic.png" /></div>
+                        }
+                    </div>
                 }
             </li>
         }
