@@ -53,9 +53,8 @@
             });
         })
         .catch(error => {
-            console.error('Error accessing webcam:', error);
             videoElement.style.display = "none";
-            var errorImageElement = $(".errorImage")[0];
+            var errorImageElement = $('.errorImage[data-userid="@Model.UserId"]')[0];
             errorImageElement.style.display = "block";
         });
     }
@@ -87,20 +86,29 @@
             
             var call = peer.call(peerId, _localVideoStream);
 
-            call.on("stream", (stream) => {
-                this.srcObject = stream;
-                this.addEventListener('loadedmetadata', () => {
-                    this.play();
+            if(!call){
+                var videoElement = $('.playerVideo[data-peerid="' + peerId + '"]')[0];
+                videoElement.style.display = "none";
+
+                var errorImageElement = $('.errorImage[data-peerid="' + peerId +'"]')[0];
+                errorImageElement.style.display = "block";
+            }
+            else{
+                call.on("stream", (stream) => {
+                    this.srcObject = stream;
+                    this.addEventListener('loadedmetadata', () => {
+                        this.play();
+                    });
                 });
-            });
 
-            call.on("error", (err) => {
-                console.log("Call error:" + err);
-            });
+                call.on("error", (err) => {
+                    console.log("Call error:" + err);
+                });
 
-            call.on('close', () => {
-                Endcall(call);
-            })
+                call.on('close', () => {
+                    Endcall(call);
+                })
+            }
         });
     }
 
