@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BoardBrawl.Services.Lobby;
 using BoardBrawl.Services.Lobby.Models;
+using BoardBrawl.WebApp.MVC.Areas.Lobby.Models;
 
 namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
 {
@@ -16,15 +17,19 @@ namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
             _service = service;
         }
 
-        public IActionResult Index(Guid? userId)
+        public IActionResult Index()
         {
-            if (userId == null) { return Redirect("/Main"); }
+            return View();
+        }
 
+        public IActionResult CreateGame(NewGameInfo newGameInfo)
+        {
             Guid gameIdToJoin;
+            var userId = Guid.NewGuid();
 
             var publicGames = _service.GetPublicGames();
 
-            if(!publicGames.Any())
+            if (!publicGames.Any())
             {
                 var newGame = new GameInfo
                 {

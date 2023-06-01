@@ -2,6 +2,56 @@
     ViewData["Title"] = "Lobby";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Lobby</h1>
+<div class="bg-dark rounded">
+    <button id="btnCreateGame" type="button" class="btn btn-success"><i class="bi bi-plus me-2"></i>Create Game</button>
 </div>
+
+<dialog id="createGameDialog">
+    <h2>New Game</h2>
+    <p>Create a new game</p>
+    <button id="btnClose">Close</button>
+</dialog>
+
+@section Scripts{
+    <script>
+        const openButton = document.getElementById("btnCreateGame");
+        const dlg = document.getElementById("createGameDialog");
+        const closeButton = document.getElementById("btnClose");
+
+        openButton.addEventListener("click", () => {
+            dlg.showModal();
+        });
+
+        closeButton.addEventListener("click", () => {
+            dlg.close();
+
+            // Create a form element
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/Lobby/Home/CreateGame';
+
+            // Add hidden fields for the form data
+            const gameNameInput = document.createElement('input');
+            gameNameInput.type = 'hidden';
+            gameNameInput.name = 'gameName';
+            gameNameInput.value = 'Test Game';
+            form.appendChild(gameNameInput);
+
+            const gameDescriptionInput = document.createElement('input');
+            gameDescriptionInput.type = 'hidden';
+            gameDescriptionInput.name = 'gameDescription';
+            gameDescriptionInput.value = 'Test game description goes here';
+            form.appendChild(gameDescriptionInput);
+
+            const isPublicInput = document.createElement('input');
+            isPublicInput.type = 'hidden';
+            isPublicInput.name = 'isPublic';
+            isPublicInput.value = 'false';
+            form.appendChild(isPublicInput);
+
+            // Append the form to the document and submit it
+            document.body.appendChild(form);
+            form.submit();
+        });
+    </script>
+}
