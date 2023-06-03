@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BoardBrawl.Services.Lobby;
-using BoardBrawl.Services.Lobby.Models;
 using BoardBrawl.WebApp.MVC.Areas.Lobby.Models;
 
 namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
@@ -19,20 +18,37 @@ namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var model = new Model
+            {
+                //TODO:Get UserId from Identity
+                UserId = Guid.NewGuid()
+            };
+
+            model.MyGames.Add(new GameInfo 
+            { 
+                GameId = Guid.NewGuid(),
+                Name = "Game 1",
+                Description = "A hard coded test game",
+                IsPublic = false,
+                PlayerCount = 1
+            });
+
+            return View(model);
         }
 
         [HttpPost]
-        public IActionResult CreateGame([FromForm] NewGameInfo newGameInfo)
+        public IActionResult CreateGame([FromForm] GameInfo gameInfo)
         {
+            //TODO:Get UserId from Identity
             var userId = Guid.NewGuid();
 
-            var newGame = new GameInfo
+            var newGame = new Services.Lobby.Models.GameInfo
             {
+                //TODO:Get game Id from service/repo
                 GameId = Guid.NewGuid(),
-                Name = newGameInfo.GameName,
-                Description = newGameInfo.GameDescription,
-                IsPublic = newGameInfo.IsPublic
+                Name = gameInfo.Name,
+                Description = gameInfo.Description,
+                IsPublic = gameInfo.IsPublic
             };
 
             _service.CreateGame(newGame);

@@ -1,9 +1,47 @@
-﻿@{
+﻿@using BoardBrawl.WebApp.MVC.Areas.Lobby.Models;
+@model Model
+
+@{
     ViewData["Title"] = "Lobby";
 }
 
-<div class="bg-dark rounded">
-    <button id="btnCreateGame" type="button" class="btn btn-success"><i class="bi bi-plus me-2"></i>Create Game</button>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <span class="h2">Your Games</span>
+            <button type="button" class="btn btn-success float-end" id="btnCreateGame">
+                <i class="bi bi-plus me-1"></i> Create Game
+            </button>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="col text-start">Game Name</th>
+                        <th class="col-2 text-center">Players</th>
+                        <th class="col-2 text-end"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var game in Model.MyGames)
+                    {
+                        <tr>
+                            <td class="col"><a href="@Url.Action("GameDetails", new { gameId = game.GameId })">@game.Name</a></td>
+                            <td class="col-2 text-center">@game.PlayerCount</td>
+                            <td class="col-2 text-end">
+                                <button type="button" class="btn btn-link" onclick="location.href='@Url.Action("JoinGame", new { gameId = game.GameId })'"><i class="bi bi-arrow-right-square-fill"></i></button>
+                                <button type="button" class="btn btn-link"><i class="bi bi-person-plus-fill"></i></button>
+                                <button type="button" class="btn btn-link"><i class="bi bi-trash-fill"></i></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <dialog id="createGameDialog">
@@ -16,11 +54,11 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label for="gameName">Name:</label>
-                    <input type="text" class="form-control" id="gameName" name="GameName">
+                    <input type="text" class="form-control" id="gameName" name="Name">
                 </div>
                 <div class="form-group">
                     <label for="gameDescription">Description:</label>
-                    <textarea class="form-control" id="gameDescription" name="GameDescription"></textarea>
+                    <textarea class="form-control" id="gameDescription" name="Description"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="isPublic">Public:</label>
