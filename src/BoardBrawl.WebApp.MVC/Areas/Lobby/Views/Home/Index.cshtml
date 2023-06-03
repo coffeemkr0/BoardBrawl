@@ -84,8 +84,13 @@
             <button type="button" class="close btnCloseInvitePlayersDialog">&times;</button>
         </div>
         <div class="modal-body">
-            <p>Copy the following URL to invite players:</p>
-            <input type="text" id="invitationUrl" readonly class="form-control">
+            <p>Use the following URL to invite players:</p>
+            <div class="input-group">
+                <input type="text" id="invitationUrl" readonly class="form-control">
+                <button type="button" class="btn btn-primary" id="btnCopyInvitationUrl">
+                    <i class="bi bi-clipboard"></i>
+                </button>
+            </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary btnCloseInvitePlayersDialog">Close</button>
@@ -122,6 +127,12 @@
 
         $(document).on('click', '.btnCloseInvitePlayersDialog', function () {
             invitePlayersDialog.close();
+        });
+
+        $(document).on('click', '#btnCopyInvitationUrl', function () {
+            const invitationUrlInput = $('#invitationUrl');
+            invitationUrlInput.select();
+            document.execCommand('copy');
         });
     </script>
 }
