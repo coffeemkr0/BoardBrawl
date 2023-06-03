@@ -22,6 +22,11 @@ namespace BoardBrawl.Services.Lobby
             _repository.CreateGame(repoGameInfo);
         }
 
+        public void DeleteGame(Guid gameId)
+        {
+            _repository.DeleteGame(gameId);
+        }
+
         public List<GameInfo> GetGames(Guid userId)
         {
             var repoGames = _repository.GetGames().Where(x => x.CreatedByUserId == userId);

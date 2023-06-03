@@ -24,6 +24,20 @@ namespace BoardBrawl.Repositories.Lobby
             }
         }
 
+        public void DeleteGame(Guid gameId)
+        {
+            var games = GetGames();
+
+            var game = games.FirstOrDefault(i => i.GameId == gameId);
+
+            if (game != null)
+            {
+                games.Remove(game);
+            }
+
+            _memoryCache.Set("Games", games);
+        }
+
         public List<GameInfo> GetGames()
         {
             return _memoryCache.GetValueOrDefault<List<GameInfo>>("Games");

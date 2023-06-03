@@ -6,5 +6,6 @@ namespace BoardBrawl.Repositories.Lobby
     {
         List<GameInfo> GetGames();
         void CreateGame(GameInfo gameInfo);
+        void DeleteGame(Guid gameId);
     }
 }

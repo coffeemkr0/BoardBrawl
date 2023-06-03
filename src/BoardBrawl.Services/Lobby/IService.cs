@@ -7,5 +7,6 @@ namespace BoardBrawl.Services.Lobby
         List<GameInfo> GetPublicGames();
         List<GameInfo> GetGames(Guid userId);
         void CreateGame(GameInfo gameInfo);
+        void DeleteGame(Guid gameId);
     }
 }

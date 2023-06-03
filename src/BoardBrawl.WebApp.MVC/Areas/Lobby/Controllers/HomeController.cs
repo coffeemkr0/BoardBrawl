@@ -66,6 +66,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
         {
             //TODO:Get UserId from Identity
 
+            _service.DeleteGame(gameId);
             return RedirectToAction("Index", new { userId = userId });
         }
     }
