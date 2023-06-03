@@ -22,33 +22,22 @@ namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
             return View();
         }
 
-        public IActionResult CreateGame(NewGameInfo newGameInfo)
+        [HttpPost]
+        public IActionResult CreateGame([FromForm] NewGameInfo newGameInfo)
         {
-            Guid gameIdToJoin;
             var userId = Guid.NewGuid();
 
-            var publicGames = _service.GetPublicGames();
-
-            if (!publicGames.Any())
+            var newGame = new GameInfo
             {
-                var newGame = new GameInfo
-                {
-                    GameId = Guid.NewGuid(),
-                    Name = "Test Game",
-                    Description = "A game created by test code",
-                    IsPublic = true
-                };
+                GameId = Guid.NewGuid(),
+                Name = newGameInfo.GameName,
+                Description = newGameInfo.GameDescription,
+                IsPublic = newGameInfo.IsPublic
+            };
 
-                _service.CreateGame(newGame);
+            _service.CreateGame(newGame);
 
-                gameIdToJoin = newGame.GameId;
-            }
-            else
-            {
-                gameIdToJoin = publicGames.First().GameId;
-            }
-
-            return RedirectToAction("Index", "Home", new { area = "Game", id = gameIdToJoin, userId });
+            return RedirectToAction("Index", "Home", new { area = "Game", id = newGame.GameId, userId });
         }
     }
 }

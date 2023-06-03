@@ -7,51 +7,56 @@
 </div>
 
 <dialog id="createGameDialog">
-    <h2>New Game</h2>
-    <p>Create a new game</p>
-    <button id="btnClose">Close</button>
+    <form action="/Lobby/Home/CreateGame" method="post">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Game</h5>
+                <button id="btnCloseDialog" type="button" class="close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="gameName">Name:</label>
+                    <input type="text" class="form-control" id="gameName" name="GameName">
+                </div>
+                <div class="form-group">
+                    <label for="gameDescription">Description:</label>
+                    <textarea class="form-control" id="gameDescription" name="GameDescription"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="isPublic">Public:</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="isPublic" name="IsPublic" value="true">
+                        <label class="form-check-label" for="isPublic">Yes</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="btnOk">Create</button>
+                <button type="button" class="btn btn-secondary" id="btnCancel">Cancel</button>
+            </div>
+        </div>
+    </form>
 </dialog>
+
 
 @section Scripts{
     <script>
-        const openButton = document.getElementById("btnCreateGame");
-        const dlg = document.getElementById("createGameDialog");
-        const closeButton = document.getElementById("btnClose");
+        const createGameButton = document.getElementById("btnCreateGame");
 
-        openButton.addEventListener("click", () => {
+        const dlg = document.getElementById('createGameDialog');
+        const closeBtn = document.getElementById('btnCloseDialog');
+        const cancelBtn = document.getElementById('btnCancel');
+
+        createGameButton.addEventListener("click", () => {
             dlg.showModal();
         });
 
-        closeButton.addEventListener("click", () => {
+        closeBtn.addEventListener("click", () => {
             dlg.close();
+        });
 
-            // Create a form element
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '/Lobby/Home/CreateGame';
-
-            // Add hidden fields for the form data
-            const gameNameInput = document.createElement('input');
-            gameNameInput.type = 'hidden';
-            gameNameInput.name = 'gameName';
-            gameNameInput.value = 'Test Game';
-            form.appendChild(gameNameInput);
-
-            const gameDescriptionInput = document.createElement('input');
-            gameDescriptionInput.type = 'hidden';
-            gameDescriptionInput.name = 'gameDescription';
-            gameDescriptionInput.value = 'Test game description goes here';
-            form.appendChild(gameDescriptionInput);
-
-            const isPublicInput = document.createElement('input');
-            isPublicInput.type = 'hidden';
-            isPublicInput.name = 'isPublic';
-            isPublicInput.value = 'false';
-            form.appendChild(isPublicInput);
-
-            // Append the form to the document and submit it
-            document.body.appendChild(form);
-            form.submit();
+        cancelBtn.addEventListener("click", () => {
+            dlg.close();
         });
     </script>
 }
