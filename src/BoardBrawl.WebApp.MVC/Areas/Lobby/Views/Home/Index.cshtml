@@ -98,6 +98,29 @@
     </div>
 </dialog>
 
+<dialog id="deleteGameDialog">
+    <form action="/Lobby/Home/DeleteGame" method="post">
+        <input type="hidden" id="deleteGameId" name="gameId" value="">
+        <input type="hidden" id="userId" name="userId" value="@Model.UserId">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Game</h5>
+                <button type="button" class="close btnCloseDeleteGameDialog">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Warning:</strong> Any players in the game will be removed.</p>
+                <p>Are you sure you want to delete this game?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger" id="btnDeleteGameConfirm">Delete</button>
+                <button type="button" class="btn btn-secondary btnCloseDeleteGameDialog">Cancel</button>
+            </div>
+        </div>
+    </form>
+</dialog>
+
+
 @section Scripts{
     <script>
         //Create game dialog
@@ -133,6 +156,19 @@
             const invitationUrlInput = $('#invitationUrl');
             invitationUrlInput.select();
             document.execCommand('copy');
+        });
+
+        //Delete game dialog
+        const deleteGameDialog = document.getElementById('deleteGameDialog');
+
+        $(document).on('click', '.btnDeleteGame', function () {
+            const gameId = $(this).data('game-id');
+            $('#deleteGameId').val(gameId);
+            deleteGameDialog.show();
+        });
+
+        $(document).on('click', '.btnCloseDeleteGameDialog', function () {
+            deleteGameDialog.close();
         });
     </script>
 }
