@@ -55,5 +55,13 @@ namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
 
             return RedirectToAction("Index", "Home", new { area = "Game", id = newGame.GameId, userId });
         }
+
+        public IActionResult JoinGame(Guid gameId)
+        {
+            //TODO:Get UserId from Identity
+            var userId = Guid.NewGuid();
+
+            return RedirectToAction("Index", "Home", new { area = "Game", id = gameId, userId });
+        }
     }
 }
