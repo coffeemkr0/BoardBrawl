@@ -9,5 +9,8 @@
         public string PlayerName { get; set; }
 
         public int LifeTotal { get; set; }
+        public int InfectDamage { get; set; }
+        public int CommanderDamage { get; set; }
+
     }
 }
