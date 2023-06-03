@@ -1,4 +1,4 @@
-﻿namespace BoardBrawl.Repositories.Game.Models
+﻿namespace BoardBrawl.Repositories.Models
 {
     public class PlayerInfo
     {

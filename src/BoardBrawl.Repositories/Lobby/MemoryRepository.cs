@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using BoardBrawl.Repositories.Lobby.Models;
+﻿using BoardBrawl.Repositories.Models;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BoardBrawl.Repositories.Lobby
 {
@@ -10,6 +10,20 @@ namespace BoardBrawl.Repositories.Lobby
         public MemoryRepository(IMemoryCache memoryCache)
         {
             _memoryCache = memoryCache;
+        }
+
+        public void AddPlayerToGame(Guid gameId, PlayerInfo playerInfo)
+        {
+            var games = GetGames();
+
+            var game = games.First(i => i.GameId == gameId);
+
+            if (!game.Players.Any(i => i.UserId == playerInfo.UserId))
+            {
+                game.Players.Add(playerInfo);
+            }
+
+            _memoryCache.Set("Games", games);
         }
 
         public void CreateGame(GameInfo gameInfo)

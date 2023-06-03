@@ -37,27 +37,30 @@ namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
         [HttpPost]
         public IActionResult CreateGame([FromForm] GameInfo gameInfo)
         {
+            //TODO:Get UserId from Identity
+            var userId = gameInfo.CreatedByUserId;
+
             var newGame = new Services.Lobby.Models.GameInfo
             {
                 //TODO:Get game Id from service/repo
                 GameId = Guid.NewGuid(),
-                //TODO:Get UserId from Identity
-                CreatedByUserId = gameInfo.CreatedByUserId,
+                CreatedByUserId = userId,
                 Name = gameInfo.Name,
                 Description = gameInfo.Description,
                 IsPublic = gameInfo.IsPublic
             };
 
             _service.CreateGame(newGame);
+            _service.JoinGame(newGame.GameId, userId);
 
-            return RedirectToAction("Index", "Home", new { area = "Game", id = newGame.GameId, userId = newGame.CreatedByUserId });
+            return RedirectToAction("Index", "Home", new { area = "Game", id = newGame.GameId, userId = userId });
         }
 
-        [HttpPost]
+        
         public IActionResult JoinGame(Guid gameId, Guid userId)
         {
             //TODO:Get UserId from Identity
-
+            _service.JoinGame(gameId, userId);
             return RedirectToAction("Index", "Home", new { area = "Game", id = gameId, userId });
         }
 

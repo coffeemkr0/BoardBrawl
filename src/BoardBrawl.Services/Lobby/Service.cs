@@ -17,7 +17,7 @@ namespace BoardBrawl.Services.Lobby
 
         public void CreateGame(GameInfo gameInfo)
         {
-            var repoGameInfo = _mapper.Map<Repositories.Lobby.Models.GameInfo>(gameInfo);
+            var repoGameInfo = _mapper.Map<Repositories.Models.GameInfo>(gameInfo);
 
             _repository.CreateGame(repoGameInfo);
         }
@@ -29,9 +29,17 @@ namespace BoardBrawl.Services.Lobby
 
         public List<GameInfo> GetGames(Guid userId)
         {
-            var repoGames = _repository.GetGames().Where(x => x.CreatedByUserId == userId);
+            var games = new List<GameInfo>();
 
-            return _mapper.Map<List<GameInfo>>(repoGames);
+            foreach (var repoGame in _repository.GetGames().Where(x => x.CreatedByUserId == userId))
+            {
+                var game = _mapper.Map<GameInfo>(repoGame);
+                game.PlayerCount = repoGame.Players.Count();
+
+                games.Add(game);
+            }
+
+            return games;
         }
 
         public List<GameInfo> GetPublicGames()
@@ -39,6 +47,19 @@ namespace BoardBrawl.Services.Lobby
             var repoGames = _repository.GetGames().Where(x => x.IsPublic);
 
             return _mapper.Map<List<GameInfo>>(repoGames);
+        }
+
+        public void JoinGame(Guid gameId, Guid userId )
+        {
+            var playerInfo = new Repositories.Models.PlayerInfo
+            {
+                UserId = userId,
+                //TODO:Get player info from repo
+                PlayerName = "Hard coded player name",
+                LifeTotal = 40
+            };
+
+            _repository.AddPlayerToGame(gameId, playerInfo);
         }
     }
 }

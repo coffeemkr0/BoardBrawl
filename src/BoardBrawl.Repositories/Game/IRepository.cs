@@ -1,4 +1,4 @@
-﻿using BoardBrawl.Repositories.Game.Models;
+﻿using BoardBrawl.Repositories.Models;
 
 namespace BoardBrawl.Repositories.Game
 {

@@ -1,4 +1,4 @@
-﻿namespace BoardBrawl.Repositories.Lobby.Models
+﻿namespace BoardBrawl.Repositories.Models
 {
     public class GameInfo
     {
@@ -11,5 +11,12 @@
         public string Name { get; set; }
 
         public string Description { get; set; }
+
+        public List<PlayerInfo> Players { get; }
+
+        public GameInfo()
+        {
+            Players = new List<PlayerInfo>();
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BoardBrawl.Repositories.Models;
 
 namespace BoardBrawl.Services.Game
 {
@@ -6,11 +7,11 @@ namespace BoardBrawl.Services.Game
     {
         public AutoMapperProfile()
         {
-            CreateMap<Models.GameInfo, Repositories.Game.Models.GameInfo>();
-            CreateMap<Repositories.Game.Models.GameInfo, Models.GameInfo>();
+            CreateMap<Models.GameInfo, GameInfo>();
+            CreateMap<GameInfo, Models.GameInfo>();
 
-            CreateMap<Repositories.Game.Models.PlayerInfo, Models.PlayerInfo>();
-            CreateMap<Models.PlayerInfo, Repositories.Game.Models.PlayerInfo>();
+            CreateMap<PlayerInfo, Models.PlayerInfo>();
+            CreateMap<Models.PlayerInfo, PlayerInfo>();
         }
     }
 }

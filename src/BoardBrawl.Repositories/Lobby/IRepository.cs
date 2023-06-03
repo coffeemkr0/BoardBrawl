@@ -1,4 +1,5 @@
-﻿using BoardBrawl.Repositories.Lobby.Models;
+﻿
+using BoardBrawl.Repositories.Models;
 
 namespace BoardBrawl.Repositories.Lobby
 {
@@ -7,5 +8,6 @@ namespace BoardBrawl.Repositories.Lobby
         List<GameInfo> GetGames();
         void CreateGame(GameInfo gameInfo);
         void DeleteGame(Guid gameId);
+        void AddPlayerToGame(Guid gameId, PlayerInfo playerInfo);
     }
 }

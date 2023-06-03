@@ -17,7 +17,7 @@ namespace BoardBrawl.Services.Game
 
         public void AddPlayerToGame(Guid gameId, PlayerInfo playerInfo)
         {
-            _repository.AddPlayerToGame(gameId, _mapper.Map<Repositories.Game.Models.PlayerInfo>(playerInfo));
+            _repository.AddPlayerToGame(gameId, _mapper.Map<Repositories.Models.PlayerInfo>(playerInfo));
         }
 
         public void ClearPlayers()
