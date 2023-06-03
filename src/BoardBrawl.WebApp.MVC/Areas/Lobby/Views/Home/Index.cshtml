@@ -85,7 +85,7 @@
         </div>
         <div class="modal-body">
             <p>Copy the following URL to invite players:</p>
-            <input type="text" id="invitationUrl" readonly>
+            <input type="text" id="invitationUrl" readonly class="form-control">
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary btnCloseInvitePlayersDialog">Close</button>
@@ -112,7 +112,11 @@
 
         $(document).on('click', '.btnInvitePlayers', function () {
             const invitationUrl = $(this).data('invitation-url');
-            $('#invitationUrl').val(invitationUrl);
+            const invitationUrlInput = $('#invitationUrl');
+
+            invitationUrlInput.val(invitationUrl);
+            invitationUrlInput.width(invitationUrl.length + 'ch');
+
             invitePlayersDialog.show();
         });
 
