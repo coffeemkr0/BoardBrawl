@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BoardBrawl.Services.Lobby;
 using BoardBrawl.WebApp.MVC.Areas.Lobby.Models;
+using BoardBrawl.Core.AutoMapping;
 
 namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
 {
@@ -9,29 +10,26 @@ namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IService _service;
+        private readonly IMapper _mapper;
 
-        public HomeController(ILogger<HomeController> logger, IService service)
+        public HomeController(ILogger<HomeController> logger, IService service, IMapper mapper)
         {
             _logger = logger;
             _service = service;
+            _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(Guid? userId)
         {
+            //TODO:Get UserId from Identity
+            if (userId == null) { return Redirect("/Main"); }
+
             var model = new Model
             {
-                //TODO:Get UserId from Identity
-                UserId = Guid.NewGuid()
+                UserId = userId.Value
             };
 
-            model.MyGames.Add(new GameInfo 
-            { 
-                GameId = Guid.NewGuid(),
-                Name = "Game 1",
-                Description = "A hard coded test game",
-                IsPublic = false,
-                PlayerCount = 1
-            });
+            model.MyGames.AddRange(_mapper.Map<List<GameInfo>>(_service.GetGames(userId.Value)));
 
             return View(model);
         }
@@ -39,13 +37,12 @@ namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
         [HttpPost]
         public IActionResult CreateGame([FromForm] GameInfo gameInfo)
         {
-            //TODO:Get UserId from Identity
-            var userId = Guid.NewGuid();
-
             var newGame = new Services.Lobby.Models.GameInfo
             {
                 //TODO:Get game Id from service/repo
                 GameId = Guid.NewGuid(),
+                //TODO:Get UserId from Identity
+                CreatedByUserId = gameInfo.CreatedByUserId,
                 Name = gameInfo.Name,
                 Description = gameInfo.Description,
                 IsPublic = gameInfo.IsPublic
@@ -53,13 +50,12 @@ namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
 
             _service.CreateGame(newGame);
 
-            return RedirectToAction("Index", "Home", new { area = "Game", id = newGame.GameId, userId });
+            return RedirectToAction("Index", "Home", new { area = "Game", id = newGame.GameId, userId = newGame.CreatedByUserId });
         }
 
-        public IActionResult JoinGame(Guid gameId)
+        public IActionResult JoinGame(Guid gameId, Guid userId)
         {
             //TODO:Get UserId from Identity
-            var userId = Guid.NewGuid();
 
             return RedirectToAction("Index", "Home", new { area = "Game", id = gameId, userId });
         }

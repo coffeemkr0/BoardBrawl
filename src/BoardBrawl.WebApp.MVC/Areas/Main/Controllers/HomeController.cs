@@ -14,12 +14,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Main.Controllers
 
         public IActionResult Index()
         {
-            return RedirectToAction("Index", "Home", new { area = "Lobby" });
-
-            ////TODO:Simulate a random user Id until we have Identity in place
-            //var userId = Guid.NewGuid().ToString();
-
-            //return RedirectToAction("Index", "Home", new { area = "Lobby", userId });
+            return RedirectToAction("Index", "Home", new { area = "Lobby", userId = Guid.NewGuid() });
         }
     }
 }

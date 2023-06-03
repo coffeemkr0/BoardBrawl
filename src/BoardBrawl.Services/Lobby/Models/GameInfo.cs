@@ -4,6 +4,8 @@
     {
         public Guid GameId { get; set; }
 
+        public Guid CreatedByUserId { get; set; }
+
         public bool IsPublic { get; set; }
 
         public string Name { get; set; }

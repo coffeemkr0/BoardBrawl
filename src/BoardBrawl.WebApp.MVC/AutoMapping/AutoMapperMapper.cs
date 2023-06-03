@@ -12,8 +12,11 @@ namespace BoardBrawl.WebApp.MVC.AutoMapping
             var configurationExpression = new MapperConfigurationExpression();
 
             configurationExpression.AddProfile<Services.Lobby.AutoMapperProfile>();
+            configurationExpression.AddProfile<Areas.Lobby.AutoMapperProfile>();
+
             configurationExpression.AddProfile<Services.Game.AutoMapperProfile>();
             configurationExpression.AddProfile<Areas.Game.AutoMapperProfile>();
+            
 
             _mapper = new Mapper(new MapperConfiguration(configurationExpression));
         }

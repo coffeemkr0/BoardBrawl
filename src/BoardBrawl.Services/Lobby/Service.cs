@@ -22,6 +22,13 @@ namespace BoardBrawl.Services.Lobby
             _repository.CreateGame(repoGameInfo);
         }
 
+        public List<GameInfo> GetGames(Guid userId)
+        {
+            var repoGames = _repository.GetGames().Where(x => x.CreatedByUserId == userId);
+
+            return _mapper.Map<List<GameInfo>>(repoGames);
+        }
+
         public List<GameInfo> GetPublicGames()
         {
             var repoGames = _repository.GetGames().Where(x => x.IsPublic);
