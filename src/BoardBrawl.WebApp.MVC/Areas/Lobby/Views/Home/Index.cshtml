@@ -33,8 +33,8 @@
                             <td class="col-2 text-center">@game.PlayerCount</td>
                             <td class="col-2 text-end">
                                 <button type="button" class="btn btn-link" onclick="location.href='@Url.Action("JoinGame", new { gameId = game.GameId, userId = Model.UserId })'"><i class="bi bi-arrow-right-square-fill"></i></button>
-                                <button type="button" class="btn btn-link btnInvitePlayers"><i class="bi bi-person-plus-fill"></i></button>
-                                <button type="button" class="btn btn-link btnDeleteGame"><i class="bi bi-trash-fill"></i></button>
+                                <button type="button" class="btn btn-link btnInvitePlayers" data-invitation-url="@Url.Action("", "", new { area = "Game", game.GameId }, "https", Context.Request.Host.Value)"><i class="bi bi-person-plus-fill"></i></button>
+                                <button type="button" class="btn btn-link btnDeleteGame" data-game-id="@game.GameId"><i class="bi bi-trash-fill"></i></button>
                             </td>
                         </tr>
                     }
@@ -111,6 +111,8 @@
         const invitePlayersDialog = document.getElementById('invitePlayersDialog');
 
         $(document).on('click', '.btnInvitePlayers', function () {
+            const invitationUrl = $(this).data('invitation-url');
+            $('#invitationUrl').val(invitationUrl);
             invitePlayersDialog.show();
         });
 
