@@ -33,8 +33,8 @@
                             <td class="col-2 text-center">@game.PlayerCount</td>
                             <td class="col-2 text-end">
                                 <button type="button" class="btn btn-link" onclick="location.href='@Url.Action("JoinGame", new { gameId = game.GameId, userId = Model.UserId })'"><i class="bi bi-arrow-right-square-fill"></i></button>
-                                <button type="button" class="btn btn-link"><i class="bi bi-person-plus-fill"></i></button>
-                                <button type="button" class="btn btn-link"><i class="bi bi-trash-fill"></i></button>
+                                <button type="button" class="btn btn-link btnInvitePlayers"><i class="bi bi-person-plus-fill"></i></button>
+                                <button type="button" class="btn btn-link btnDeleteGame"><i class="bi bi-trash-fill"></i></button>
                             </td>
                         </tr>
                     }
@@ -50,7 +50,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Create Game</h5>
-                <button id="btnCloseDialog" type="button" class="close">&times;</button>
+                <button type="button" class="close btnCloseCreateGameDialog">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -71,31 +71,51 @@
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary" id="btnOk">Create</button>
-                <button type="button" class="btn btn-secondary" id="btnCancel">Cancel</button>
+                <button type="button" class="btn btn-secondary btnCloseCreateGameDialog">Cancel</button>
             </div>
         </div>
     </form>
 </dialog>
 
+<dialog id="invitePlayersDialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Invite Players</h5>
+            <button type="button" class="close btnCloseInvitePlayersDialog">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>Copy the following URL to invite players:</p>
+            <input type="text" id="invitationUrl" readonly>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btnCloseInvitePlayersDialog">Close</button>
+        </div>
+    </div>
+</dialog>
 
 @section Scripts{
     <script>
-        const createGameButton = document.getElementById("btnCreateGame");
+        //Create game dialog
+        const createGameButton = document.getElementById('btnCreateGame');
+        const createGameDialog = document.getElementById('createGameDialog');
 
-        const dlg = document.getElementById('createGameDialog');
-        const closeBtn = document.getElementById('btnCloseDialog');
-        const cancelBtn = document.getElementById('btnCancel');
-
-        createGameButton.addEventListener("click", () => {
-            dlg.showModal();
+        createGameButton.addEventListener('click', () => {
+            createGameDialog.showModal();
         });
 
-        closeBtn.addEventListener("click", () => {
-            dlg.close();
+        $(document).on('click', '.btnCloseCreateGameDialog', function () {
+            createGameDialog.close();
         });
 
-        cancelBtn.addEventListener("click", () => {
-            dlg.close();
+        //Invite players dialog
+        const invitePlayersDialog = document.getElementById('invitePlayersDialog');
+
+        $(document).on('click', '.btnInvitePlayers', function () {
+            invitePlayersDialog.show();
+        });
+
+        $(document).on('click', '.btnCloseInvitePlayersDialog', function () {
+            invitePlayersDialog.close();
         });
     </script>
 }
