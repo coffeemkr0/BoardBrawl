@@ -12,5 +12,9 @@ namespace BoardBrawl.Services.Game
         PlayerInfo DecreaseLifeTotal(Guid gameId, Guid userId, int amount);
         PlayerInfo IncreaseLifeTotal(Guid gameId, Guid userId, int amount);
         void ClearPlayers();
+        PlayerInfo DecreaseCommanderDamage(Guid gameId, Guid userId, int amount);
+        PlayerInfo IncreaseCommanderDamage(Guid gameId, Guid userId, int amount);
+        PlayerInfo DecreaseInfectDamage(Guid gameId, Guid userId, int amount);
+        PlayerInfo IncreaseInfectDamage(Guid gameId, Guid userId, int amount);
     }
 }

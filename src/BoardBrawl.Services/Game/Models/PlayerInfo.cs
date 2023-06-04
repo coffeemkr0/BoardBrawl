@@ -11,5 +11,10 @@ namespace BoardBrawl.Services.Game.Models
         public string PlayerName { get; set; }
 
         public int LifeTotal { get; set; }
+        public int CommanderDamage { get; set; }
+        public int InfectDamage { get; set; }
+
+
+
     }
 }

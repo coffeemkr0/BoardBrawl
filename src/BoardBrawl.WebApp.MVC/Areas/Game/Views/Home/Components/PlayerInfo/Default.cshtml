@@ -12,7 +12,7 @@
     <div class="card-body bg-dark text-white">
         <div class="d-flex justify-content-between align-items-start">
             <div>
-                <p class="card-text pl-5">@Model.PlayerName</p>
+                <p class="card-text">@Model.PlayerName</p>
                 <p class="card-text">
                     Life Total:
                     <button data-userid="@Model.UserId" class="btn btn-danger btn-sm btnDecreaseLife">-</button>
@@ -27,13 +27,13 @@
         <div class="collapse bg-transparent text-white" id="settingsCollapse">
             <div class="card card-body bg-dark text-white border-0 text-start">
                 Player ID: @Model.UserId
-                <p>
+                <p class="commanderDamage">
                     Commander Damage:
                     <button data-userid="@Model.UserId" class="btn btn-danger btn-sm btnDecreaseCommanderDamage">-</button>
                     @Model.CommanderDamage
                     <button data-userid="@Model.UserId" class="btn btn-success btn-sm btnIncreaseCommanderDamage">+</button>
                 </p>
-                <p>
+                <p class="infectDamage">
                     Infect Damage:
                     <button data-userid="@Model.UserId" class="btn btn-danger btn-sm btnDecreaseInfectDamage">-</button>
                     @Model.InfectDamage
@@ -44,47 +44,5 @@
     </div>
 </div>
 
-@section Scripts
-{
-    // You'll want to replace `#settingsCollapse` with the actual id of your element.
-const settingsCollapse = document.querySelector("#settingsCollapse");
-document.querySelector(".btnIncreaseLife").addEventListener("click", event => {
-    event.stopPropagation(); // Prevents the event from affecting the parent elements.
-    // Increase life total.
-    // ...
-});
-
-document.querySelector(".btnDecreaseLife").addEventListener("click", event => {
-    event.stopPropagation(); // Prevents the event from affecting the parent elements.
-    // Decrease life total.
-    // ...
-});
-
-document.querySelector(".btnIncreaseCommanderDamage").addEventListener("click", event => {
-    event.stopPropagation(); // Prevents the event from affecting the parent elements.
-    // Increase commander damage.
-    // ...
-});
-
-document.querySelector(".btnDecreaseCommanderDamage").addEventListener("click", event => {
-    event.stopPropagation(); // Prevents the event from affecting the parent elements.
-    // Decrease commander damage.
-    // ...
-});
-
-document.querySelector(".btnIncreaseInfectDamage").addEventListener("click", event => {
-    event.stopPropagation(); // Prevents the event from affecting the parent elements.
-    // Increase infect damage.
-    // ...
-});
-
-document.querySelector(".btnDecreaseInfectDamage").addEventListener("click", event => {
-    event.stopPropagation(); // Prevents the event from affecting the parent elements.
-    // Decrease infect damage.
-    // ...
-});
-
-
-}
 
 

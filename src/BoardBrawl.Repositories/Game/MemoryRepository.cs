@@ -24,7 +24,7 @@ namespace BoardBrawl.Repositories.Game
                 playerDictionary.Add(gameId, new List<PlayerInfo>());
             }
 
-            if (!playerDictionary[gameId].Any(i=>i.UserId== playerInfo.UserId))
+            if (!playerDictionary[gameId].Any(i => i.UserId == playerInfo.UserId))
             {
                 playerDictionary[gameId].Add(playerInfo);
             }
@@ -93,6 +93,30 @@ namespace BoardBrawl.Repositories.Game
         public void ClearPlayers()
         {
             GetPlayerCollection().Clear();
+        }
+
+        public void DecreaseCommanderDamage(Guid gameId, Guid userId, int amount)
+        {
+            var player = GetPlayer(gameId, userId);
+            player.CommanderDamage -= amount;
+        }
+
+        public void IncreaseCommanderDamage(Guid gameId, Guid userId, int amount)
+        {
+            var player = GetPlayer(gameId, userId);
+            player.CommanderDamage += amount;
+        }
+
+        public void DecreaseInfectDamage(Guid gameId, Guid userId, int amount)
+        {
+            var player = GetPlayer(gameId, userId);
+            player.InfectDamage -= amount;
+        }
+
+        public void IncreaseInfectDamage(Guid gameId, Guid userId, int amount)
+        {
+            var player = GetPlayer(gameId, userId);
+            player.InfectDamage += amount;
         }
     }
 }

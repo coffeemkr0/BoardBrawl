@@ -50,7 +50,9 @@
         });
 
         $(document).ready(function () {
+            const settingsCollapse = document.querySelector("#settingsCollapse");
             $(document).on('click', '.btnDecreaseLife', function () {
+                event.stopPropagation();
                 var userId = $(this).data('userid');
 
                 $.ajax({
@@ -68,6 +70,7 @@
             });
 
             $(document).on('click', '.btnIncreaseLife', function () {
+                event.stopPropagation();
                 var userId = $(this).data('userid');
 
                 $.ajax({
@@ -79,6 +82,81 @@
                     },
                     success: function (html) {
                         var playerInfoElement = $('.playerInfo[data-userid="' + userId + '"]:first');
+                        playerInfoElement.html(html);
+                    }
+                });
+            });
+
+
+            $(document).on('click', '.btnDecreaseCommanderDamage', function () {
+                event.stopPropagation();
+                var userId = $(this).data('userid');
+
+                $.ajax({
+                    url: '/Game/Home/DecreaseCommanderDamage',
+                    data: {
+                        gameId: '@(Model.GameId)',
+                        userId: userId,
+                        amount: 1
+                    },
+                    success: function (html) {
+                        var playerInfoElement = $('.playerInfo[data-userid="' + userId + '"]:first');
+                        playerInfoElement.html(html);
+                    }
+                });
+            });
+
+            $(document).on('click', '.btnIncreaseCommanderDamage', function () {
+                event.stopPropagation();
+                var userId = $(this).data('userid');
+
+                $.ajax({
+                    url: '/Game/Home/IncreaseCommanderDamage',
+                    data: {
+                        gameId: '@(Model.GameId)',
+                        userId: userId,
+                        amount: 1
+                    },
+                    success: function (html) {
+                        var playerInfoElement = $('.playerInfo[data-userid="' + userId + '"]:first');
+                        playerInfoElement.html(html);
+                    }
+                });
+            });
+
+            $(document).on('click', '.btnDecreaseInfectDamage', function () {
+                event.stopPropagation();
+                var userId = $(this).data('userid');
+
+                $.ajax({
+                    url: '/Game/Home/DecreaseInfectDamage',
+                    data: {
+                        gameId: '@(Model.GameId)',
+                        userId: userId,
+                        amount: 1
+                    },
+                    success: function (html) {
+                        var playerInfoElement = $('.playerInfo[data-userid="' + userId + '"]:first');
+
+                        playerInfoElement.html(html);
+                    }
+                });
+            });
+
+            $(document).on('click', '.btnIncreaseInfectDamage', function () {
+                event.stopPropagation();
+                var userId = $(this).data('userid');
+
+                $.ajax({
+                    url: '/Game/Home/IncreaseInfectDamage',
+                    data: {
+                        gameId: '@(Model.GameId)',
+                        userId: userId,
+                        amount: 1
+                    },
+                    success: function (html) {
+                        var playerInfoElement = $('.playerInfo[data-userid="' + userId + '"]:first');
+
                         playerInfoElement.html(html);
                     }
                 });

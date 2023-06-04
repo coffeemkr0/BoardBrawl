@@ -58,7 +58,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 
         public IActionResult PlayerBoard(Guid gameId, Guid userId)
         {
-            return ViewComponent("PlayerBoard", new { gameId, userId});
+            return ViewComponent("PlayerBoard", new { gameId, userId });
         }
 
         public IActionResult PlayerInfo(Guid gameId, Guid userId)
@@ -77,6 +77,34 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
         public async Task<IActionResult> IncreaseLifeTotal(Guid gameId, Guid userId, int amount)
         {
             var playerInfo = _mapper.Map<PlayerInfo>(_service.IncreaseLifeTotal(gameId, userId, amount));
+            await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfoChanged", userId);
+            return ViewComponent("PlayerInfo", new { playerInfo });
+        }
+
+        public async Task<IActionResult> DecreaseCommanderDamage(Guid gameId, Guid userId, int amount)
+        {
+            var playerInfo = _mapper.Map<PlayerInfo>(_service.DecreaseCommanderDamage(gameId, userId, amount));
+            await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfoChanged", userId);
+            return ViewComponent("PlayerInfo", new { playerInfo });
+        }
+
+        public async Task<IActionResult> IncreaseCommanderDamage(Guid gameId, Guid userId, int amount)
+        {
+            var playerInfo = _mapper.Map<PlayerInfo>(_service.IncreaseCommanderDamage(gameId, userId, amount));
+            await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfoChanged", userId);
+            return ViewComponent("PlayerInfo", new { playerInfo });
+        }
+
+        public async Task<IActionResult> DecreaseInfectDamage(Guid gameId, Guid userId, int amount)
+        {
+            var playerInfo = _mapper.Map<PlayerInfo>(_service.DecreaseInfectDamage(gameId, userId, amount));
+            await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfoChanged", userId);
+            return ViewComponent("PlayerInfo", new { playerInfo });
+        }
+
+        public async Task<IActionResult> IncreaseInfectDamage(Guid gameId, Guid userId, int amount)
+        {
+            var playerInfo = _mapper.Map<PlayerInfo>(_service.IncreaseInfectDamage(gameId, userId, amount));
             await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfoChanged", userId);
             return ViewComponent("PlayerInfo", new { playerInfo });
         }

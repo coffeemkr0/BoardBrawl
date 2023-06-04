@@ -60,5 +60,32 @@ namespace BoardBrawl.Services.Game
         {
             _repository.UpdatePeerId(gameId, userId, peerId);
         }
+
+        public PlayerInfo IncreaseCommanderDamage(Guid gameId, Guid userId, int amount)
+        {
+            _repository.IncreaseCommanderDamage(gameId, userId, amount);
+            var repoPlayer = _repository.GetPlayers(gameId).First(i => i.UserId == userId);
+            var servicePlayer = _mapper.Map<PlayerInfo>(repoPlayer);
+
+            return servicePlayer;
+        }
+
+        public PlayerInfo IncreaseInfectDamage(Guid gameId, Guid userId, int amount)
+        {
+            _repository.IncreaseInfectDamage(gameId, userId, amount);
+            return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));
+        }
+
+        public PlayerInfo DecreaseCommanderDamage(Guid gameId, Guid userId, int amount)
+        {
+            _repository.DecreaseCommanderDamage(gameId, userId, amount);
+            return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));
+        }
+
+        public PlayerInfo DecreaseInfectDamage(Guid gameId, Guid userId, int amount)
+        {
+            _repository.DecreaseInfectDamage(gameId, userId, amount);
+            return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));
+        }
     }
 }
