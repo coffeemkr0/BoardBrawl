@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
-using BoardBrawl.Repositories.Game.Models;
+using BoardBrawl.Repositories.Models;
 
 namespace BoardBrawl.Repositories.Game
 {
