@@ -1,4 +1,5 @@
-﻿using BoardBrawl.Data.Identity;
+﻿using BoardBrawl.Data.Application;
+using BoardBrawl.Data.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace BoardBrawl.WebApp.MVC
@@ -13,8 +14,20 @@ namespace BoardBrawl.WebApp.MVC
 
                 try
                 {
-                    var dbContext = services.GetRequiredService<IdentityDbContext>();
-                    dbContext.Database.Migrate();
+                    var identityDbContext = services.GetRequiredService<IdentityDbContext>();
+                    identityDbContext.Database.Migrate();
+                }
+                catch (Exception ex)
+                {
+                    // Handle any errors that occurred during migration
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "An error occurred while migrating the database.");
+                }
+
+                try
+                {
+                    var applicationDbContext = services.GetRequiredService<ApplicationDbContext>();
+                    applicationDbContext.Database.Migrate();
                 }
                 catch (Exception ex)
                 {

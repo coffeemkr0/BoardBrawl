@@ -1,0 +1,9 @@
+
+
+Run these in the VS Package Manager console and select the BoardBrawl.Data project as the Default project in the window
+Note: The PM console window uses the solution's Startup project to find connection strings to use for building the migration
+	Whatever database type the connection strings point to will determine what types are used in the migration(s)
+	
+Create an initial migration - this can be useful when starting over
+Add-Migration InitialCreate -Context IdentityDbContext -OutputDir Identity\Migrations
+Add-Migration InitialCreate -Context ApplicationDbContext -OutputDir Application\Migrations

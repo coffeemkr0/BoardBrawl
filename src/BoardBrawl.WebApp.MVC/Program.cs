@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.HttpOverrides;
 using BoardBrawl.WebApp.MVC;
 using BoardBrawl.Data.Identity;
+using BoardBrawl.Data.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,10 +18,13 @@ builder.Host.ConfigureLogging(logging =>
     logging.AddConsole();
 });
 
-var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
-
+var identityConnetionString = builder.Configuration.GetConnectionString("IdentityDbContextConnection") ?? throw new InvalidOperationException("Connection string 'IdentityDbContextConnection' not found.");
 builder.Services.AddDbContext<IdentityDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.Parse("10.11.3")));
+    options.UseMySql(identityConnetionString, ServerVersion.Parse("10.11.3")));
+
+var applicationConnectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseMySql(applicationConnectionString, ServerVersion.Parse("10.11.3")));
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<IdentityDbContext>();
