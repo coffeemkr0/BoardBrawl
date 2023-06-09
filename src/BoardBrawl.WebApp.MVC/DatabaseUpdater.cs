@@ -13,7 +13,7 @@ namespace BoardBrawl.WebApp.MVC
 
                 try
                 {
-                    var dbContext = services.GetRequiredService<ApplicationDbContext>();
+                    var dbContext = services.GetRequiredService<IdentityDbContext>();
                     dbContext.Database.Migrate();
                 }
                 catch (Exception ex)

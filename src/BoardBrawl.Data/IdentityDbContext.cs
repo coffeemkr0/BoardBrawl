@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BoardBrawl.Data;
 
-public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+public class IdentityDbContext : IdentityDbContext<IdentityUser>
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    public IdentityDbContext(DbContextOptions<IdentityDbContext> options)
         : base(options)
     {
     }
