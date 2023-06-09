@@ -19,7 +19,7 @@
         justify-content: center;
     }
 
-    .btn-player-lifetotal {
+    .btn-player-counter {
         margin-top: -5px;
     }
 
@@ -49,66 +49,95 @@
         font-size: 13px !important;
     }
 
-/*    .commander-search-input {
-        padding: 0px 0px 0px 0px;
+/   .commander-search-input {
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
     }
 
-    input::placeholder {
+/*    input::placeholder {
         padding-left: 10px;
     }*/
+    .dropdown-menu-extended {
+        max-height: 500px; /* Or any other value */
+        overflow-y: auto;
+    }
+
+    .custom-dropdown {
+        width: 315px; /* Or any other value */
+    }
+
+    .no-arrow::after {
+        display: none;
+    }
+
+    .damage-type-header {
+        margin-left: 10px;
+    }
 </style>
 <div class="card bg-transparent border-0">
-    <div class="card-body text-white bg-dark" style="padding-top: 5px;">
-        <div class="d-flex justify-content-between align-items-center">
+    <div class="card-body text-white bg-dark dropdown" style="padding-top: 5px;">
+        <div class="d-flex justify-content-between align-items-center dropdown-toggle no-arrow shadow-none" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
             <div class="d-flex align-items-center">
                 <div>
-                    <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnDecreaseLife btn-player-lifetotal">-</button>
+                    <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnDecreaseLife btn-player-counter">-</button>
                     @Model.LifeTotal
-                    <button data-userid="@Model.UserId" class="shadow-none btn text-white btn-transparent btn-sm btnIncreaseLife btn-player-lifetotal">+</button>
+                    <button data-userid="@Model.UserId" class="shadow-none btn text-white btn-transparent btn-sm btnIncreaseLife btn-player-counter">+</button>
                 </div>
                 <div class="ml-2" style="font-size: 12px;">
                     <div>@Model.PlayerName</div>
                     <div>commander name</div>
                 </div>
             </div>
-            <button class="btn shadow-none text-white p-0" type="button" data-bs-toggle="collapse" data-bs-target="#settingsCollapse" aria-expanded="false" aria-controls="settingsCollapse">
-                ...
-            </button>
-        </div>
-        <div class="collapse bg-transparent text-white pt-1" id="settingsCollapse">
-            <div class="card bg-dark border-0">
-                <div class="card-body" style="font-size: 12px; padding-top: 5px;">
-                    @*<h6 class="text-white mb-2">Player ID: @Model.UserId</h6>*@
 
-                    <div class="row pt-2 pb-2 bg-light">
-                        <div class="col-md-6">
-                            <input type="text" class="form-control input-sm commander-search-input placeholder-xs" placeholder="Add Commander">
-                        </div>
-                        <div class="col-md-6">
-                            <input type="text" class="form-control input-sm commander-search-input placeholder-xs" placeholder="Add Commander">
-                        </div>
+            <div class="dropdown">
+                <button class="btn shadow-none text-white p-0 no-arrow dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    ...
+                </button>
+                <div class="dropdown-menu dropdown-menu-right bg-dark text-white" aria-labelledby="dropdownMenuButton1">
+                    <div class="card-body" style="font-size: 12px; padding-top: 5px;">
                     </div>
-                    <div class="row align-items-center pt-1">
-                        <div class="col-7">Commander Damage:</div>
-                        <div class="col-5">
-                            <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnDecreaseCommanderDamage btn-player-lifetotal">-</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="dropdown-menu dropdown-menu-right text-white custom-dropdown" aria-labelledby="dropdownMenuButton" style="background-color: slateblue;">
+            <div class="card-body" style="font-size: 12px; padding-top: 5px; padding-bottom: 5px; background-color: slateblue;">
+                @*<h6 class="text-white mb-2">Player ID: @Model.UserId</h6>*@
+                <div class="row pt-2 pb-4">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control input-sm commander-search-input placeholder-xs" placeholder="Add Commander">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control input-sm commander-search-input placeholder-xs" placeholder="Add Commander">
+                    </div>
+                </div>
+                <div class="fst-italic">Damage Counters</div>
+                <div class="row align-items-center">
+                    <div class="col-7" style="padding-right: 10px;"><span class="damage-type-header">Commander</span></div>
+                    <div class="col-5">
+                        <span class="float-end">
+                            <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnDecreaseCommanderDamage btn-player-counter">-</button>
                             @Model.CommanderDamage
-                            <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnIncreaseCommanderDamage btn-player-lifetotal">+</button>
-                        </div>
+                            <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnIncreaseCommanderDamage btn-player-counter">+</button>
+                        </span>
                     </div>
-                    <div class="row align-items-center">
-                        <div class="col-7">Infect Damage:</div>
-                        <div class="col-5">
-                            <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnDecreaseInfectDamage btn-player-lifetotal">-</button>
+                </div>
+                <div class="row align-items-center">
+                    <div class="col-7" style="padding-right: 10px;"><span class="damage-type-header">Infect</span></span></div>
+                    <div class="col-5 float-end">
+                        <span class="float-end">
+                            <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnDecreaseInfectDamage btn-player-counter">-</button>
                             @Model.InfectDamage
-                            <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnIncreaseInfectDamage btn-player-lifetotal">+</button>
-                        </div>
+                            <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnIncreaseInfectDamage btn-player-counter">+</button>
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
 
 
 
