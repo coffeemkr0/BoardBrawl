@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.HttpOverrides;
 using BoardBrawl.WebApp.MVC;
-using BoardBrawl.Data;
+using BoardBrawl.Data.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 

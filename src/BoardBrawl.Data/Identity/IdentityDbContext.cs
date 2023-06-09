@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace BoardBrawl.Data;
+namespace BoardBrawl.Data.Identity;
 
 public class IdentityDbContext : IdentityDbContext<IdentityUser>
 {
