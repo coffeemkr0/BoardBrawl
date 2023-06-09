@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BoardBrawl.Data.Migrations
+namespace BoardBrawl.Data.Migrations.Identity
 {
     public partial class InitialCreate : Migration
     {
