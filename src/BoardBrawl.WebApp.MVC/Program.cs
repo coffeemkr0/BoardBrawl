@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using BoardBrawl.WebApp.MVC.Areas.Identity.Data;
 using Microsoft.AspNetCore.HttpOverrides;
+using BoardBrawl.WebApp.MVC;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -92,5 +93,7 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.MapHub<GameHub>("/GameHub");
+
+DatabaseUpdater.Update(app);
 
 app.Run();
