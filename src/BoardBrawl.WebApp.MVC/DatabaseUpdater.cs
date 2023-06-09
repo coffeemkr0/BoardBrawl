@@ -1,4 +1,4 @@
-﻿using BoardBrawl.WebApp.MVC.Areas.Identity.Data;
+﻿using BoardBrawl.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace BoardBrawl.WebApp.MVC

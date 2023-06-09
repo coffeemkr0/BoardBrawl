@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BoardBrawl.Core\BoardBrawl.Core.csproj" />
+    <ProjectReference Include="..\BoardBrawl.Data\BoardBrawl.Data.csproj" />
     <ProjectReference Include="..\BoardBrawl.Repositories\BoardBrawl.Repositories.csproj" />
     <ProjectReference Include="..\BoardBrawl.Services\BoardBrawl.Services.csproj" />
   </ItemGroup>
