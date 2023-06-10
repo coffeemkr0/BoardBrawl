@@ -15,9 +15,17 @@ namespace BoardBrawl.Repositories.Lobby
             _applicationDbContext = applicationDbContext;
         }
 
-        public void AddPlayerToGame(int gameId, Guid playerId)
+        public void AddPlayerToGame(int gameId, PlayerInfo playerInfo)
         {
-            //TODO:Re-implement this
+            var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.UserId == playerInfo.UserId);
+            if (playerEntity == null)
+            {
+                playerEntity = _mapper.Map<Data.Application.Models.Player>(playerInfo);
+                _applicationDbContext.Players.Add(playerEntity);
+            }
+
+            playerEntity.GameId = gameId;
+            _applicationDbContext.SaveChanges();
         }
 
         public void CreateGame(GameInfo gameInfo)
@@ -36,7 +44,11 @@ namespace BoardBrawl.Repositories.Lobby
         public void DeleteGame(int gameId)
         {
             var gameEntity = _applicationDbContext.Games.FirstOrDefault(i => i.Id == gameId);
-            if (gameEntity != null) { _applicationDbContext.Games.Remove(gameEntity); }
+            if (gameEntity != null)
+            {
+                _applicationDbContext.Games.Remove(gameEntity);
+                _applicationDbContext.SaveChanges();
+            }
         }
 
         public List<GameInfo> GetGames()

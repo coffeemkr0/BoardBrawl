@@ -9,6 +9,9 @@ namespace BoardBrawl.Repositories.Lobby
         {
             CreateMap<GameInfo, Data.Application.Models.Game>();
             CreateMap<Data.Application.Models.Game, GameInfo>();
+
+            CreateMap<Data.Application.Models.Player, PlayerInfo>();
+            CreateMap<PlayerInfo, Data.Application.Models.Player>();
         }
     }
 }

@@ -7,6 +7,6 @@ namespace BoardBrawl.Repositories.Lobby
         List<GameInfo> GetGames();
         void CreateGame(GameInfo gameInfo);
         void DeleteGame(int gameId);
-        void AddPlayerToGame(int gameId, Guid playerId);
+        void AddPlayerToGame(int gameId, PlayerInfo playerInfo);
     }
 }
