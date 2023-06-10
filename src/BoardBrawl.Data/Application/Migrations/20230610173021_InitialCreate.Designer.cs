@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoardBrawl.Data.Application.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230610171544_InitialCreate")]
+    [Migration("20230610173021_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,6 +29,13 @@ namespace BoardBrawl.Data.Application.Migrations
 
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("char(36)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
                         .IsRequired()

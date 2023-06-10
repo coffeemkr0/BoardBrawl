@@ -15,19 +15,6 @@ namespace BoardBrawl.Repositories.Lobby
             _applicationDbContext = applicationDbContext;
         }
 
-        public void AddPlayerToGame(int gameId, PlayerInfo playerInfo)
-        {
-            var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.UserId == playerInfo.UserId);
-            if (playerEntity == null)
-            {
-                playerEntity = _mapper.Map<Data.Application.Models.Player>(playerInfo);
-                _applicationDbContext.Players.Add(playerEntity);
-            }
-
-            playerEntity.GameId = gameId;
-            _applicationDbContext.SaveChanges();
-        }
-
         public void CreateGame(GameInfo gameInfo)
         {
             if (!_applicationDbContext.Games.Any(i => i.Id == gameInfo.Id))

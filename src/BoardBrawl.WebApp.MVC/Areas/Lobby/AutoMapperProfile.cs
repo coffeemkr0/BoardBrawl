@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BoardBrawl.WebApp.MVC.Areas.Lobby.Models;
 
 namespace BoardBrawl.WebApp.MVC.Areas.Lobby
 {
@@ -6,7 +7,8 @@ namespace BoardBrawl.WebApp.MVC.Areas.Lobby
     {
         public AutoMapperProfile()
         {
-            CreateMap<Services.Lobby.Models.GameInfo, Models.GameInfo>();
+            CreateMap<Services.Lobby.Models.GameInfo, GameInfo>();
+            CreateMap<GameInfo, Services.Lobby.Models.GameInfo>();
         }
     }
 }

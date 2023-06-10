@@ -40,26 +40,17 @@ namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
             //TODO:Get UserId from Identity
             var userId = gameInfo.CreatedByUserId;
 
-            var newGame = new Services.Lobby.Models.GameInfo
-            {
-                CreatedByUserId = userId,
-                Name = gameInfo.Name,
-                Description = gameInfo.Description,
-                IsPublic = gameInfo.IsPublic
-            };
+            var newGame = _mapper.Map<Services.Lobby.Models.GameInfo>(gameInfo);
 
             _service.CreateGame(newGame);
-            _service.JoinGame(newGame.Id, userId);
 
-            return RedirectToAction("Index", "Home", new { area = "Lobby", userId = userId });
-            //return RedirectToAction("Index", "Home", new { area = "Game", id = newGame.Id, userId = userId });
+            return RedirectToAction("Index", "Home", new { area = "Game", id = newGame.Id, userId = userId });
         }
 
         
         public IActionResult JoinGame(int gameId, Guid userId)
         {
             //TODO:Get UserId from Identity
-            _service.JoinGame(gameId, userId);
             return RedirectToAction("Index", "Home", new { area = "Game", id = gameId, userId });
         }
 
@@ -67,7 +58,6 @@ namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
         public IActionResult DeleteGame(int gameId, Guid userId)
         {
             //TODO:Get UserId from Identity
-
             _service.DeleteGame(gameId);
             return RedirectToAction("Index", new { userId = userId });
         }

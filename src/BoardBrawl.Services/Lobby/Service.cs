@@ -42,17 +42,5 @@ namespace BoardBrawl.Services.Lobby
 
             return games;
         }
-
-        public void JoinGame(int gameId, Guid userId)
-        {
-            var playerInfo = new Repositories.Lobby.Models.PlayerInfo
-            {
-                //TODO:Get player info from app layer
-                UserId = userId,
-                Name = "Hard coded player name"
-            };
-
-            _repository.AddPlayerToGame(gameId, playerInfo);
-        }
     }
 }

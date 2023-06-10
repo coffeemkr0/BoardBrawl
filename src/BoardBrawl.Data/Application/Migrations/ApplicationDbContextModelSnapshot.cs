@@ -28,6 +28,13 @@ namespace BoardBrawl.Data.Application.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("char(36)");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
