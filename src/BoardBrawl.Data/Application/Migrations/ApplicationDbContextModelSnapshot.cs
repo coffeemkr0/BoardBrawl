@@ -81,11 +81,13 @@ namespace BoardBrawl.Data.Application.Migrations
 
             modelBuilder.Entity("BoardBrawl.Data.Application.Models.Player", b =>
                 {
-                    b.HasOne("BoardBrawl.Data.Application.Models.Game", null)
+                    b.HasOne("BoardBrawl.Data.Application.Models.Game", "Game")
                         .WithMany("Players")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Game");
                 });
 
             modelBuilder.Entity("BoardBrawl.Data.Application.Models.Game", b =>

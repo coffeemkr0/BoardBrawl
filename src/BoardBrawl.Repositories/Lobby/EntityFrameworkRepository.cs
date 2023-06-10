@@ -1,6 +1,7 @@
 ﻿using BoardBrawl.Core.AutoMapping;
 using BoardBrawl.Data.Application;
 using BoardBrawl.Repositories.Lobby.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BoardBrawl.Repositories.Lobby
 {
@@ -40,7 +41,16 @@ namespace BoardBrawl.Repositories.Lobby
 
         public List<GameInfo> GetGames()
         {
-            return _mapper.Map<List<GameInfo>>(_applicationDbContext.Games);
+            var games = new List<GameInfo>();
+
+            foreach (var gameEntity in _applicationDbContext.Games.Include(i => i.Players))
+            {
+                var game = _mapper.Map<GameInfo>(gameEntity);
+                game.PlayerCount = gameEntity.Players == null ? 0 : gameEntity.Players.Count;
+                games.Add(game);
+            }
+
+            return games;
         }
     }
 }

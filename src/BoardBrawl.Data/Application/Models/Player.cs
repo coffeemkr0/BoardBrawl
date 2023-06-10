@@ -17,5 +17,7 @@
         public int CommanderDamage { get; set; }
 
         public int InfectDamage { get; set; }
+
+        public Game Game { get; set; }
     }
 }
