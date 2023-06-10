@@ -11,6 +11,8 @@ namespace BoardBrawl.WebApp.MVC.AutoMapping
         {
             var configurationExpression = new MapperConfigurationExpression();
 
+            configurationExpression.AddProfile<Repositories.Lobby.AutoMapperProfile>();
+
             configurationExpression.AddProfile<Services.Lobby.AutoMapperProfile>();
             configurationExpression.AddProfile<Areas.Lobby.AutoMapperProfile>();
 

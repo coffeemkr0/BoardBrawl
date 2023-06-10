@@ -7,9 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BoardBrawl.Core\BoardBrawl.Core.csproj" />
+    <ProjectReference Include="..\BoardBrawl.Data\BoardBrawl.Data.csproj" />
   </ItemGroup>
 
 </Project>

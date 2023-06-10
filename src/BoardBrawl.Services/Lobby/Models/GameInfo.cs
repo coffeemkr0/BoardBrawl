@@ -2,7 +2,7 @@
 {
     public class GameInfo
     {
-        public Guid GameId { get; set; }
+        public int Id { get; set; }
 
         public Guid CreatedByUserId { get; set; }
 

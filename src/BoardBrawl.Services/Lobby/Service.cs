@@ -17,12 +17,14 @@ namespace BoardBrawl.Services.Lobby
 
         public void CreateGame(GameInfo gameInfo)
         {
-            var repoGameInfo = _mapper.Map<Repositories.Models.GameInfo>(gameInfo);
+            var repoGameInfo = _mapper.Map<Repositories.Lobby.Models.GameInfo>(gameInfo);
 
             _repository.CreateGame(repoGameInfo);
+
+            gameInfo.Id = repoGameInfo.Id;
         }
 
-        public void DeleteGame(Guid gameId)
+        public void DeleteGame(int gameId)
         {
             _repository.DeleteGame(gameId);
         }
@@ -34,7 +36,6 @@ namespace BoardBrawl.Services.Lobby
             foreach (var repoGame in _repository.GetGames().Where(x => x.CreatedByUserId == userId))
             {
                 var game = _mapper.Map<GameInfo>(repoGame);
-                game.PlayerCount = repoGame.Players.Count();
 
                 games.Add(game);
             }
@@ -42,14 +43,7 @@ namespace BoardBrawl.Services.Lobby
             return games;
         }
 
-        public List<GameInfo> GetPublicGames()
-        {
-            var repoGames = _repository.GetGames().Where(x => x.IsPublic);
-
-            return _mapper.Map<List<GameInfo>>(repoGames);
-        }
-
-        public void JoinGame(Guid gameId, Guid userId )
+        public void JoinGame(int gameId, Guid userId )
         {
             var playerInfo = new Repositories.Models.PlayerInfo
             {
@@ -59,7 +53,7 @@ namespace BoardBrawl.Services.Lobby
                 LifeTotal = 40
             };
 
-            _repository.AddPlayerToGame(gameId, playerInfo);
+            _repository.AddPlayerToGame(gameId, playerInfo.UserId);
         }
     }
 }

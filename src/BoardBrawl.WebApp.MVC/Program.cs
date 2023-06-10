@@ -44,7 +44,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSingleton<IMapper, AutoMapperMapper>();
 
-builder.Services.AddScoped<BoardBrawl.Repositories.Lobby.IRepository, BoardBrawl.Repositories.Lobby.MemoryRepository>();
+builder.Services.AddScoped<BoardBrawl.Repositories.Lobby.IRepository, BoardBrawl.Repositories.Lobby.EntityFrameworkRepository>();
 builder.Services.AddScoped<BoardBrawl.Services.Lobby.IService, BoardBrawl.Services.Lobby.Service>();
 
 builder.Services.AddScoped<BoardBrawl.Repositories.Game.IRepository, BoardBrawl.Repositories.Game.MemoryRepository>();
