@@ -1,20 +1,20 @@
-﻿using BoardBrawl.Repositories.Models;
+﻿using BoardBrawl.Repositories.Game.Models;
 
 namespace BoardBrawl.Repositories.Game
 {
     public interface IRepository
     {
-        GameInfo? GetGameInfo(Guid id);
+        GameInfo? GetGameInfo(int id);
         void CloseGame(GameInfo gameInfo);
-        void AddPlayerToGame(Guid gameId, PlayerInfo playerInfo);            
-        List<PlayerInfo> GetPlayers(Guid gameId);
-        void UpdatePeerId(Guid gameId, Guid userId, Guid peerId);
-        void DecreaseLifeTotal(Guid gameId, Guid userId, int amount);
-        void IncreaseLifeTotal(Guid gameId, Guid userId, int amount);
-        void DecreaseCommanderDamage(Guid gameId, Guid userId, int amount);
-        void IncreaseCommanderDamage(Guid gameId, Guid userId, int amount);
-        void DecreaseInfectDamage(Guid gameId, Guid userId, int amount);
-        void IncreaseInfectDamage(Guid gameId, Guid userId, int amount);
+        void AddPlayerToGame(int gameId, PlayerInfo playerInfo);            
+        List<PlayerInfo> GetPlayers(int gameId);
+        void UpdatePeerId(int gameId, Guid userId, Guid peerId);
+        void DecreaseLifeTotal(int gameId, Guid userId, int amount);
+        void IncreaseLifeTotal(int gameId, Guid userId, int amount);
+        void DecreaseCommanderDamage(int gameId, Guid userId, int amount);
+        void IncreaseCommanderDamage(int gameId, Guid userId, int amount);
+        void DecreaseInfectDamage(int gameId, Guid userId, int amount);
+        void IncreaseInfectDamage(int gameId, Guid userId, int amount);
         void ClearPlayers();
     }
 }

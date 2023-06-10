@@ -43,12 +43,24 @@ namespace BoardBrawl.Data.Application.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("CommanderDamage")
+                        .HasColumnType("int");
+
                     b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InfectDamage")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LifeTotal")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<Guid>("PeerId")
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
@@ -62,13 +74,11 @@ namespace BoardBrawl.Data.Application.Migrations
 
             modelBuilder.Entity("BoardBrawl.Data.Application.Models.Player", b =>
                 {
-                    b.HasOne("BoardBrawl.Data.Application.Models.Game", "Game")
+                    b.HasOne("BoardBrawl.Data.Application.Models.Game", null)
                         .WithMany("Players")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Game");
                 });
 
             modelBuilder.Entity("BoardBrawl.Data.Application.Models.Game", b =>

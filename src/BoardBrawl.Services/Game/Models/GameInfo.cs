@@ -2,7 +2,7 @@
 {
     public  class GameInfo
     {
-        public Guid GameId { get; set; }
+        public int GameId { get; set; }
 
         public bool IsPublic { get; set; }
 

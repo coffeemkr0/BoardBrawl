@@ -16,7 +16,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.ViewComponents
             _mapper = mapper;
         }
 
-        public IViewComponentResult Invoke(Guid gameId, Guid userId)
+        public IViewComponentResult Invoke(int gameId, Guid userId)
         {
             var model = new PlayerBoard { GameId = gameId, UserId = userId };
             var players = _service.GetPlayers(gameId);

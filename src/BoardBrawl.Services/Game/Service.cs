@@ -15,9 +15,9 @@ namespace BoardBrawl.Services.Game
             _mapper = mapper;
         }
 
-        public void AddPlayerToGame(Guid gameId, PlayerInfo playerInfo)
+        public void AddPlayerToGame(int gameId, PlayerInfo playerInfo)
         {
-            _repository.AddPlayerToGame(gameId, _mapper.Map<Repositories.Models.PlayerInfo>(playerInfo));
+            _repository.AddPlayerToGame(gameId, _mapper.Map< Repositories.Game.Models.PlayerInfo >(playerInfo));
         }
 
         public void ClearPlayers()
@@ -25,13 +25,13 @@ namespace BoardBrawl.Services.Game
             _repository.ClearPlayers();
         }
 
-        public PlayerInfo DecreaseLifeTotal(Guid gameId, Guid userId, int amount)
+        public PlayerInfo DecreaseLifeTotal(int gameId, Guid userId, int amount)
         {
             _repository.DecreaseLifeTotal(gameId, userId, amount);
             return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));
         }
 
-        public GameInfo? GetGameInfo(Guid id)
+        public GameInfo? GetGameInfo(int id)
         {
             var repoGameInfo = _repository.GetGameInfo(id);
             if (repoGameInfo != null)
@@ -44,24 +44,24 @@ namespace BoardBrawl.Services.Game
             }
         }
 
-        public List<PlayerInfo> GetPlayers(Guid gameId)
+        public List<PlayerInfo> GetPlayers(int gameId)
         {
             var repoPlayers = _repository.GetPlayers(gameId);
             return _mapper.Map<List<PlayerInfo>>(repoPlayers);
         }
 
-        public PlayerInfo IncreaseLifeTotal(Guid gameId, Guid userId, int amount)
+        public PlayerInfo IncreaseLifeTotal(int gameId, Guid userId, int amount)
         {
             _repository.IncreaseLifeTotal(gameId, userId, amount);
             return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));
         }
 
-        public void UpdatePeerId(Guid gameId, Guid userId, Guid peerId)
+        public void UpdatePeerId(int gameId, Guid userId, Guid peerId)
         {
             _repository.UpdatePeerId(gameId, userId, peerId);
         }
 
-        public PlayerInfo IncreaseCommanderDamage(Guid gameId, Guid userId, int amount)
+        public PlayerInfo IncreaseCommanderDamage(int gameId, Guid userId, int amount)
         {
             _repository.IncreaseCommanderDamage(gameId, userId, amount);
             var repoPlayer = _repository.GetPlayers(gameId).First(i => i.UserId == userId);
@@ -70,19 +70,19 @@ namespace BoardBrawl.Services.Game
             return servicePlayer;
         }
 
-        public PlayerInfo IncreaseInfectDamage(Guid gameId, Guid userId, int amount)
+        public PlayerInfo IncreaseInfectDamage(int gameId, Guid userId, int amount)
         {
             _repository.IncreaseInfectDamage(gameId, userId, amount);
             return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));
         }
 
-        public PlayerInfo DecreaseCommanderDamage(Guid gameId, Guid userId, int amount)
+        public PlayerInfo DecreaseCommanderDamage(int gameId, Guid userId, int amount)
         {
             _repository.DecreaseCommanderDamage(gameId, userId, amount);
             return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));
         }
 
-        public PlayerInfo DecreaseInfectDamage(Guid gameId, Guid userId, int amount)
+        public PlayerInfo DecreaseInfectDamage(int gameId, Guid userId, int amount)
         {
             _repository.DecreaseInfectDamage(gameId, userId, amount);
             return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));
