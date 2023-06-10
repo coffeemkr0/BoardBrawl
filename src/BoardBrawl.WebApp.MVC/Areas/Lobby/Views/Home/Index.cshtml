@@ -29,12 +29,12 @@
                     @foreach (var game in Model.MyGames)
                     {
                         <tr>
-                            <td class="col"><a href="@Url.Action("JoinGame", new { gameId = game.GameId, userId = Model.UserId })">@game.Name</a></td>
+                            <td class="col"><a href="@Url.Action("JoinGame", new { gameId = game.Id, userId = Model.UserId })">@game.Name</a></td>
                             <td class="col-2 text-center">@game.PlayerCount</td>
                             <td class="col-2 text-end">
-                                <button type="button" class="btn btn-link" onclick="location.href='@Url.Action("JoinGame", new { gameId = game.GameId, userId = Model.UserId })'"><i class="bi bi-arrow-right-square-fill"></i></button>
-                                <button type="button" class="btn btn-link btnInvitePlayers" data-invitation-url="@Url.Action("", "", new { area = "Game", game.GameId }, "https", Context.Request.Host.Value)"><i class="bi bi-person-plus-fill"></i></button>
-                                <button type="button" class="btn btn-link btnDeleteGame" data-game-id="@game.GameId"><i class="bi bi-trash-fill"></i></button>
+                                <button type="button" class="btn btn-link" onclick="location.href='@Url.Action("JoinGame", new { gameId = game.Id, userId = Model.UserId })'"><i class="bi bi-arrow-right-square-fill"></i></button>
+                                <button type="button" class="btn btn-link btnInvitePlayers" data-invitation-url="@Url.Action("", "", new { area = "Game", game.Id }, "https", Context.Request.Host.Value)"><i class="bi bi-person-plus-fill"></i></button>
+                                <button type="button" class="btn btn-link btnDeleteGame" data-game-id="@game.Id"><i class="bi bi-trash-fill"></i></button>
                             </td>
                         </tr>
                     }
