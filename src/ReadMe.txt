@@ -1,4 +1,6 @@
 
+how to view the log of the web app from a linux terminal:
+sudo journalctl -u boardbrawl.service -f
 
 Notes on uploading to the app server
 To upload files with pscp, it requires Pageant to be running on local PC and adding the private auth key to it.
