@@ -30,8 +30,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDefaultIdentity<IdentityUser>(
     options =>
     {
-        options.SignIn.RequireConfirmedEmail = false;
-        options.SignIn.RequireConfirmedAccount = false;
         options.Password.RequireDigit = false;
         options.Password.RequireLowercase = false;
         options.Password.RequireNonAlphanumeric = false;

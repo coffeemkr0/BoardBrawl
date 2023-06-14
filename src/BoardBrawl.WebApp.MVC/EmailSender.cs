@@ -12,7 +12,7 @@ namespace BoardBrawl.WebApp.MVC
         public EmailSender(ILogger<EmailSender> logger)
         {
             _logger = logger;
-            _sendGridKey = Environment.GetEnvironmentVariable("BoardBrawl_SendGrid_Key", EnvironmentVariableTarget.Machine);
+            _sendGridKey = Environment.GetEnvironmentVariable("BoardBrawl_SendGrid_Key");
         }
 
         public async Task SendEmailAsync(string toEmail, string subject, string message)
