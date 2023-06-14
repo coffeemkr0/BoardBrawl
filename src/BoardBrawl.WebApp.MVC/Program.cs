@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using BoardBrawl.WebApp.MVC;
 using BoardBrawl.Data.Identity;
 using BoardBrawl.Data.Application;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +27,18 @@ var applicationConnectionString = builder.Configuration.GetConnectionString("App
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(applicationConnectionString, ServerVersion.Parse("10.11.3")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<IdentityUser>(
+    options =>
+    {
+        options.SignIn.RequireConfirmedEmail = false;
+        options.SignIn.RequireConfirmedAccount = false;
+        options.Password.RequireDigit = false;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequiredLength = 6;
+        options.Password.RequiredUniqueChars = 0;
+    })
     .AddEntityFrameworkStores<IdentityDbContext>();
 
 // Add services to the container.
@@ -49,6 +61,8 @@ builder.Services.AddScoped<BoardBrawl.Services.Lobby.IService, BoardBrawl.Servic
 
 builder.Services.AddScoped<BoardBrawl.Repositories.Game.IRepository, BoardBrawl.Repositories.Game.EntityFrameworkRepository>();
 builder.Services.AddScoped<BoardBrawl.Services.Game.IService, BoardBrawl.Services.Game.Service>();
+
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 var app = builder.Build();
 

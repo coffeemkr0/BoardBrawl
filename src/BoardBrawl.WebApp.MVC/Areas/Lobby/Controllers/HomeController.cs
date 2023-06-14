@@ -2,9 +2,11 @@
 using BoardBrawl.Services.Lobby;
 using BoardBrawl.WebApp.MVC.Areas.Lobby.Models;
 using BoardBrawl.Core.AutoMapping;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
 {
+    [Authorize]
     [Area("Lobby")]
     public class HomeController : Controller
     {
