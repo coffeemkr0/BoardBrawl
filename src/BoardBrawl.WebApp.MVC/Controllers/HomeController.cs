@@ -15,5 +15,15 @@ namespace BoardBrawl.WebApp.MVC.Controllers
         {
             return Redirect("Main");
         }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult TermsOfService()
+        {
+            return View();
+        }
     }
 }
