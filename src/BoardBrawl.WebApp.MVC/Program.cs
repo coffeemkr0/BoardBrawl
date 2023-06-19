@@ -39,6 +39,12 @@ builder.Services.AddDefaultIdentity<IdentityUser>(
     })
     .AddEntityFrameworkStores<IdentityDbContext>();
 
+builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+{
+    googleOptions.ClientId = Environment.GetEnvironmentVariable("BoardBrawl_Google_ClientId");
+    googleOptions.ClientSecret = Environment.GetEnvironmentVariable("BoardBrawl_Google_ClientSecret");
+});
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
