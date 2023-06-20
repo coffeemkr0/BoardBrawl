@@ -2,7 +2,7 @@
 {
     public class PlayerInfo
     {
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         public Guid PeerId { get; set; }
         public string Name { get; set; }
         public int LifeTotal { get; set; }

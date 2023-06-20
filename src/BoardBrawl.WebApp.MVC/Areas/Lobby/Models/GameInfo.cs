@@ -4,8 +4,6 @@
     {
         public int Id { get; set; }
 
-        public Guid CreatedByUserId { get; set; }
-
         public bool IsPublic { get; set; }
 
         public string Name { get; set; }

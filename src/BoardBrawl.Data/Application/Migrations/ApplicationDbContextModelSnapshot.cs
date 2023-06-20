@@ -25,11 +25,11 @@ namespace BoardBrawl.Data.Application.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<Guid>("CreatedByUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<string>("CreatedByUserId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<bool>("IsPublic")
@@ -69,8 +69,9 @@ namespace BoardBrawl.Data.Application.Migrations
                     b.Property<Guid>("PeerId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 

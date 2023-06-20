@@ -29,7 +29,7 @@ namespace BoardBrawl.Services.Lobby
             _repository.DeleteGame(gameId);
         }
 
-        public List<GameInfo> GetGames(Guid userId)
+        public List<GameInfo> GetGames(string userId)
         {
             var games = new List<GameInfo>();
 

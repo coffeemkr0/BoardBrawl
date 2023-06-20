@@ -3,6 +3,7 @@ using BoardBrawl.Services.Lobby;
 using BoardBrawl.WebApp.MVC.Areas.Lobby.Models;
 using BoardBrawl.Core.AutoMapping;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
 {
@@ -11,27 +12,27 @@ namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly IService _service;
         private readonly IMapper _mapper;
 
-        public HomeController(ILogger<HomeController> logger, IService service, IMapper mapper)
+        public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager,
+            IService service, IMapper mapper)
         {
             _logger = logger;
+            _userManager = userManager;
             _service = service;
             _mapper = mapper;
         }
 
-        public IActionResult Index(Guid? userId)
+        public IActionResult Index()
         {
-            //TODO:Get UserId from Identity
-            if (userId == null) { return Redirect("/Main"); }
-
             var model = new Model
             {
-                UserId = userId.Value
+                UserId = _userManager.GetUserId(User)
             };
 
-            model.MyGames.AddRange(_mapper.Map<List<GameInfo>>(_service.GetGames(userId.Value)));
+            model.MyGames.AddRange(_mapper.Map<List<GameInfo>>(_service.GetGames(model.UserId)));
 
             return View(model);
         }
@@ -39,29 +40,29 @@ namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
         [HttpPost]
         public IActionResult CreateGame([FromForm] GameInfo gameInfo)
         {
-            //TODO:Get UserId from Identity
-            var userId = gameInfo.CreatedByUserId;
+            var userId = _userManager.GetUserId(User);
 
             var newGame = _mapper.Map<Services.Lobby.Models.GameInfo>(gameInfo);
+            newGame.CreatedByUserId = userId;
 
             _service.CreateGame(newGame);
 
-            return RedirectToAction("Index", "Home", new { area = "Game", id = newGame.Id, userId = userId });
+            return RedirectToAction("Index", "Home", new { area = "Game", id = newGame.Id });
         }
 
         
-        public IActionResult JoinGame(int gameId, Guid userId)
+        public IActionResult JoinGame(int gameId)
         {
-            //TODO:Get UserId from Identity
-            return RedirectToAction("Index", "Home", new { area = "Game", id = gameId, userId });
+            var userId = _userManager.GetUserId(User);
+            return RedirectToAction("Index", "Home", new { area = "Game", id = gameId });
         }
 
         [HttpPost]
-        public IActionResult DeleteGame(int gameId, Guid userId)
+        public IActionResult DeleteGame(int gameId)
         {
-            //TODO:Get UserId from Identity
+            var userId = _userManager.GetUserId(User);
             _service.DeleteGame(gameId);
-            return RedirectToAction("Index", new { userId = userId });
+            return RedirectToAction("Index");
         }
     }
 }

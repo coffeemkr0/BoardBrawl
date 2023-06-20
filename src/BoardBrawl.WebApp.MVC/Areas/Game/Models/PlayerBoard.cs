@@ -4,11 +4,11 @@
     {
         public int GameId { get; set; }
 
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         public List<PlayerInfo> Players { get; }
 
-        public Guid? ActivePlayerUserId { get; set; }
+        public string ActivePlayerUserId { get; set; }
 
         public PlayerBoard()
         {

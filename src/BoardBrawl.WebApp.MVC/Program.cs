@@ -48,7 +48,10 @@ builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddSignalR();
+builder.Services.AddSignalR(options =>
+{
+    options.EnableDetailedErrors = true;
+});
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>

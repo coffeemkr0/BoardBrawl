@@ -29,10 +29,10 @@
                     @foreach (var game in Model.MyGames)
                     {
                         <tr>
-                            <td class="col"><a href="@Url.Action("JoinGame", new { gameId = game.Id, userId = Model.UserId })">@game.Name</a></td>
+                            <td class="col"><a href="@Url.Action("JoinGame", new { gameId = game.Id })">@game.Name</a></td>
                             <td class="col-2 text-center">@game.PlayerCount</td>
                             <td class="col-2 text-end">
-                                <button type="button" class="btn btn-link" onclick="location.href='@Url.Action("JoinGame", new { gameId = game.Id, userId = Model.UserId })'"><i class="bi bi-arrow-right-square-fill"></i></button>
+                                <button type="button" class="btn btn-link" onclick="location.href='@Url.Action("JoinGame", new { gameId = game.Id })'"><i class="bi bi-arrow-right-square-fill"></i></button>
                                 <button type="button" class="btn btn-link btnInvitePlayers" data-invitation-url="@Url.Action("", "", new { area = "Game", game.Id }, "https", Context.Request.Host.Value)"><i class="bi bi-person-plus-fill"></i></button>
                                 <button type="button" class="btn btn-link btnDeleteGame" data-game-id="@game.Id"><i class="bi bi-trash-fill"></i></button>
                             </td>
@@ -46,7 +46,6 @@
 
 <dialog id="createGameDialog">
     <form action="/Lobby/Home/CreateGame" method="post">
-        <input type="hidden" name="CreatedByUserId" value="@Model.UserId">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Create Game</h5>
@@ -101,7 +100,6 @@
 <dialog id="deleteGameDialog">
     <form action="/Lobby/Home/DeleteGame" method="post">
         <input type="hidden" id="deleteGameId" name="gameId" value="">
-        <input type="hidden" id="userId" name="userId" value="@Model.UserId">
 
         <div class="modal-content">
             <div class="modal-header">

@@ -25,7 +25,7 @@ namespace BoardBrawl.Services.Game
             _repository.ClearPlayers();
         }
 
-        public PlayerInfo DecreaseLifeTotal(int gameId, Guid userId, int amount)
+        public PlayerInfo DecreaseLifeTotal(int gameId, string userId, int amount)
         {
             _repository.DecreaseLifeTotal(gameId, userId, amount);
             return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));
@@ -50,18 +50,18 @@ namespace BoardBrawl.Services.Game
             return _mapper.Map<List<PlayerInfo>>(repoPlayers);
         }
 
-        public PlayerInfo IncreaseLifeTotal(int gameId, Guid userId, int amount)
+        public PlayerInfo IncreaseLifeTotal(int gameId, string userId, int amount)
         {
             _repository.IncreaseLifeTotal(gameId, userId, amount);
             return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));
         }
 
-        public void UpdatePeerId(int gameId, Guid userId, Guid peerId)
+        public void UpdatePeerId(int gameId, string userId, Guid peerId)
         {
             _repository.UpdatePeerId(gameId, userId, peerId);
         }
 
-        public PlayerInfo IncreaseCommanderDamage(int gameId, Guid userId, int amount)
+        public PlayerInfo IncreaseCommanderDamage(int gameId, string userId, int amount)
         {
             _repository.IncreaseCommanderDamage(gameId, userId, amount);
             var repoPlayer = _repository.GetPlayers(gameId).First(i => i.UserId == userId);
@@ -70,19 +70,19 @@ namespace BoardBrawl.Services.Game
             return servicePlayer;
         }
 
-        public PlayerInfo IncreaseInfectDamage(int gameId, Guid userId, int amount)
+        public PlayerInfo IncreaseInfectDamage(int gameId, string userId, int amount)
         {
             _repository.IncreaseInfectDamage(gameId, userId, amount);
             return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));
         }
 
-        public PlayerInfo DecreaseCommanderDamage(int gameId, Guid userId, int amount)
+        public PlayerInfo DecreaseCommanderDamage(int gameId, string userId, int amount)
         {
             _repository.DecreaseCommanderDamage(gameId, userId, amount);
             return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));
         }
 
-        public PlayerInfo DecreaseInfectDamage(int gameId, Guid userId, int amount)
+        public PlayerInfo DecreaseInfectDamage(int gameId, string userId, int amount)
         {
             _repository.DecreaseInfectDamage(gameId, userId, amount);
             return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));

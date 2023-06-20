@@ -20,7 +20,7 @@
 
     <div class="col h-100">
         <div id="playerBoardContainer" class="row h-100 border border-primary">
-            @await Component.InvokeAsync("PlayerBoard", new {gameId = Model.GameId, userId = Model.UserId})
+            @await Component.InvokeAsync("PlayerBoard", new { gameId = Model.GameId })
         </div>
     </div>
 
@@ -219,8 +219,7 @@
             $.ajax({
                 url: '/Game/Home/PlayerBoard/@Model.GameId',
                 data:{
-                    gameId : '@Model.GameId',
-                    userId : '@Model.UserId'
+                    gameId : '@Model.GameId'
                 },
                 success: function (html) {
                     $('#playerBoardContainer').html(html);

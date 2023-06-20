@@ -14,7 +14,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Main.Controllers
 
         public IActionResult Index()
         {
-            return RedirectToAction("Index", "Home", new { area = "Lobby", userId = Guid.NewGuid() });
+            return RedirectToAction("Index", "Home", new { area = "Lobby" });
         }
     }
 }

@@ -53,7 +53,7 @@
             });
         })
         .catch(error => {
-            videoElement.style.display = "none";
+            if (videoElement) videoElement.style.display = "none";
             var errorImageElement = $('.errorImage[data-userid="@Model.UserId"]')[0];
             errorImageElement.style.display = "block";
         });

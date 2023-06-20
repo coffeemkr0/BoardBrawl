@@ -40,7 +40,7 @@ namespace BoardBrawl.Repositories.Game
             }
         }
 
-        public void DecreaseLifeTotal(int gameId, Guid userId, int amount)
+        public void DecreaseLifeTotal(int gameId, string userId, int amount)
         {
             var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.GameId == gameId && i.UserId == userId);
 
@@ -70,7 +70,7 @@ namespace BoardBrawl.Repositories.Game
             return _mapper.Map<List<PlayerInfo>>(playerEntities);
         }
 
-        public void IncreaseLifeTotal(int gameId, Guid userId, int amount)
+        public void IncreaseLifeTotal(int gameId, string userId, int amount)
         {
             var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.GameId == gameId && i.UserId == userId);
 
@@ -81,7 +81,7 @@ namespace BoardBrawl.Repositories.Game
             }
         }
 
-        public void UpdatePeerId(int gameId, Guid userId, Guid peerId)
+        public void UpdatePeerId(int gameId, string userId, Guid peerId)
         {
             var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.GameId == gameId && i.UserId == userId);
 
@@ -99,7 +99,7 @@ namespace BoardBrawl.Repositories.Game
             _applicationDbContext.SaveChanges();
         }
 
-        public void DecreaseCommanderDamage(int gameId, Guid userId, int amount)
+        public void DecreaseCommanderDamage(int gameId, string userId, int amount)
         {
             var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.GameId == gameId && i.UserId == userId);
 
@@ -110,7 +110,7 @@ namespace BoardBrawl.Repositories.Game
             }
         }
 
-        public void IncreaseCommanderDamage(int gameId, Guid userId, int amount)
+        public void IncreaseCommanderDamage(int gameId, string userId, int amount)
         {
             var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.GameId == gameId && i.UserId == userId);
 
@@ -121,7 +121,7 @@ namespace BoardBrawl.Repositories.Game
             }
         }
 
-        public void DecreaseInfectDamage(int gameId, Guid userId, int amount)
+        public void DecreaseInfectDamage(int gameId, string userId, int amount)
         {
             var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.GameId == gameId && i.UserId == userId);
 
@@ -132,7 +132,7 @@ namespace BoardBrawl.Repositories.Game
             }
         }
 
-        public void IncreaseInfectDamage(int gameId, Guid userId, int amount)
+        public void IncreaseInfectDamage(int gameId, string userId, int amount)
         {
             var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.GameId == gameId && i.UserId == userId);
 
