@@ -50,6 +50,10 @@
         });
 
         $(document).ready(function () {
+            $(document).on('click', '#btnPassTurn', function () { 
+                PassTurn();
+            });
+
             const settingsCollapse = document.querySelector("#settingsCollapse");
             $(document).on('click', '.btnDecreaseLife', function () {
                 event.stopPropagation();
@@ -220,6 +224,20 @@
                 url: '/Game/Home/PlayerBoard/@Model.GameId',
                 data:{
                     gameId : '@Model.GameId'
+                },
+                success: function (html) {
+                    $('#playerBoardContainer').html(html);
+                    PlayerBoard_LoadRemoteStreams(_peerJsObject);
+                }
+            });
+        }
+
+        function PassTurn()
+        {
+            $.ajax({
+                url: '/Game/Home/PassTurn/@Model.GameId',
+                data: {
+                    gameId: '@Model.GameId'
                 },
                 success: function (html) {
                     $('#playerBoardContainer').html(html);

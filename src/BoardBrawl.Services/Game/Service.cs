@@ -83,13 +83,33 @@ namespace BoardBrawl.Services.Game
             return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));
         }
 
-        public void StartGame(int gameId)
+        public void PassTurn(int gameId)
         {
             var repoGameInfo = _repository.GetGameInfo(gameId);
 
+            if (repoGameInfo == null) throw new Exception($"Game not found with id {gameId}");
+          
             var now = DateTime.Now;
-            repoGameInfo.GameStart = now;
-            repoGameInfo.ActivePlayerId = repoGameInfo.Players.First().Id;
+
+            //Start game if it hasn't started
+            if (repoGameInfo.GameStart == null)
+            {
+                repoGameInfo.GameStart = now;
+            }
+
+            //Set active player to next player in list
+            if (repoGameInfo.ActivePlayerId == null)
+            {
+                repoGameInfo.ActivePlayerId = repoGameInfo.Players.First().Id;
+            }
+            else
+            {
+                var currentPlayerIndex = repoGameInfo.Players.FindIndex(i => i.Id == repoGameInfo.ActivePlayerId);
+                int nextPlayerIndex = (currentPlayerIndex + 1) % repoGameInfo.Players.Count;
+                repoGameInfo.ActivePlayerId = repoGameInfo.Players[nextPlayerIndex].Id;
+            }
+
+            //Start the turn
             repoGameInfo.TurnStart = now;
 
             _repository.UpdateGameInfo(repoGameInfo);

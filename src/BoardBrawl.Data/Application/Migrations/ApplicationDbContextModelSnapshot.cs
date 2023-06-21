@@ -41,12 +41,12 @@ namespace BoardBrawl.Data.Application.Migrations
                     b.Property<bool>("IsPublic")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<DateTime?>("LastTurnStart")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("TurnStart")
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 

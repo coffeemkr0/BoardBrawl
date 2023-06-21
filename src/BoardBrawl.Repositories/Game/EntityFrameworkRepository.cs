@@ -1,6 +1,7 @@
 ﻿using BoardBrawl.Core.AutoMapping;
 using BoardBrawl.Data.Application;
 using BoardBrawl.Repositories.Game.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BoardBrawl.Repositories.Game
 {
@@ -53,7 +54,7 @@ namespace BoardBrawl.Repositories.Game
 
         public GameInfo? GetGameInfo(int id)
         {
-            var gameEntity = _applicationDbContext.Games.FirstOrDefault(i => i.Id == id);
+            var gameEntity = _applicationDbContext.Games.Include(i => i.Players).FirstOrDefault(i => i.Id == id);
 
             if (gameEntity != null)
             {

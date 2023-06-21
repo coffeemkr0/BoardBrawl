@@ -54,6 +54,14 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             return View(model);
         }
 
+        public IActionResult PassTurn(int gameId)
+        {
+            _service.PassTurn(gameId);
+
+            var userId = _userManager.GetUserId(User);
+            return ViewComponent("PlayerBoard", new { gameId, userId });
+        }
+
         public IActionResult PlayerBoard(int gameId)
         {
             var userId = _userManager.GetUserId(User);
