@@ -16,6 +16,5 @@ namespace BoardBrawl.Repositories.Game
         void IncreaseCommanderDamage(int gameId, string userId, int amount);
         void DecreaseInfectDamage(int gameId, string userId, int amount);
         void IncreaseInfectDamage(int gameId, string userId, int amount);
-        void ClearPlayers();
     }
 }

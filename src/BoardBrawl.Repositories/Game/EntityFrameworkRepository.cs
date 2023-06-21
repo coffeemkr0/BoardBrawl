@@ -92,13 +92,6 @@ namespace BoardBrawl.Repositories.Game
             }
         }
 
-
-        public void ClearPlayers()
-        {
-            _applicationDbContext.Players.RemoveRange(_applicationDbContext.Players);
-            _applicationDbContext.SaveChanges();
-        }
-
         public void DecreaseCommanderDamage(int gameId, string userId, int amount)
         {
             var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.GameId == gameId && i.UserId == userId);

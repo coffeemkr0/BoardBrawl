@@ -54,13 +54,6 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             return View(model);
         }
 
-        public IActionResult Clear()
-        {
-            _service.ClearPlayers();
-            return Redirect("Index");
-        }
-
-
         public IActionResult PlayerBoard(int gameId)
         {
             var userId = _userManager.GetUserId(User);
