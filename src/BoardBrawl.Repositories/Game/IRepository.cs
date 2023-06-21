@@ -5,6 +5,7 @@ namespace BoardBrawl.Repositories.Game
     public interface IRepository
     {
         GameInfo? GetGameInfo(int id);
+        void UpdateGameInfo(GameInfo gameInfo);
         void CloseGame(GameInfo gameInfo);
         void AddPlayerToGame(int gameId, PlayerInfo playerInfo);            
         List<PlayerInfo> GetPlayers(int gameId);

@@ -142,5 +142,14 @@ namespace BoardBrawl.Repositories.Game
                 _applicationDbContext.SaveChanges();
             }
         }
+
+        public void UpdateGameInfo(GameInfo gameInfo)
+        {
+            var gameInfoEntity = _applicationDbContext.Games.First(i => i.Id == gameInfo.Id);
+
+            _mapper.Map(gameInfo, gameInfoEntity);
+
+            _applicationDbContext.SaveChanges();
+        }
     }
 }

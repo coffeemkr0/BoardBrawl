@@ -12,6 +12,12 @@
 
         public bool IsPublic { get; set; }
 
+        public DateTime? GameStart { get; set; }
+
+        public DateTime? TurnStart { get; set; }
+
+        public int? ActivePlayerId { get; set; }
+
         public ICollection<Player> Players { get; set; }
     }
 }

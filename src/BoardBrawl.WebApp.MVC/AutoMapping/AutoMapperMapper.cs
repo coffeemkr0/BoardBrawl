@@ -27,5 +27,10 @@ namespace BoardBrawl.WebApp.MVC.AutoMapping
         {
             return _mapper.Map<TDestination>(source);
         }
+
+        public TDestination Map<TDestination>(object source, TDestination destination)
+        {
+            return _mapper.Map<object, TDestination>(source, destination);
+        }
     }
 }

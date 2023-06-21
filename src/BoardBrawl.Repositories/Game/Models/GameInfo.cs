@@ -6,6 +6,12 @@
 
         public string Name { get; set; }
 
+        public DateTime? GameStart { get; set; }
+
+        public DateTime? TurnStart { get; set; }
+
+        public int? ActivePlayerId { get; set; }
+
         public List<PlayerInfo> Players{ get; }
 
         public GameInfo()

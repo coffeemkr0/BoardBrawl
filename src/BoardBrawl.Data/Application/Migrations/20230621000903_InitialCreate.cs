@@ -25,7 +25,10 @@ namespace BoardBrawl.Data.Application.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Description = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    IsPublic = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    IsPublic = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    GameStart = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    LastTurnStart = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    ActivePlayerId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {

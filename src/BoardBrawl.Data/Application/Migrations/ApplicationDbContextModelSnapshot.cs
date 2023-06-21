@@ -25,6 +25,9 @@ namespace BoardBrawl.Data.Application.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int?>("ActivePlayerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("CreatedByUserId")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -32,8 +35,14 @@ namespace BoardBrawl.Data.Application.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
 
+                    b.Property<DateTime?>("GameStart")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<bool>("IsPublic")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("LastTurnStart")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
                         .IsRequired()

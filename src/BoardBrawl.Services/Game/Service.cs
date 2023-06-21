@@ -87,5 +87,17 @@ namespace BoardBrawl.Services.Game
             _repository.DecreaseInfectDamage(gameId, userId, amount);
             return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));
         }
+
+        public void StartGame(int gameId)
+        {
+            var repoGameInfo = _repository.GetGameInfo(gameId);
+
+            var now = DateTime.Now;
+            repoGameInfo.GameStart = now;
+            repoGameInfo.ActivePlayerId = repoGameInfo.Players.First().Id;
+            repoGameInfo.TurnStart = now;
+
+            _repository.UpdateGameInfo(repoGameInfo);
+        }
     }
 }
