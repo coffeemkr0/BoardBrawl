@@ -50,11 +50,12 @@
         });
 
         $(document).ready(function () {
-            $(document).on('click', '#btnPassTurn', function () { 
+            const settingsCollapse = document.querySelector("#settingsCollapse");
+
+            $(document).on('click', '#btnPassTurn', function () {
                 PassTurn();
             });
 
-            const settingsCollapse = document.querySelector("#settingsCollapse");
             $(document).on('click', '.btnDecreaseLife', function () {
                 event.stopPropagation();
                 var userId = $(this).data('userid');
@@ -90,7 +91,6 @@
                     }
                 });
             });
-
 
             $(document).on('click', '.btnDecreaseCommanderDamage', function () {
                 event.stopPropagation();
@@ -192,6 +192,10 @@
             _gameHubConnection.on("OnPlayerInfoChanged", function (userId) {
                 OnPlayerInfoChanged(userId);
             });
+
+            _gameHubConnection.on("OnPassTurn", function (userId, peerId) {
+                OnPassTurn();
+            });
         }
 
         async function JoinGameHub()
@@ -204,6 +208,22 @@
         function OnPlayerJoinedGame(userId, peerId) 
         {
             RefreshPlayersList();
+        }
+
+        function OnPassTurn()
+        {
+            console.log('On pass turn');
+
+            $.ajax({
+                url: '/Game/Home/PlayerBoard/@Model.GameId',
+                data: {
+                    gameId: '@Model.GameId'
+                },
+                success: function (html) {
+                    $('#playerBoardContainer').html(html);
+                    PlayerBoard_LoadRemoteStreams(_peerJsObject);
+                }
+            });
         }
 
         function OnPlayerInfoChanged(userId) 
@@ -232,18 +252,9 @@
             });
         }
 
-        function PassTurn()
+        async function PassTurn()
         {
-            $.ajax({
-                url: '/Game/Home/PassTurn/@Model.GameId',
-                data: {
-                    gameId: '@Model.GameId'
-                },
-                success: function (html) {
-                    $('#playerBoardContainer').html(html);
-                    PlayerBoard_LoadRemoteStreams(_peerJsObject);
-                }
-            });
+            await _gameHubConnection.invoke("PassTurn", '@Model.GameId');
         }
 
         function AnswerCall(call) 

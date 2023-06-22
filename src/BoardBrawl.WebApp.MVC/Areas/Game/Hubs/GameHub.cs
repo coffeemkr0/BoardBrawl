@@ -18,5 +18,11 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Hubs
             await Groups.AddToGroupAsync(Context.ConnectionId, gameId.ToString());
             await Clients.GroupExcept(gameId.ToString(), Context.ConnectionId).SendAsync("OnPlayerJoined", userId, peerId);
         }
+
+        public async Task PassTurn(string gameId)
+        {
+            _service.PassTurn(Convert.ToInt32(gameId));
+            await Clients.Group(gameId.ToString()).SendAsync("OnPassTurn");
+        }
     }
 }
