@@ -114,5 +114,10 @@ namespace BoardBrawl.Services.Game
 
             _repository.UpdateGameInfo(repoGameInfo);
         }
+
+        public void UpdateFocusedPlayer(int playerId, int focusedPlayerId)
+        {
+            _repository.UpdateFocusedPlayer(playerId, focusedPlayerId);
+        }
     }
 }

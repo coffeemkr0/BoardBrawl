@@ -48,6 +48,7 @@ namespace BoardBrawl.Data.Application.Migrations
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     GameId = table.Column<int>(type: "int", nullable: false),
+                    FocusedPlayerId = table.Column<int>(type: "int", nullable: false),
                     LifeTotal = table.Column<int>(type: "int", nullable: false),
                     CommanderDamage = table.Column<int>(type: "int", nullable: false),
                     InfectDamage = table.Column<int>(type: "int", nullable: false)

@@ -145,5 +145,16 @@ namespace BoardBrawl.Repositories.Game
 
             _applicationDbContext.SaveChanges();
         }
+
+        public void UpdateFocusedPlayer(int playerId, int focusedPlayerId)
+        {
+            var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.Id == playerId);
+
+            if (playerEntity != null)
+            {
+                playerEntity.FocusedPlayerId = focusedPlayerId;
+                _applicationDbContext.SaveChanges();
+            }
+        }
     }
 }

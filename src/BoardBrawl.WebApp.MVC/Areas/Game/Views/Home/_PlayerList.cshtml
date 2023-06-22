@@ -11,11 +11,11 @@
     <ul class="nav h-100">
         @foreach (var playerInfo in Model.Players)
         {
-            var isFocusedPlayer = Model.ActivePlayerUserId == playerInfo.UserId ? "focusedPlayer" : "";
+            var isFocusedPlayer = Model.FocusedPlayerId == playerInfo.Id ? "focusedPlayer" : "";
 
             <li class="nav-item w-100 m-1">
                 @{
-                    <div class="playerListPlayer @(isFocusedPlayer)">
+                    <div class="playerListPlayer @(isFocusedPlayer)" data-player-id="@playerInfo.Id">
                         <div class="playerInfo" data-userid="@playerInfo.UserId">@await Component.InvokeAsync("PlayerInfo", playerInfo)</div>
 
                         @if (playerInfo.UserId == Model.UserId)

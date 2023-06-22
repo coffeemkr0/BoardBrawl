@@ -74,6 +74,12 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             return ViewComponent("PlayerInfo", playerInfo);
         }
 
+        public IActionResult UpdateFocusedPlayer(int playerId, int focusedPlayerId)
+        {
+            _service.UpdateFocusedPlayer(playerId, focusedPlayerId);
+            return NoContent();
+        }
+
         public async Task<IActionResult> DecreaseLifeTotal(int gameId, string userId, int amount)
         {
             var playerInfo = _mapper.Map<PlayerInfo>(_service.DecreaseLifeTotal(gameId, userId, amount));

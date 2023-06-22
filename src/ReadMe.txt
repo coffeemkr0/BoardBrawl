@@ -24,4 +24,3 @@ from PM console in VS, with the BoarBrawl.Data project selected as the default p
 Delete migrations folder first and then run a command like this:
 Add-Migration InitialCreate -Context IdentityDbContext -OutputDir Identity\Migrations
 Add-Migration InitialCreate -Context ApplicationDbContext -OutputDir Application\Migrations
-

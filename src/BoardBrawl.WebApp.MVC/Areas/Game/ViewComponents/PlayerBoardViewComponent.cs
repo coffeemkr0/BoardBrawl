@@ -28,7 +28,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.ViewComponents
             model.Players.AddRange(_mapper.Map<List<PlayerInfo>>(players));
 
             //TODO:Replace with real game state
-            model.ActivePlayerUserId = model.Players.Count > 1 ? model.Players[1].UserId : model.Players.FirstOrDefault()?.UserId;
+            model.FocusedPlayerId = model.Players.First().Id;
 
             return View(model);
         }

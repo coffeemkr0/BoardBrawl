@@ -8,7 +8,9 @@
 
         public List<PlayerInfo> Players { get; }
 
-        public string ActivePlayerUserId { get; set; }
+        public int FocusedPlayerId { get; set; }
+
+        public int ActivePlayerId { get; set; }
 
         public PlayerBoard()
         {

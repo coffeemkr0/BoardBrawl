@@ -9,6 +9,7 @@ namespace BoardBrawl.Repositories.Game
         void CloseGame(GameInfo gameInfo);
         void AddPlayerToGame(int gameId, PlayerInfo playerInfo);            
         List<PlayerInfo> GetPlayers(int gameId);
+        void UpdateFocusedPlayer(int playerId, int focusedPlayerId);
         void UpdatePeerId(int gameId, string userId, Guid peerId);
         void DecreaseLifeTotal(int gameId, string userId, int amount);
         void IncreaseLifeTotal(int gameId, string userId, int amount);
