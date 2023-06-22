@@ -23,12 +23,19 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.ViewComponents
         public IViewComponentResult Invoke(int gameId)
         {
             var userId = _userManager.GetUserId((System.Security.Claims.ClaimsPrincipal)User);
-            var model = new PlayerBoard { GameId = gameId, UserId = userId };
             var players = _service.GetPlayers(gameId);
-            model.Players.AddRange(_mapper.Map<List<PlayerInfo>>(players));
+            var myPlayer = players.First(i => i.UserId == userId);
+            var focusedPlayer = players.FirstOrDefault(i => i.Id == myPlayer.FocusedPlayerId);
 
-            //TODO:Replace with real game state
-            model.FocusedPlayerId = model.Players.First().Id;
+            var model = new PlayerBoard
+            {
+                GameId = gameId,
+                UserId = userId,
+                PlayerId = myPlayer.Id,
+                FocusedPlayerId = focusedPlayer?.Id ?? players.First().Id
+            };
+
+            model.Players.AddRange(_mapper.Map<List<PlayerInfo>>(players));
 
             return View(model);
         }

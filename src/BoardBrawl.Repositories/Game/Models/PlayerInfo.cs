@@ -8,6 +8,8 @@
 
         public string UserId { get; set; }
 
+        public int? FocusedPlayerId { get; set; }
+
         public Guid PeerId { get; set; }
 
         public int LifeTotal { get; set; }

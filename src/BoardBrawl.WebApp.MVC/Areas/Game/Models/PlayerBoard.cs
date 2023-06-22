@@ -4,13 +4,15 @@
     {
         public int GameId { get; set; }
 
+        public int PlayerId { get; set; }
+
         public string UserId { get; set; }
 
         public List<PlayerInfo> Players { get; }
 
         public int FocusedPlayerId { get; set; }
 
-        public int ActivePlayerId { get; set; }
+        public int? ActivePlayerId { get; set; }
 
         public PlayerBoard()
         {

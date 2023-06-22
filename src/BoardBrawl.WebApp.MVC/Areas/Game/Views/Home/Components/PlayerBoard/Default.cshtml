@@ -128,6 +128,17 @@
 
         focusedPlayerVideo.srcObject = stream;
         focusedPlayerVideo.play();
+
+        //Tell the server to save the focused player state
+        var focusedPlayerId = $(playerListPlayer).data('playerid');
+
+        $.ajax({
+            url: '/Game/Home/UpdateFocusedPlayer',
+            data: {
+                playerId: @Model.PlayerId,
+                focusedPlayerId: focusedPlayerId
+            }
+        });
     }
 
 </script>

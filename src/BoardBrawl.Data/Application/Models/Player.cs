@@ -12,7 +12,7 @@
 
         public int GameId { get; set; }
 
-        public int FocusedPlayerId { get; set; }
+        public int? FocusedPlayerId { get; set; }
 
         public int LifeTotal { get; set; }
 

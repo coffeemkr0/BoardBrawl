@@ -62,7 +62,7 @@ namespace BoardBrawl.Data.Application.Migrations
                     b.Property<int>("CommanderDamage")
                         .HasColumnType("int");
 
-                    b.Property<int>("FocusedPlayerId")
+                    b.Property<int?>("FocusedPlayerId")
                         .HasColumnType("int");
 
                     b.Property<int>("GameId")
