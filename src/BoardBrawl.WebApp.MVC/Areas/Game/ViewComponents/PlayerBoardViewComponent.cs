@@ -22,6 +22,10 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.ViewComponents
 
         public IViewComponentResult Invoke(int gameId)
         {
+            var gameInfo = _service.GetGameInfo(gameId);
+
+            if (gameInfo == null) { throw new Exception($"Game not found with id {gameId}"); }
+
             var userId = _userManager.GetUserId((System.Security.Claims.ClaimsPrincipal)User);
             var players = _service.GetPlayers(gameId);
             var myPlayer = players.First(i => i.UserId == userId);
@@ -32,7 +36,8 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.ViewComponents
                 GameId = gameId,
                 UserId = userId,
                 PlayerId = myPlayer.Id,
-                FocusedPlayerId = focusedPlayer?.Id ?? players.First().Id
+                FocusedPlayerId = focusedPlayer?.Id ?? players.First().Id,
+                ActivePlayerId = gameInfo.ActivePlayerId
             };
 
             model.Players.AddRange(_mapper.Map<List<PlayerInfo>>(players));

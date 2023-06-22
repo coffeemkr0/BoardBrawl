@@ -117,21 +117,23 @@
     }
 
     function OnPlayerListPlayerClicked(playerListPlayer) {
+        //Set the main video to the clicked player
         var videoElement = $(playerListPlayer).find('.playerVideo')[0];
-
         var stream = videoElement.srcObject;
         var focusedPlayerVideo = $('#focusedPlayerVideo')[0];
-
-        //Set the focused player style on the clicked player
-        $('.playerListPlayer').not(videoElement).removeClass('focusedPlayer');
-        $(playerListPlayer).addClass('focusedPlayer');
-
         focusedPlayerVideo.srcObject = stream;
         focusedPlayerVideo.play();
 
+        //Set the focused player style on the clicked player
+        $('.playerListPlayer').not(playerListPlayer).removeClass('focusedPlayer');
+        $(playerListPlayer).addClass('focusedPlayer');
+
+        var newFocusedPlayerIndicator = $(playerListPlayer).find(".focusedPlayerIndicator").first();
+        $('.focusedPlayerIndicator').not(newFocusedPlayerIndicator).hide();
+        $(newFocusedPlayerIndicator).show();
+
         //Tell the server to save the focused player state
         var focusedPlayerId = $(playerListPlayer).data('playerid');
-
         $.ajax({
             url: '/Game/Home/UpdateFocusedPlayer',
             data: {
