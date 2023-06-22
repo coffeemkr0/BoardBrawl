@@ -8,12 +8,7 @@
     ViewData["Title"] = Model.GameName;
 }
 
-<header class="row bg-dark text-white text-center py-3" style="height:10%;">
-    <!-- Header content -->
-    <h1>@Model.GameName</h1>
-</header>
-
-<div class="row bg-dark text-white" style="height:90%;">
+<div class="row bg-dark text-white" style="height:100%;">
     <div class="col-1 h-100" style="overflow-y:auto; overflow-x:clip; min-width: 94px; max-width: 94px;">
         @await Html.PartialAsync("_CommandBar", null)
     </div>
