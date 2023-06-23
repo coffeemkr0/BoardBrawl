@@ -1,60 +1,35 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿<form action="/Home/SelectCommander" method="post">
+
+    <label for="commanderName">Name:</label>
+    <input id="commanderName" name="Name">
+
+    <button type="submit" class="btn btn-primary" id="btnOk">Select commander</button>
+</form>
+
+@section Scripts
+{
+    <script src="~/lib/jqueryui/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+            var cache = {};
+            $("#commanderName").autocomplete({
+                minLength: 1,
+                source: function (request, response) {
+                    var term = request.term;
+                    if (term in cache) {
+                        response(cache[term]);
+                        console.log("Cache hit - " + term + " | Cache count: " + Object.keys(cache).length);
+                        return;
+                    }
+
+                    console.log("cache miss - " + term);
+
+                    $.getJSON("/Home/SearchCommanders", { searchString: term }, function (data, status, xhr) {
+                        cache[term] = data;
+                        response(data);
+                    });
+                }
+            });
+        });
+    </script>
 }
-
-<div id="root">
-    <div id="leftSideBar">
-        <img alt="Logo" />
-        <img alt="Pass the turn (spacebar)" role="button"/>
-        <img alt="Mute" role="button" />
-        <img alt="Stop Video" role="button" />
-        <img alt="separator" />
-        <img alt="Toggle to focused layout" role="button" />
-        <img alt="Toggle to four corner layout" role="button" />
-        <img alt="Toggle to picture in picture layout" role="button" />
-        <img alt="Hide Game Panel" role="button" />
-        <img alt="separator" />
-        <img alt="Invite Players" role="button" />
-        <img alt="Settings" role="button" />
-        <img alt="Roll Dice or Flip a Coin" role="button" />
-        <img alt="separator" />
-        <img alt="Keyboard Shortcuts" role="button" />
-        <img alt="View FAQ" role="button" />
-        <img alt="View Onboarding" role="button" />
-        <img alt="separator" />
-        <img alt="Player Icon" role="button" />
-    </div>
-
-    <div id="main">
-        <div id="playerList">
-            <div id="playerListPlayer1">
-                <div id="playerListPlayer1Header">
-                    <div id="playerListPlayer1LifeTotalContainer">
-                        <img alt="Decrease life total" role="button" />
-                        <span id="playerListPlayer1LifeTotalText">40</span>
-                        <img alt="Increase life total" role="button" />
-                    </div>
-                    <div id="playerListPlayer1InfoPanel">
-                        <img alt="Player icon" />
-                        <span id="playerListPlayer1Name">Magic Mike</span>
-                        <span>Click to add commander(s)</span>
-                        <img alt="..." role="button" />
-                    </div>
-                </div>
-                <div id="playerListPlayer1VideoContainer">
-                    <video id="playerListPlayer1VideoStream"></video>
-                </div>
-                <div id="playerListPlayer1Footer">
-                    <img alt="Focused player icon" />
-                </div>
-            </div>
-        </div>
-        <div id="focusedPlayer">
-            <video id="focusedPlayerVideo"></video>
-        </div>
-    </div>
-
-    <div id="rightSideBar">
-
-    </div>
-</div>

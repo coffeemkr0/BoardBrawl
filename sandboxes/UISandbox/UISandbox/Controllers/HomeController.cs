@@ -18,6 +18,22 @@ namespace UISandbox.Controllers
             return View();
         }
 
+        public JsonResult SearchCommanders(string searchString)
+        {
+            var commanders = new List<string>
+            {
+                "Commander 1",
+                "Test 1"
+            };
+
+            return Json(commanders);
+        }
+
+        public IActionResult SelectCommander(string name)
+        {
+            return Redirect("Index");
+        }
+
         public IActionResult Privacy()
         {
             return View();
