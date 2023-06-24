@@ -21,6 +21,23 @@
         "font/bootstrap-icons.json",
         "font/bootstrap-icons.min.css"
       ]
+    },
+    {
+      "library": "jquery-ui@1.13.2",
+      "destination": "wwwroot/lib/jquery-ui/",
+      "files": [
+        "dist/jquery-ui.js",
+        "dist/jquery-ui.min.js",
+        "dist/themes/base/images/ui-icons_444444_256x240.png",
+        "dist/themes/base/images/ui-icons_555555_256x240.png",
+        "dist/themes/base/images/ui-icons_777620_256x240.png",
+        "dist/themes/base/images/ui-icons_777777_256x240.png",
+        "dist/themes/base/images/ui-icons_cc0000_256x240.png",
+        "dist/themes/base/images/ui-icons_ffffff_256x240.png",
+        "dist/themes/base/jquery-ui.css",
+        "dist/themes/base/jquery-ui.min.css",
+        "dist/themes/base/theme.css"
+      ]
     }
   ]
 }
