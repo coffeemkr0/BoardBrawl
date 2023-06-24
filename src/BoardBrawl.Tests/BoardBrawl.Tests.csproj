@@ -16,4 +16,12 @@
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BoardBrawl.Core\BoardBrawl.Core.csproj" />
+    <ProjectReference Include="..\BoardBrawl.Data\BoardBrawl.Data.csproj" />
+    <ProjectReference Include="..\BoardBrawl.Repositories\BoardBrawl.Repositories.csproj" />
+    <ProjectReference Include="..\BoardBrawl.Services\BoardBrawl.Services.csproj" />
+    <ProjectReference Include="..\BoardBrawl.WebApp.MVC\BoardBrawl.WebApp.MVC.csproj" />
+  </ItemGroup>
+
 </Project>
