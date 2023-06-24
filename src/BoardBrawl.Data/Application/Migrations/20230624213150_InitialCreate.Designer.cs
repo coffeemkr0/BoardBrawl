@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoardBrawl.Data.Application.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230624192537_InitialCreate")]
+    [Migration("20230624213150_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,6 +28,10 @@ namespace BoardBrawl.Data.Application.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Colors")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Identifier")
                         .IsRequired()
                         .HasColumnType("longtext");
 

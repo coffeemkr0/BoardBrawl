@@ -98,10 +98,12 @@
                                         <span class="fst-italic mb-2">Commander(s)</span>
                                     </div>
                                     <div class="col-md-6">
-                                        <input class="form-control commander-search-input cardsearch placeholder-xs" placeholder="Add Commander">
+                                        <input class="form-control commander-search-input cardsearch placeholder-xs" placeholder="Add Commander" data-labelfor="commander1">
+                                        <input type="hidden" name="Commander1" id="commander1">
                                     </div>
                                     <div class="col-md-6">
-                                        <input class="form-control commander-search-input cardsearch placeholder-xs" placeholder="Add Commander">
+                                        <input class="form-control commander-search-input cardsearch placeholder-xs" placeholder="Add Commander" data-labelfor="commander2">
+                                        <input type="hidden" name="Commander2" id="commander2">
                                     </div>
                                 </div>
                                 <div class="fst-italic">Damage Counters</div>
@@ -150,6 +152,8 @@
         var cache = {};
         $(".cardsearch").each(function () {
             var input = $(this);
+            var hiddenInputId = input.data('labelfor');
+
             input.autocomplete({
                 minLength: 2,
                 source: function (request, response) {
@@ -164,6 +168,15 @@
                         response(data);
                     });
                 },
+                focus: function (event, ui) {
+                    input.val(ui.item.label);
+                    return false;
+                },
+                select: function (event, ui) {
+                    input.val(ui.item.label);
+                    $("#" + hiddenInputId).val(ui.item.value);
+                    return false;
+                }
             });
         });
     });

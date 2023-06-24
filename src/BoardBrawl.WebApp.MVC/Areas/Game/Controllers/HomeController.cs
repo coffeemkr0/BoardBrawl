@@ -132,11 +132,11 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
                     .SetQueryParams(new { q = searchString })
                     .GetJsonAsync();
 
-                var results = new List<string>();
+                var results = new List<dynamic>();
 
                 foreach (var card in jsonResponse.data)
                 {
-                    results.Add(card.name);
+                    results.Add(new { label = card.name, value = card.id });
                 }
 
                 return Ok(results);

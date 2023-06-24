@@ -29,6 +29,10 @@ namespace BoardBrawl.Data.Application.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Identifier")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("ImageUri")
                         .IsRequired()
                         .HasColumnType("longtext");

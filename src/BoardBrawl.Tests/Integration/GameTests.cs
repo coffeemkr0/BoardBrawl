@@ -29,6 +29,7 @@ namespace BoardBrawl.Tests.Integration
         [TestMethod]
         public void TestUpdateCommanders()
         {
+            //Create a game
             var lobbyGameInfo = new Services.Lobby.Models.GameInfo
             {
                 Name = "Test Game",
@@ -37,6 +38,7 @@ namespace BoardBrawl.Tests.Integration
 
             _lobbyService.CreateGame(lobbyGameInfo);
 
+            //Add a player to the game
             var playerInfo = new Services.Game.Models.PlayerInfo
             {
                 UserId = "user Id 1",
@@ -46,6 +48,7 @@ namespace BoardBrawl.Tests.Integration
             
             _gameService.AddPlayerToGame(lobbyGameInfo.Id, playerInfo);
 
+            //Add a commander to the player
             playerInfo = _gameService.GetPlayers(lobbyGameInfo.Id).First();
 
             playerInfo.Commanders.Add(new Services.Game.Models.Commander
@@ -57,6 +60,10 @@ namespace BoardBrawl.Tests.Integration
             playerInfo.Commanders.Last().Colors.Add(Repositories.Game.Models.Colors.White);
 
             _gameService.UpdateCommanders(playerInfo.Id, playerInfo.Commanders);
+
+            //Make sure the player info comes back correctly
+            playerInfo = _gameService.GetPlayers(lobbyGameInfo.Id).First();
+            Assert.IsTrue(playerInfo.Commanders.First().Colors[1] == Repositories.Game.Models.Colors.White);
         }
     }
 }

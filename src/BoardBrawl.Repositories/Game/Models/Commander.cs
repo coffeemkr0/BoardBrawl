@@ -8,6 +8,8 @@ namespace BoardBrawl.Repositories.Game.Models
 
         public string Name { get; set; }
 
+        public string Identifier { get; set; }
+
         public string ImageUri { get; set; }
 
         public string Colors { get; set; }
