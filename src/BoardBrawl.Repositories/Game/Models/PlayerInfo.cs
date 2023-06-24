@@ -17,5 +17,12 @@
         public int CommanderDamage { get; set; }
 
         public int InfectDamage { get; set; }
+
+        public List<Commander> Commanders { get; set; }
+
+        public PlayerInfo()
+        {
+            Commanders = new List<Commander>();
+        }
     }
 }

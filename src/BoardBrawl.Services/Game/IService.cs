@@ -17,5 +17,6 @@ namespace BoardBrawl.Services.Game
         PlayerInfo IncreaseCommanderDamage(int gameId, string userId, int amount);
         PlayerInfo DecreaseInfectDamage(int gameId, string userId, int amount);
         PlayerInfo IncreaseInfectDamage(int gameId, string userId, int amount);
+        void UpdateCommanders(int playerId, List<Commander> commanders);
     }
 }

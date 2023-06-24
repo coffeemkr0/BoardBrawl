@@ -156,5 +156,34 @@ namespace BoardBrawl.Repositories.Game
                 _applicationDbContext.SaveChanges();
             }
         }
+
+        public void UpdateCommanders(int playerId, List<Commander> commanders)
+        {
+            foreach (var commander in commanders)
+            {
+                var commanderEntity = _applicationDbContext.Commanders.FirstOrDefault(i => i.Id == commander.Id);
+
+                if (commanderEntity == null)
+                {
+                    commanderEntity = _mapper.Map<Data.Application.Models.Commander>(commander);
+                    commanderEntity.PlayerId = playerId;
+                    _applicationDbContext.Commanders.Add(commanderEntity);
+                }
+                else
+                {
+                    _mapper.Map(commander, commanderEntity);
+                    commanderEntity.PlayerId = playerId;
+                }
+
+                _applicationDbContext.SaveChanges();
+                commander.Id = commanderEntity.Id;
+            }
+
+            var commanderIds = commanders.Select(i => i.Id);
+            var removedCommanders = _applicationDbContext.Commanders.Where(i => i.PlayerId == playerId && !commanderIds.Contains(i.Id));
+
+            _applicationDbContext.Commanders.RemoveRange(removedCommanders);
+            _applicationDbContext.SaveChanges();
+        }
     }
 }

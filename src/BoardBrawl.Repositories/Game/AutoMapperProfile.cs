@@ -12,6 +12,9 @@ namespace BoardBrawl.Repositories.Game
 
             CreateMap<Data.Application.Models.Player, PlayerInfo>();
             CreateMap<PlayerInfo, Data.Application.Models.Player>();
+
+            CreateMap<Commander, Data.Application.Models.Commander>();
+            CreateMap<Data.Application.Models.Commander, Commander>();
         }
     }
 }

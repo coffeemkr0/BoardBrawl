@@ -45,6 +45,18 @@ namespace BoardBrawl.Tests.Integration
             };
             
             _gameService.AddPlayerToGame(lobbyGameInfo.Id, playerInfo);
+
+            playerInfo = _gameService.GetPlayers(lobbyGameInfo.Id).First();
+
+            playerInfo.Commanders.Add(new Services.Game.Models.Commander
+            {
+                Name = "Commander 1",
+                ImageUri = ""
+            });
+            playerInfo.Commanders.Last().Colors.Add(Repositories.Game.Models.Colors.Red);
+            playerInfo.Commanders.Last().Colors.Add(Repositories.Game.Models.Colors.White);
+
+            _gameService.UpdateCommanders(playerInfo.Id, playerInfo.Commanders);
         }
     }
 }

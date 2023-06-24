@@ -119,5 +119,18 @@ namespace BoardBrawl.Services.Game
         {
             _repository.UpdateFocusedPlayer(playerId, focusedPlayerId);
         }
+
+        public void UpdateCommanders(int playerId, List<Commander> commanders)
+        {
+            var repoCommanders = new List<Repositories.Game.Models.Commander>();
+
+            foreach (var commander in commanders)
+            {
+                var repoCommander = _mapper.Map<Repositories.Game.Models.Commander>(commander);
+                repoCommanders.Add(repoCommander);
+            }
+
+            _repository.UpdateCommanders(playerId, repoCommanders);
+        }
     }
 }

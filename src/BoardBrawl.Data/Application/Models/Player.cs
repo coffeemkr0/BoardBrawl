@@ -21,5 +21,7 @@
         public int InfectDamage { get; set; }
 
         public Game Game { get; set; }
+
+        public ICollection<Commander> Commanders { get; set; }
     }
 }

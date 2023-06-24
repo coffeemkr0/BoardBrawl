@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoardBrawl.Data.Application.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230622013811_InitialCreate")]
+    [Migration("20230624192537_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,34 @@ namespace BoardBrawl.Data.Application.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("BoardBrawl.Data.Application.Models.Commander", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Colors")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ImageUri")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("Commanders");
+                });
 
             modelBuilder.Entity("BoardBrawl.Data.Application.Models.Game", b =>
                 {
@@ -94,6 +122,17 @@ namespace BoardBrawl.Data.Application.Migrations
                     b.ToTable("Players");
                 });
 
+            modelBuilder.Entity("BoardBrawl.Data.Application.Models.Commander", b =>
+                {
+                    b.HasOne("BoardBrawl.Data.Application.Models.Player", "Player")
+                        .WithMany("Commanders")
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Player");
+                });
+
             modelBuilder.Entity("BoardBrawl.Data.Application.Models.Player", b =>
                 {
                     b.HasOne("BoardBrawl.Data.Application.Models.Game", "Game")
@@ -108,6 +147,11 @@ namespace BoardBrawl.Data.Application.Migrations
             modelBuilder.Entity("BoardBrawl.Data.Application.Models.Game", b =>
                 {
                     b.Navigation("Players");
+                });
+
+            modelBuilder.Entity("BoardBrawl.Data.Application.Models.Player", b =>
+                {
+                    b.Navigation("Commanders");
                 });
 #pragma warning restore 612, 618
         }

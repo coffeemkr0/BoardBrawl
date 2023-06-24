@@ -7,6 +7,8 @@ namespace BoardBrawl.Data.Application
     {
         public DbSet<Game> Games { get; set; }
         public DbSet<Player> Players { get; set; }
+        public DbSet<Commander> Commanders { get; set; }
+
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
