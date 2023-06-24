@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using BoardBrawl.Core.AutoMapping;
+﻿using BoardBrawl.Core.AutoMapping;
 using BoardBrawl.Services.Game;
 using BoardBrawl.WebApp.MVC.Areas.Game.Hubs;
 using BoardBrawl.WebApp.MVC.Areas.Game.Models;
+using Flurl;
+using Flurl.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 {
@@ -120,6 +122,30 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             var playerInfo = _mapper.Map<PlayerInfo>(_service.IncreaseInfectDamage(gameId, userId, amount));
             await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfoChanged", userId);
             return ViewComponent("PlayerInfo", new { playerInfo });
+        }
+
+        public async Task<IActionResult> SearchCards(string searchString)
+        {
+            try
+            {
+                var jsonResponse = await "https://api.scryfall.com/cards/search"
+                    .SetQueryParams(new { q = searchString })
+                    .GetJsonAsync();
+
+                var results = new List<string>();
+
+                foreach (var card in jsonResponse.data)
+                {
+                    results.Add(card.name);
+                }
+
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"API call failed: {ex}");
+                return NotFound();
+            }
         }
     }
 }

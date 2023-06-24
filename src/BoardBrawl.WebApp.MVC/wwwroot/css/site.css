@@ -16,3 +16,8 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/*Fix for jquery-ui auto complete on a pop-up*/
+ul.ui-autocomplete {
+    z-index: 9999;
+}

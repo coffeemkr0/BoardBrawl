@@ -92,13 +92,16 @@
                         </div>
                         <div class="dropdown-menu dropdown-menu-right text-white custom-dropdown" aria-labelledby="dropdownMenuButton" style="background-color: slateblue;">
                             <div class="card-body" style="font-size: 12px; padding-top: 5px; padding-bottom: 5px; background-color: slateblue;">
-                                @*<h6 class="text-white mb-2">Player ID: @Model.UserId</h6>*@
+                                <h6 class="text-white mb-2">Player Name</h6>
                                 <div class="row pt-2 pb-4">
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control input-sm commander-search-input placeholder-xs" placeholder="Add Commander">
+                                    <div class="pb-1">
+                                        <span class="fst-italic mb-2">Commander(s)</span>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control input-sm commander-search-input placeholder-xs" placeholder="Add Commander">
+                                        <input class="form-control commander-search-input cardsearch placeholder-xs" placeholder="Add Commander">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input class="form-control commander-search-input cardsearch placeholder-xs" placeholder="Add Commander">
                                     </div>
                                 </div>
                                 <div class="fst-italic">Damage Counters</div>
@@ -141,15 +144,27 @@
     </div>
 </div>
 
+<script>
+    //Auto complete card search boxes
+    $(function () {
+        var cache = {};
+        $(".cardsearch").each(function () {
+            var input = $(this);
+            input.autocomplete({
+                minLength: 2,
+                source: function (request, response) {
+                    var term = request.term;
+                    if (term in cache) {
+                        response(cache[term]);
+                        return;
+                    }
 
-
-
-
-
-
-
-
-
-
-
-
+                    $.getJSON("/Game/Home/SearchCards", { searchString: term }, function (data, status, xhr) {
+                        cache[term] = data;
+                        response(data);
+                    });
+                },
+            });
+        });
+    });
+</script>
