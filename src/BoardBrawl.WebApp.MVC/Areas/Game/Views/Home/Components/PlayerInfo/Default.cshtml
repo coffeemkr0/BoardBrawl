@@ -74,8 +74,8 @@
     }
 </style>
 <div class="card bg-transparent border-0">
-    <div class="card-body text-white bg-dark dropdown" style="padding-top: 5px;">
-        <div class="d-flex justify-content-between align-items-center dropdown-toggle no-arrow shadow-none" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+    <div class="card-body text-white bg-dark" style="padding-top: 5px;">
+        <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
                 <div>
                     <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnDecreaseLife btn-player-counter">-</button>
@@ -83,8 +83,48 @@
                     <button data-userid="@Model.UserId" class="shadow-none btn text-white btn-transparent btn-sm btnIncreaseLife btn-player-counter">+</button>
                 </div>
                 <div class="ml-2" style="font-size: 12px;">
-                    <div>@Model.PlayerName</div>
-                    <div>commander name</div>
+                    <div>
+                        <span>Player Name</span>
+                    </div>
+                    <div class="dropdown">
+                        <div class="dropdown-toggle no-arrow shadow-none" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span>Commander Name</span>
+                        </div>
+                        <div class="dropdown-menu dropdown-menu-right text-white custom-dropdown" aria-labelledby="dropdownMenuButton" style="background-color: slateblue;">
+                            <div class="card-body" style="font-size: 12px; padding-top: 5px; padding-bottom: 5px; background-color: slateblue;">
+                                @*<h6 class="text-white mb-2">Player ID: @Model.UserId</h6>*@
+                                <div class="row pt-2 pb-4">
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control input-sm commander-search-input placeholder-xs" placeholder="Add Commander">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control input-sm commander-search-input placeholder-xs" placeholder="Add Commander">
+                                    </div>
+                                </div>
+                                <div class="fst-italic">Damage Counters</div>
+                                <div class="row align-items-center">
+                                    <div class="col-7" style="padding-right: 10px;"><span class="damage-type-header">Commander</span></div>
+                                    <div class="col-5">
+                                        <span class="float-end">
+                                            <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnDecreaseCommanderDamage btn-player-counter">-</button>
+                                            @Model.CommanderDamage
+                                            <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnIncreaseCommanderDamage btn-player-counter">+</button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center">
+                                    <div class="col-7" style="padding-right: 10px;"><span class="damage-type-header">Infect</span></span></div>
+                                    <div class="col-5 float-end">
+                                        <span class="float-end">
+                                            <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnDecreaseInfectDamage btn-player-counter">-</button>
+                                            @Model.InfectDamage
+                                            <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnIncreaseInfectDamage btn-player-counter">+</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -94,41 +134,6 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-right bg-dark text-white" aria-labelledby="dropdownMenuButton1">
                     <div class="card-body" style="font-size: 12px; padding-top: 5px;">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="dropdown-menu dropdown-menu-right text-white custom-dropdown" aria-labelledby="dropdownMenuButton" style="background-color: slateblue;">
-            <div class="card-body" style="font-size: 12px; padding-top: 5px; padding-bottom: 5px; background-color: slateblue;">
-                @*<h6 class="text-white mb-2">Player ID: @Model.UserId</h6>*@
-                <div class="row pt-2 pb-4">
-                    <div class="col-md-6">
-                        <input type="text" class="form-control input-sm commander-search-input placeholder-xs" placeholder="Add Commander">
-                    </div>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control input-sm commander-search-input placeholder-xs" placeholder="Add Commander">
-                    </div>
-                </div>
-                <div class="fst-italic">Damage Counters</div>
-                <div class="row align-items-center">
-                    <div class="col-7" style="padding-right: 10px;"><span class="damage-type-header">Commander</span></div>
-                    <div class="col-5">
-                        <span class="float-end">
-                            <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnDecreaseCommanderDamage btn-player-counter">-</button>
-                            @Model.CommanderDamage
-                            <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnIncreaseCommanderDamage btn-player-counter">+</button>
-                        </span>
-                    </div>
-                </div>
-                <div class="row align-items-center">
-                    <div class="col-7" style="padding-right: 10px;"><span class="damage-type-header">Infect</span></span></div>
-                    <div class="col-5 float-end">
-                        <span class="float-end">
-                            <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnDecreaseInfectDamage btn-player-counter">-</button>
-                            @Model.InfectDamage
-                            <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnIncreaseInfectDamage btn-player-counter">+</button>
-                        </span>
                     </div>
                 </div>
             </div>

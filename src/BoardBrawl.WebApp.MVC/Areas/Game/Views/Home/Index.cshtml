@@ -45,8 +45,6 @@
         });
 
         $(document).ready(function () {
-            const settingsCollapse = document.querySelector("#settingsCollapse");
-
             $(document).on('click', '#btnPassTurn', function () {
                 PassTurn();
             });
@@ -224,12 +222,6 @@
         function OnPlayerInfoChanged(userId) 
         {
             PlayerBoard_RefreshPlayerInfo(userId);
-        }
-
-        //Control events
-        function btnRefreshPlayers_Clicked()
-        {
-            RefreshPlayersList();
         }
 
         //Methods
