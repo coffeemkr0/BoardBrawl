@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Flurl.Http;
+using Flurl;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using UISandbox.Models;
+
 
 namespace UISandbox.Controllers
 {
@@ -18,15 +21,29 @@ namespace UISandbox.Controllers
             return View();
         }
 
-        public JsonResult SearchCommanders(string searchString)
+        public async Task<IActionResult> SearchCommanders(string searchString)
         {
-            var commanders = new List<string>
+            try
             {
-                "Commander 1",
-                "Test 1"
-            };
+                // Make the API call using Flurl.Http
+                var jsonResponse = await "https://api.scryfall.com/cards/search"
+                    .SetQueryParams(new { q = searchString })
+                    .GetJsonAsync();
 
-            return Json(commanders);
+                var results = new List<string>();
+
+                foreach (var card in jsonResponse.data)
+                {
+                    results.Add(card.name);
+                }
+
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"API call failed: {ex}");
+                return NotFound();
+            }
         }
 
         public IActionResult SelectCommander(string name)
