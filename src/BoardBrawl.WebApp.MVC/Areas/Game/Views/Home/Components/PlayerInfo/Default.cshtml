@@ -98,12 +98,14 @@
                                         <span class="fst-italic mb-2">Commander(s)</span>
                                     </div>
                                     <div class="col-md-6">
-                                        <input class="form-control commander-search-input cardsearch placeholder-xs" placeholder="Add Commander" data-labelfor="commander1">
-                                        <input type="hidden" name="Commander1" id="commander1">
+                                        <input class="form-control commander-search-input cardsearch placeholder-xs" 
+                                            placeholder="Add Commander" data-labelfor="commander1" value="@Model.Commander1?.Name">
+                                        <input type="hidden" name="Commander1" id="commander1" value="@Model.Commander1Id">
                                     </div>
                                     <div class="col-md-6">
-                                        <input class="form-control commander-search-input cardsearch placeholder-xs" placeholder="Add Commander" data-labelfor="commander2">
-                                        <input type="hidden" name="Commander2" id="commander2">
+                                        <input class="form-control commander-search-input cardsearch placeholder-xs"
+                                            placeholder="Add Commander" data-labelfor="commander2" value="@Model.Commander2?.Name">
+                                        <input type="hidden" name="Commander2" id="commander2" value="@Model.Commander2Id">
                                     </div>
                                 </div>
                                 <div class="fst-italic">Damage Counters</div>
@@ -174,8 +176,42 @@
                 },
                 select: function (event, ui) {
                     input.val(ui.item.label);
-                    $("#" + hiddenInputId).val(ui.item.value);
+                    $("#" + hiddenInputId).val(ui.item.value).trigger('change');
                     return false;
+                }
+            });
+        });
+
+        $('#commander1').on('change', function () {
+            var newValue = $(this).val();
+            
+            $.ajax({
+                url: '/Game/Home/UpdateCommander',
+                data: {
+                    gameId: '@(Model.GameId)',
+                    slot: 1,
+                    cardId: newValue
+                },
+                success: function (html) {
+                    var playerInfoElement = $('.playerInfo[data-userid="@Model.UserId"]:first');
+                    playerInfoElement.html(html);
+                }
+            });
+        });
+
+        $('#commander2').on('change', function () {
+            var newValue = $(this).val();
+
+            $.ajax({
+                url: '/Game/Home/UpdateCommander',
+                data: {
+                    gameId: '@(Model.GameId)',
+                    slot: 2,
+                    cardId: newValue
+                },
+                success: function (html) {
+                    var playerInfoElement = $('.playerInfo[data-userid="@Model.UserId"]:first');
+                    playerInfoElement.html(html);
                 }
             });
         });

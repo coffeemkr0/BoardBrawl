@@ -9,6 +9,7 @@ namespace BoardBrawl.Repositories.Game
         void CloseGame(GameInfo gameInfo);
         void AddPlayerToGame(int gameId, PlayerInfo playerInfo);            
         List<PlayerInfo> GetPlayers(int gameId);
+        PlayerInfo GetPlayer(string userId);
         void UpdateFocusedPlayer(int playerId, int focusedPlayerId);
         void UpdatePeerId(int gameId, string userId, Guid peerId);
         void DecreaseLifeTotal(int gameId, string userId, int amount);
@@ -17,6 +18,6 @@ namespace BoardBrawl.Repositories.Game
         void IncreaseCommanderDamage(int gameId, string userId, int amount);
         void DecreaseInfectDamage(int gameId, string userId, int amount);
         void IncreaseInfectDamage(int gameId, string userId, int amount);
-        void UpdateCommanders(int playerId, List<Commander> commanders);
+        void UpdatePlayerInfo(PlayerInfo playerInfo);
     }
 }

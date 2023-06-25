@@ -9,6 +9,7 @@ namespace BoardBrawl.Services.Game
         void PassTurn(int gameId);
         void AddPlayerToGame(int gameId, PlayerInfo playerInfo);
         List<PlayerInfo> GetPlayers(int gameId);
+        PlayerInfo GetPlayer(string userId);
         void UpdatePeerId(int gameId, string userId, Guid peerId);
         void UpdateFocusedPlayer(int playerId, int focusedPlayerId);
         PlayerInfo DecreaseLifeTotal(int gameId, string userId, int amount);
@@ -17,6 +18,6 @@ namespace BoardBrawl.Services.Game
         PlayerInfo IncreaseCommanderDamage(int gameId, string userId, int amount);
         PlayerInfo DecreaseInfectDamage(int gameId, string userId, int amount);
         PlayerInfo IncreaseInfectDamage(int gameId, string userId, int amount);
-        void UpdateCommanders(int playerId, List<Commander> commanders);
+        void UpdatePlayerInfo(PlayerInfo playerInfo);
     }
 }

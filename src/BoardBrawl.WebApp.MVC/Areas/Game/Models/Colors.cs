@@ -1,4 +1,4 @@
-﻿namespace BoardBrawl.Repositories.Game.Models
+﻿namespace BoardBrawl.WebApp.MVC.Areas.Game.Models
 {
     public enum Colors
     {

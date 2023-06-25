@@ -1,4 +1,5 @@
 using BoardBrawl.Data.Application;
+using BoardBrawl.WebApp.MVC.Areas.Game.Models;
 using BoardBrawl.WebApp.MVC.AutoMapping;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,7 +42,7 @@ namespace BoardBrawl.Tests.Integration
             //Add a player to the game
             var playerInfo = new Services.Game.Models.PlayerInfo
             {
-                UserId = "user Id 1",
+                UserId = Guid.NewGuid().ToString(),
                 Name = $"Test player",
                 LifeTotal = 40
             };
@@ -49,21 +50,15 @@ namespace BoardBrawl.Tests.Integration
             _gameService.AddPlayerToGame(lobbyGameInfo.Id, playerInfo);
 
             //Add a commander to the player
-            playerInfo = _gameService.GetPlayers(lobbyGameInfo.Id).First();
-
-            playerInfo.Commanders.Add(new Services.Game.Models.Commander
-            {
-                Name = "Commander 1",
-                ImageUri = ""
-            });
-            playerInfo.Commanders.Last().Colors.Add(Repositories.Game.Models.Colors.Red);
-            playerInfo.Commanders.Last().Colors.Add(Repositories.Game.Models.Colors.White);
-
-            _gameService.UpdateCommanders(playerInfo.Id, playerInfo.Commanders);
+            playerInfo = _gameService.GetPlayer(playerInfo.UserId);
+            var commanderId = Guid.NewGuid().ToString();
+            playerInfo.Commander1Id = commanderId;
+            _gameService.UpdatePlayerInfo(playerInfo);
 
             //Make sure the player info comes back correctly
-            playerInfo = _gameService.GetPlayers(lobbyGameInfo.Id).First();
-            Assert.IsTrue(playerInfo.Commanders.First().Colors[1] == Repositories.Game.Models.Colors.White);
+            playerInfo = _gameService.GetPlayer(playerInfo.UserId);
+
+            Assert.IsTrue(playerInfo.Commander1Id == commanderId);
         }
     }
 }

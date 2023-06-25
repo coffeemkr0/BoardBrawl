@@ -20,8 +20,10 @@
 
         public int InfectDamage { get; set; }
 
-        public Game Game { get; set; }
+        public string? Commander1Id { get; set; }
 
-        public ICollection<Commander> Commanders { get; set; }
+        public string? Commander2Id { get; set; }
+
+        public Game Game { get; set; }
     }
 }

@@ -4,6 +4,8 @@
     {
         public int Id { get; set; }
 
+        public int GameId { get; set; }
+
         public string Name { get; set; }
 
         public string UserId { get; set; }
@@ -18,11 +20,8 @@
 
         public int InfectDamage { get; set; }
 
-        public List<Commander> Commanders { get; set; }
+        public string Commander1Id { get; set; }
 
-        public PlayerInfo()
-        {
-            Commanders = new List<Commander>();
-        }
+        public string Commander2Id { get; set; }
     }
 }

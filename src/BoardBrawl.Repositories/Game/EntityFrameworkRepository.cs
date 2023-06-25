@@ -1,5 +1,6 @@
 ﻿using BoardBrawl.Core.AutoMapping;
 using BoardBrawl.Data.Application;
+using BoardBrawl.Data.Application.Models;
 using BoardBrawl.Repositories.Game.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -157,32 +158,21 @@ namespace BoardBrawl.Repositories.Game
             }
         }
 
-        public void UpdateCommanders(int playerId, List<Commander> commanders)
+        public PlayerInfo GetPlayer(string userId)
         {
-            foreach (var commander in commanders)
+            return _mapper.Map<PlayerInfo>(_applicationDbContext.Players.First(i => i.UserId == userId));
+        }
+
+        public void UpdatePlayerInfo(PlayerInfo playerInfo)
+        {
+            var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.Id == playerInfo.Id);
+
+            if (playerEntity == null)
             {
-                var commanderEntity = _applicationDbContext.Commanders.FirstOrDefault(i => i.Id == commander.Id);
-
-                if (commanderEntity == null)
-                {
-                    commanderEntity = _mapper.Map<Data.Application.Models.Commander>(commander);
-                    commanderEntity.PlayerId = playerId;
-                    _applicationDbContext.Commanders.Add(commanderEntity);
-                }
-                else
-                {
-                    _mapper.Map(commander, commanderEntity);
-                    commanderEntity.PlayerId = playerId;
-                }
-
-                _applicationDbContext.SaveChanges();
-                commander.Id = commanderEntity.Id;
+                playerEntity = new Player();
             }
 
-            var commanderIds = commanders.Select(i => i.Id);
-            var removedCommanders = _applicationDbContext.Commanders.Where(i => i.PlayerId == playerId && !commanderIds.Contains(i.Id));
-
-            _applicationDbContext.Commanders.RemoveRange(removedCommanders);
+            _mapper.Map(playerInfo, playerEntity);
             _applicationDbContext.SaveChanges();
         }
     }

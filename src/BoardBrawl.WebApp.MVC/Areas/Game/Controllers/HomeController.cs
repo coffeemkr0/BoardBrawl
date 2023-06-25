@@ -1,4 +1,5 @@
 ﻿using BoardBrawl.Core.AutoMapping;
+using BoardBrawl.Data.Application.Models;
 using BoardBrawl.Services.Game;
 using BoardBrawl.WebApp.MVC.Areas.Game.Hubs;
 using BoardBrawl.WebApp.MVC.Areas.Game.Models;
@@ -144,6 +145,36 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"API call failed: {ex}");
+                return NotFound();
+            }
+        }
+
+        public async Task<IActionResult> UpdateCommander(int gameId, int slot, string cardId)
+        {
+            try
+            {
+                var userId = _userManager.GetUserId(User);
+                var playerInfo = _service.GetPlayer(userId);
+                switch (slot)
+                {
+                    case 1:
+                        playerInfo.Commander1Id = cardId;
+                        break;
+
+                    case 2:
+                        playerInfo.Commander2Id = cardId;
+                        break;
+                }
+                _service.UpdatePlayerInfo(playerInfo);
+
+                var playerInfoViewModel = _mapper.Map<PlayerInfo>(playerInfo);
+                await LoadCardInfoCommand.Execute(playerInfoViewModel);
+                await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfoChanged", userId);
+                return ViewComponent("PlayerInfo", new { playerInfo = playerInfoViewModel });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ex}");
                 return NotFound();
             }
         }
