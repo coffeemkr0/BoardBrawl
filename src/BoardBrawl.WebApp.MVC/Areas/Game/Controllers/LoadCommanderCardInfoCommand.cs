@@ -26,7 +26,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             cardInfo.Name = jsonResponse.name;
             cardInfo.ImageUriSmall = new Uri(jsonResponse.image_uris.small);
             cardInfo.ImageUri = new Uri(jsonResponse.image_uris.normal);
-            cardInfo.ImageUriSmall = new Uri(jsonResponse.image_uris.large);
+            cardInfo.ImageUriLarge = new Uri(jsonResponse.image_uris.large);
 
             return cardInfo;
         }
