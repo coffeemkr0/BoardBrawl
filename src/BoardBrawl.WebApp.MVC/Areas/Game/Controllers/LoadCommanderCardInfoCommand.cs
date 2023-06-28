@@ -3,7 +3,7 @@ using Flurl.Http;
 
 namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 {
-    public static class LoadCardInfoCommand
+    public static class LoadCommanderCardInfoCommand
     {
         public static async Task Execute(PlayerInfo playerInfo)
         {

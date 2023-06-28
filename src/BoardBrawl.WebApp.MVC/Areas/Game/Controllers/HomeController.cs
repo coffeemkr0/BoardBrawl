@@ -40,6 +40,8 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             if (gameInfo == null) { return Redirect("/Lobby"); }
 
             var userId = _userManager.GetUserId(User);
+
+            //TODO:Check to see if player is already in the game first, also consider a command to create the player info
             _service.AddPlayerToGame(id.Value, new Services.Game.Models.PlayerInfo
             {
                 UserId = userId,
@@ -71,9 +73,11 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             return ViewComponent("PlayerBoard", new { gameId, userId });
         }
 
-        public IActionResult PlayerInfo(int gameId, string userId)
+        public async Task<IActionResult> PlayerInfo(int gameId, string userId)
         {
-            var playerInfo = _mapper.Map<PlayerInfo>(_service.GetPlayers(gameId).First(i => i.UserId == userId));
+            //TODO:Get userId from Identity and get rid of gameId parameter
+            var playerInfo = _mapper.Map<PlayerInfo>(_service.GetPlayer(userId));
+            await LoadCommanderCardInfoCommand.Execute(playerInfo);
             return ViewComponent("PlayerInfo", playerInfo);
         }
 
@@ -168,7 +172,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
                 _service.UpdatePlayerInfo(playerInfo);
 
                 var playerInfoViewModel = _mapper.Map<PlayerInfo>(playerInfo);
-                await LoadCardInfoCommand.Execute(playerInfoViewModel);
+                await LoadCommanderCardInfoCommand.Execute(playerInfoViewModel);
                 await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfoChanged", userId);
                 return ViewComponent("PlayerInfo", new { playerInfo = playerInfoViewModel });
             }

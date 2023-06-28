@@ -3,6 +3,7 @@ using BoardBrawl.Core.AutoMapping;
 using BoardBrawl.Services.Game;
 using BoardBrawl.WebApp.MVC.Areas.Game.Models;
 using Microsoft.AspNetCore.Identity;
+using BoardBrawl.WebApp.MVC.Areas.Game.Controllers;
 
 namespace BoardBrawl.WebApp.MVC.Areas.Game.ViewComponents
 {
@@ -20,7 +21,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.ViewComponents
             _mapper = mapper;
         }
 
-        public IViewComponentResult Invoke(int gameId)
+        public async Task<IViewComponentResult> InvokeAsync(int gameId)
         {
             var gameInfo = _service.GetGameInfo(gameId);
 
@@ -41,6 +42,11 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.ViewComponents
             };
 
             model.Players.AddRange(_mapper.Map<List<PlayerInfo>>(players));
+
+            foreach (var player in model.Players)
+            {
+                await LoadCommanderCardInfoCommand.Execute(player);
+            }
 
             return View(model);
         }
