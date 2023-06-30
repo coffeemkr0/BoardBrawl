@@ -69,14 +69,6 @@
     .damage-type-header {
         margin-left: 10px;
     }
-
-    .card-tooltip-image {
-        width:250px;
-    }
-
-    .tooltip-inner {
-        max-width: 100% !important;
-    }
 </style>
 <div class="card bg-transparent border-0" id="playerInfo1234">
     <div class="card-body text-white bg-dark" style="padding-top: 5px;">
@@ -99,7 +91,7 @@
                             }
                             else
                             {
-                                <span data-toggle="tooltip" title="<img src='@Model.Commander1.ImageUri' alt='Commander Card Image' class='card-tooltip-image' />">
+                                <span class="card-tooltip" data-toggle="tooltip" title="<img src='@Model.Commander1.ImageUri' alt='Commander Card Image' class='card-tooltip-image' />">
                                     @Model.Commander1.Name
                                 </span>
                             }
@@ -108,7 +100,7 @@
                             {
                                 <span> / </span>
 
-                                <span data-toggle="tooltip" title="<img src='@Model.Commander2.ImageUri' alt='Commander Card Image' class='card-tooltip-image' />">
+                                <span class="card-tooltip" data-toggle="tooltip" title="<img src='@Model.Commander2.ImageUri' alt='Commander Card Image' class='card-tooltip-image' />">
                                     @Model.Commander2.Name
                                 </span>
                             }
@@ -137,16 +129,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    $(function () {
-
-        //Tooltips for cards
-        $('span[data-toggle="tooltip"]').tooltip({
-            animated: 'fade',
-            placement: 'auto',
-            html: true
-        });
-
-    });
-</script>

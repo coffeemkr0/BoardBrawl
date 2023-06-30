@@ -7,6 +7,15 @@
 @{
     ViewData["Title"] = Model.GameName;
 }
+<style>
+    .card-tooltip-image {
+        width: 250px;
+    }
+
+    .tooltip-inner {
+        max-width: 100% !important;
+    }
+</style>
 
 <div class="row bg-dark text-white" style="height:100%;">
     <div class="col-1 h-100" style="overflow-y:auto; overflow-x:clip; min-width: 94px; max-width: 94px;">
@@ -24,7 +33,6 @@
     </div>
 </div>
 
-
 @section Scripts
 {
     <script>
@@ -37,6 +45,9 @@
         $(document).ready(function () 
         {
             InitializeGameHubConnection();
+            InitializeUiEventHandlers();
+            InitializeAutoCompleteForCardSearchInputs();
+            InitializeTooltipsForCards();
 
             _peerJsObject = new Peer();
             _peerJsObject.on('open', id => {
@@ -44,7 +55,103 @@
             });
         });
 
-        $(document).ready(function () {
+        $(document).ajaxComplete(function () {
+            //Re-initialize auto complete and tooltips after any part of the board is reloaded
+            InitializeAutoCompleteForCardSearchInputs();
+            InitializeTooltipsForCards();
+        });
+
+        async function OnPeerJsOpen(peerJsConnectionId) 
+        {
+            _peerJsConnectionId = peerJsConnectionId;
+
+            await JoinGameHub();
+
+            _peerJsObject.on("call", (call) => {
+                AnswerCall(call);
+            });
+
+            PlayerBoard_LoadRemoteStreams(_peerJsObject);
+        }
+
+        function InitializeGameHubConnection() 
+        {
+            _gameHubConnection = new signalR.HubConnectionBuilder()
+                .withUrl("/GameHub").build();
+
+            _gameHubConnection.on("OnPlayerJoined", function (userId, peerId) {
+                OnPlayerJoinedGame(userId, peerId);
+            });
+
+            _gameHubConnection.on("OnPlayerInfoChanged", function (userId) {
+                OnPlayerInfoChanged(userId);
+            });
+
+            _gameHubConnection.on("OnPassTurn", function (userId, peerId) {
+                OnPassTurn();
+            });
+        }
+
+        async function JoinGameHub()
+        {
+            await _gameHubConnection.start();
+            await _gameHubConnection.invoke("JoinGameHub", '@Model.GameId', '@Model.UserId', _peerJsConnectionId);
+        }
+
+        //Game hub events
+        function OnPlayerJoinedGame(userId, peerId) 
+        {
+            RefreshPlayersList();
+        }
+
+        function OnPassTurn()
+        {
+            console.log('On pass turn');
+
+            $.ajax({
+                url: '/Game/Home/PlayerBoard/@Model.GameId',
+                data: {
+                    gameId: '@Model.GameId'
+                },
+                success: function (html) {
+                    $('#playerBoardContainer').html(html);
+                    PlayerBoard_LoadRemoteStreams(_peerJsObject);
+                }
+            });
+        }
+
+        function OnPlayerInfoChanged(userId) 
+        {
+            PlayerBoard_RefreshPlayerInfo(userId);
+        }
+
+        //Methods
+        function RefreshPlayersList() 
+        {
+            $.ajax({
+                url: '/Game/Home/PlayerBoard/@Model.GameId',
+                data:{
+                    gameId : '@Model.GameId'
+                },
+                success: function (html) {
+                    $('#playerBoardContainer').html(html);
+                    PlayerBoard_LoadRemoteStreams(_peerJsObject);
+                }
+            });
+        }
+
+        async function PassTurn()
+        {
+            await _gameHubConnection.invoke("PassTurn", '@Model.GameId');
+        }
+
+        function AnswerCall(call) 
+        {
+            call.answer(_localVideoStream);
+        }
+
+        function InitializeUiEventHandlers()
+        {
             $(document).on('click', '#btnPassTurn', function () {
                 PassTurn();
             });
@@ -158,95 +265,49 @@
                     }
                 });
             });
-        });
-
-        async function OnPeerJsOpen(peerJsConnectionId) 
-        {
-            _peerJsConnectionId = peerJsConnectionId;
-
-            await JoinGameHub();
-
-            _peerJsObject.on("call", (call) => {
-                AnswerCall(call);
-            });
-
-            PlayerBoard_LoadRemoteStreams(_peerJsObject);
         }
 
-        function InitializeGameHubConnection() 
+        function InitializeAutoCompleteForCardSearchInputs()
         {
-            _gameHubConnection = new signalR.HubConnectionBuilder()
-                .withUrl("/GameHub").build();
+            var cache = {};
+            $(".cardsearch").each(function () {
+                var input = $(this);
+                var hiddenInputId = input.data('labelfor');
 
-            _gameHubConnection.on("OnPlayerJoined", function (userId, peerId) {
-                OnPlayerJoinedGame(userId, peerId);
-            });
+                input.autocomplete({
+                    minLength: 2,
+                    source: function (request, response) {
+                        var term = request.term;
+                        if (term in cache) {
+                            response(cache[term]);
+                            return;
+                        }
 
-            _gameHubConnection.on("OnPlayerInfoChanged", function (userId) {
-                OnPlayerInfoChanged(userId);
-            });
-
-            _gameHubConnection.on("OnPassTurn", function (userId, peerId) {
-                OnPassTurn();
-            });
-        }
-
-        async function JoinGameHub()
-        {
-            await _gameHubConnection.start();
-            await _gameHubConnection.invoke("JoinGameHub", '@Model.GameId', '@Model.UserId', _peerJsConnectionId);
-        }
-
-        //Game hub events
-        function OnPlayerJoinedGame(userId, peerId) 
-        {
-            RefreshPlayersList();
-        }
-
-        function OnPassTurn()
-        {
-            console.log('On pass turn');
-
-            $.ajax({
-                url: '/Game/Home/PlayerBoard/@Model.GameId',
-                data: {
-                    gameId: '@Model.GameId'
-                },
-                success: function (html) {
-                    $('#playerBoardContainer').html(html);
-                    PlayerBoard_LoadRemoteStreams(_peerJsObject);
-                }
+                        $.getJSON("/Game/Home/SearchCards", { searchString: term }, function (data, status, xhr) {
+                            cache[term] = data;
+                            response(data);
+                        });
+                    },
+                    focus: function (event, ui) {
+                        input.val(ui.item.label);
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        input.val(ui.item.label);
+                        $("#" + hiddenInputId).val(ui.item.value).trigger('change');
+                        return false;
+                    }
+                });
             });
         }
 
-        function OnPlayerInfoChanged(userId) 
+        function InitializeTooltipsForCards()
         {
-            PlayerBoard_RefreshPlayerInfo(userId);
-        }
-
-        //Methods
-        function RefreshPlayersList() 
-        {
-            $.ajax({
-                url: '/Game/Home/PlayerBoard/@Model.GameId',
-                data:{
-                    gameId : '@Model.GameId'
-                },
-                success: function (html) {
-                    $('#playerBoardContainer').html(html);
-                    PlayerBoard_LoadRemoteStreams(_peerJsObject);
-                }
+            $('.card-tooltip[data-toggle="tooltip"]').tooltip({
+                animated: 'fade',
+                placement: 'auto',
+                html: true
             });
-        }
-
-        async function PassTurn()
-        {
-            await _gameHubConnection.invoke("PassTurn", '@Model.GameId');
-        }
-
-        function AnswerCall(call) 
-        {
-            call.answer(_localVideoStream);
         }
     </script>
 }

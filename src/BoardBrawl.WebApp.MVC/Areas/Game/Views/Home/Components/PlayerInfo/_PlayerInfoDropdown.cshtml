@@ -44,38 +44,6 @@
 <script>
     $(function () {
 
-        //Auto complete for card search boxes
-        var cache = {};
-        $(".cardsearch").each(function () {
-            var input = $(this);
-            var hiddenInputId = input.data('labelfor');
-
-            input.autocomplete({
-                minLength: 2,
-                source: function (request, response) {
-                    var term = request.term;
-                    if (term in cache) {
-                        response(cache[term]);
-                        return;
-                    }
-
-                    $.getJSON("/Game/Home/SearchCards", { searchString: term }, function (data, status, xhr) {
-                        cache[term] = data;
-                        response(data);
-                    });
-                },
-                focus: function (event, ui) {
-                    input.val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    input.val(ui.item.label);
-                    $("#" + hiddenInputId).val(ui.item.value).trigger('change');
-                    return false;
-                }
-            });
-        });
-
         //Update state when user selects a commander
         $('#commander1').on('change', function () {
             var newValue = $(this).val();
