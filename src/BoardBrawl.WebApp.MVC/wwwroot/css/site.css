@@ -21,3 +21,7 @@ body {
 ul.ui-autocomplete {
     z-index: 9999;
 }
+
+.text-xs {
+    font-size: .75rem;
+}

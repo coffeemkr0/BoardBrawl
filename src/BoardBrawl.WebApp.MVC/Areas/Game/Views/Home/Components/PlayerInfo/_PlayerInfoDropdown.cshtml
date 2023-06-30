@@ -1,25 +1,31 @@
 ﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models;
 @model PlayerInfo;
 
+<style>
+   
+
+</style>
+
 <div class="card">
     <div class="card-header">
         <h5>@Model.PlayerName</h5>
     </div>
 
-    <div class="card-body py-2 px-3">
-        <div class="row pb-4">
+    <div class="card-body py-2">
+        <div class="pb-4">
             <div class="pb-2">
                 <span class="fst-italic">Commander(s)</span>
             </div>
-            <div class="col-6">
-                <input class="form-control commander-search-input cardsearch placeholder-xs"
-                       placeholder="Add Commander" data-labelfor="commander1" value="@Model.Commander1?.Name">
-                <input type="hidden" name="Commander1" id="commander1" value="@Model.Commander1Id">
-            </div>
-            <div class="col-6">
-                <input class="form-control commander-search-input cardsearch placeholder-xs"
-                       placeholder="Add Commander" data-labelfor="commander2" value="@Model.Commander2?.Name">
-                <input type="hidden" name="Commander2" id="commander2" value="@Model.Commander2Id">
+            <div id="commanderInputs" class="row text-xs">
+                <div class="col px-2">
+                    <input class="form-control input-commander text-xs" placeholder="Add Commander" data-labelfor="commander1" value="@Model.Commander1?.Name">
+                    <input type="hidden" name="Commander1" id="commander1" value="@Model.Commander1Id">
+                </div>
+                <div class="col px-2">
+                    <input class="form-control input-commander text-xs"
+                           placeholder="Add Commander" data-labelfor="commander2" value="@Model.Commander2?.Name">
+                    <input type="hidden" name="Commander2" id="commander2" value="@Model.Commander2Id">
+                </div>
             </div>
         </div>
         <div class="fst-italic">Damage Counters</div>
@@ -49,6 +55,39 @@
 
 <script>
     $(function () {
+
+        //Auto complete for commander inputs
+        var cache = {};
+        $(".input-commander").each(function () {
+            var input = $(this);
+            var hiddenInputId = input.data('labelfor');
+
+            input.autocomplete({
+                minLength: 2,
+                source: function (request, response) {
+                    var term = request.term;
+                    if (term in cache) {
+                        response(cache[term]);
+                        return;
+                    }
+
+                    $.getJSON("/Game/Home/SearchCards", { searchString: term }, function (data, status, xhr) {
+                        cache[term] = data;
+                        response(data);
+                    });
+                },
+                focus: function (event, ui) {
+                    input.val(ui.item.label);
+                    return false;
+                },
+                select: function (event, ui) {
+                    input.val(ui.item.label);
+                    $("#" + hiddenInputId).val(ui.item.value).trigger('change');
+                    return false;
+                },
+                appendTo: '#commanderInputs'
+            });
+        });
 
         //Update state when user selects a commander
         $('#commander1').on('change', function () {

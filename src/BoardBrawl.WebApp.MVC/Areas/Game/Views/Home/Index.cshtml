@@ -46,7 +46,6 @@
         {
             InitializeGameHubConnection();
             InitializeUiEventHandlers();
-            InitializeAutoCompleteForCardSearchInputs();
             InitializeTooltipsForCards();
 
             _peerJsObject = new Peer();
@@ -57,7 +56,6 @@
 
         $(document).ajaxComplete(function () {
             //Re-initialize auto complete and tooltips after any part of the board is reloaded
-            InitializeAutoCompleteForCardSearchInputs();
             InitializeTooltipsForCards();
         });
 
@@ -262,40 +260,6 @@
                         var playerInfoElement = $('.playerInfo[data-userid="' + userId + '"]:first');
 
                         playerInfoElement.html(html);
-                    }
-                });
-            });
-        }
-
-        function InitializeAutoCompleteForCardSearchInputs()
-        {
-            var cache = {};
-            $(".cardsearch").each(function () {
-                var input = $(this);
-                var hiddenInputId = input.data('labelfor');
-
-                input.autocomplete({
-                    minLength: 2,
-                    source: function (request, response) {
-                        var term = request.term;
-                        if (term in cache) {
-                            response(cache[term]);
-                            return;
-                        }
-
-                        $.getJSON("/Game/Home/SearchCards", { searchString: term }, function (data, status, xhr) {
-                            cache[term] = data;
-                            response(data);
-                        });
-                    },
-                    focus: function (event, ui) {
-                        input.val(ui.item.label);
-                        return false;
-                    },
-                    select: function (event, ui) {
-                        input.val(ui.item.label);
-                        $("#" + hiddenInputId).val(ui.item.value).trigger('change');
-                        return false;
                     }
                 });
             });
