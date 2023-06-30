@@ -6,17 +6,17 @@
         <h5>@Model.PlayerName</h5>
     </div>
 
-    <div class="card-body">
-        <div class="row pt-2 pb-4">
-            <div class="pb-1">
-                <span class="fst-italic mb-2">Commander(s)</span>
+    <div class="card-body py-2 px-3">
+        <div class="row pb-4">
+            <div class="pb-2">
+                <span class="fst-italic">Commander(s)</span>
             </div>
-            <div class="col-md-6">
+            <div class="col-6">
                 <input class="form-control commander-search-input cardsearch placeholder-xs"
                        placeholder="Add Commander" data-labelfor="commander1" value="@Model.Commander1?.Name">
                 <input type="hidden" name="Commander1" id="commander1" value="@Model.Commander1Id">
             </div>
-            <div class="col-md-6">
+            <div class="col-6">
                 <input class="form-control commander-search-input cardsearch placeholder-xs"
                        placeholder="Add Commander" data-labelfor="commander2" value="@Model.Commander2?.Name">
                 <input type="hidden" name="Commander2" id="commander2" value="@Model.Commander2Id">
