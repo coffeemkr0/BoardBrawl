@@ -9,11 +9,11 @@
 
     .dropdown-menu-extended {
         max-height: 500px; /* Or any other value */
-        overflow-y: auto;
+
     }
 
     .custom-dropdown {
-        width: 315px; /* Or any other value */
+        width: 600px; /* Or any other value */
     }
 
     .no-arrow::after {
@@ -37,35 +37,38 @@
                     <div>
                         <span>Mike</span>
                     </div>
-                    <div class="dropdown">
-                        <div class="dropdown-toggle no-arrow shadow-none fst-italic" type="button" id="playerInfoDropDownToggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            @if(Model.Commander1 == null)
-                            {
-                                <span>click to add commander(s)</span>
-                            }
-                            else
-                            {
-                                <span class="card-tooltip" data-toggle="tooltip" title="<img src='@Model.Commander1.ImageUri' alt='Commander Card Image' class='card-tooltip-image' />">
-                                    @Model.Commander1.Name
-                                </span>
-                            }
-                            
-                            @if (Model.Commander2 != null)
-                            {
-                                <span> / </span>
 
-                                <span class="card-tooltip" data-toggle="tooltip" title="<img src='@Model.Commander2.ImageUri' alt='Commander Card Image' class='card-tooltip-image' />">
-                                    @Model.Commander2.Name
-                                </span>
-                            }
-                        </div>
+                    <div id="playerInfoDropdownContainer">
+                        <div class="dropdown" id="playerInfoDropdown">
+                            <div class="dropdown-toggle no-arrow shadow-none fst-italic" type="button" id="playerInfoDropDownToggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                @if (Model.Commander1 == null)
+                                {
+                                    <span>click to add commander(s)</span>
+                                }
+                                else
+                                {
+                                    <span class="card-tooltip" data-toggle="tooltip" title="<img src='@Model.Commander1.ImageUri' alt='Commander Card Image' class='card-tooltip-image' />">
+                                        @Model.Commander1.Name
+                                    </span>
+                                }
 
-                        <div class="mt-1">
-                            @await Html.PartialAsync("_CardColors", Model.CommanderColors)
-                        </div>
+                                @if (Model.Commander2 != null)
+                                {
+                                    <span> / </span>
 
-                        <div class="dropdown-menu dropdown-menu-right text-white custom-dropdown" aria-labelledby="playerInfoDropDownToggle" style="background-color: slateblue;">
-                            @await Html.PartialAsync("Components/PlayerInfo/_PlayerInfoDropdown", Model)
+                                    <span class="card-tooltip" data-toggle="tooltip" title="<img src='@Model.Commander2.ImageUri' alt='Commander Card Image' class='card-tooltip-image' />">
+                                        @Model.Commander2.Name
+                                    </span>
+                                }
+                            </div>
+
+                            <div class="mt-1">
+                                @await Html.PartialAsync("_CardColors", Model.CommanderColors)
+                            </div>
+
+                            <div id="playerInfoDropdownContent" class="dropdown-menu dropdown-menu-right text-white custom-dropdown" aria-labelledby="playerInfoDropDownToggle" style="background-color: slateblue;">
+                                @await Html.PartialAsync("Components/PlayerInfo/_PlayerInfoDropdown", Model)
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -83,3 +86,22 @@
         </div>
     </div>
 </div>
+
+<script>
+    $()
+    {
+        $('#playerInfoDropdown').on('show.bs.dropdown', function () {
+            $('body').append($('#playerInfoDropdownContent').css({
+                position: 'absolute',
+                left: $('.dropdown').offset().left,
+                top: $('.dropdown').offset().top
+            }).detach());
+        });
+
+        $('#playerInfoDropdown').on('hidden.bs.dropdown', function () {
+            $('#playerInfoDropdown').append($('#playerInfoDropdownContent').css({
+                position: false, left: false, top: false
+            }).detach());
+        });
+    }
+</script>
