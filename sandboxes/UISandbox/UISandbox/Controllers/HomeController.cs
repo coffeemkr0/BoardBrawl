@@ -18,7 +18,7 @@ namespace UISandbox.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View("Tooltips");
         }
 
         public async Task<IActionResult> SearchCommanders(string searchString)

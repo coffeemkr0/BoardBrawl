@@ -1,0 +1,20 @@
+﻿
+<header style="height:25px;">
+
+</header>
+
+<span data-toggle="tooltip" data-placement="auto" title="<img src='http://getbootstrap.com/apple-touch-icon.png' />">My text that should show an image tooltip</span>
+
+
+@section Scripts
+{
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip({
+                animated: 'fade',
+                placement: 'bottom',
+                html: true
+            });
+        })
+    </script>
+}
