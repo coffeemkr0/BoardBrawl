@@ -87,9 +87,24 @@
                         <span>Player Name</span>
                     </div>
                     <div class="dropdown">
-                        <div class="dropdown-toggle no-arrow shadow-none" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span>Commander Name</span>
+                        <div class="dropdown-toggle no-arrow shadow-none fst-italic" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            @if(Model.Commander1 == null)
+                            {
+                                <span>click to add commander(s)</span>
+                            }
+                            else
+                            {
+                                <span>@Model.Commander1.Name</span>
+                            }
+                            
+                            @if (Model.Commander2 != null)
+                            {
+                                <span> / </span>
+                                <span>@Model.Commander2.Name</span>
+                            }
                         </div>
+
+
                         <div class="dropdown-menu dropdown-menu-right text-white custom-dropdown" aria-labelledby="dropdownMenuButton" style="background-color: slateblue;">
                             <div class="card-body" style="font-size: 12px; padding-top: 5px; padding-bottom: 5px; background-color: slateblue;">
                                 <h6 class="text-white mb-2">Player Name</h6>
