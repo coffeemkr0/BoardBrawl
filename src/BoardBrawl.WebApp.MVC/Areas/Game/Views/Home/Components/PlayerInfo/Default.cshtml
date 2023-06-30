@@ -104,6 +104,9 @@
                             }
                         </div>
 
+                        <div class="mt-1">
+                            @await Html.PartialAsync("_CardColors", Model.CommanderColors)
+                        </div>
 
                         <div class="dropdown-menu dropdown-menu-right text-white custom-dropdown" aria-labelledby="dropdownMenuButton" style="background-color: slateblue;">
                             <div class="card-body" style="font-size: 12px; padding-top: 5px; padding-bottom: 5px; background-color: slateblue;">

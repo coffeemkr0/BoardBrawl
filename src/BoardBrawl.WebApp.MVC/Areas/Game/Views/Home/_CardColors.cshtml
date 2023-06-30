@@ -1,0 +1,51 @@
+﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models;
+@model List<Colors>
+
+<style>
+    .card-color-white {
+        background-color: #fff;
+    }
+
+    .card-color-black {
+        background-color: #232b39;
+    }
+
+    .card-color-blue {
+        background-color: #3182ce;
+    }
+
+    .card-color-green {
+        background-color: #38a169;
+    }
+
+    .card-color-red {
+        background-color: #e53e3e;
+    }
+</style>
+
+<div class="d-flex" aria-label="commander colors">
+    @if (Model.Contains(Colors.White))
+    {
+        <div aria-label="white" class="rounded card-color-white" style="margin-left: 2px; margin-right: 2px; width: 20px; height: 2px;"></div>
+    }
+
+    @if (Model.Contains(Colors.Blue))
+    {
+        <div aria-label="blue" class="rounded card-color-blue" style="margin-left: 2px; margin-right: 2px; width: 20px; height: 2px;"></div>
+    }
+
+    @if (Model.Contains(Colors.Black))
+    {
+        <div aria-label="black" class="rounded card-color-black" style="margin-left: 2px; margin-right: 2px; width: 20px; height: 2px;"></div>
+    }
+
+    @if (Model.Contains(Colors.Red))
+    {
+        <div aria-label="red" class="rounded card-color-red" style="margin-left: 2px; margin-right: 2px; width: 20px; height: 2px;"></div>
+    }
+
+    @if (Model.Contains(Colors.Green))
+    {
+        <div aria-label="green" class="rounded card-color-green" style="margin-left: 2px; margin-right: 2px; width: 20px; height: 2px;"></div>
+    }
+</div>

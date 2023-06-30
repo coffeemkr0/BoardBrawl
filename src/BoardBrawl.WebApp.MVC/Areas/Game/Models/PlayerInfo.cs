@@ -14,5 +14,11 @@
         public CardInfo? Commander1 { get; set; }
         public string? Commander2Id { get; set; }
         public CardInfo? Commander2 { get; set; }
+        public List<Colors> CommanderColors { get; }
+
+        public PlayerInfo()
+        {
+            CommanderColors = new List<Colors>();
+        }
     }
 }
