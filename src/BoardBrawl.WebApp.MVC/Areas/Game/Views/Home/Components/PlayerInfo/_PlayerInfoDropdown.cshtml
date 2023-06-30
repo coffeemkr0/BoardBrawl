@@ -1,0 +1,115 @@
+﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models;
+@model PlayerInfo;
+
+<div class="card-body" style="font-size: 12px; padding-top: 5px; padding-bottom: 5px; background-color: slateblue;">
+    <h6 class="text-white mb-2">Player Name</h6>
+    <div class="row pt-2 pb-4">
+        <div class="pb-1">
+            <span class="fst-italic mb-2">Commander(s)</span>
+        </div>
+        <div class="col-md-6">
+            <input class="form-control commander-search-input cardsearch placeholder-xs"
+                   placeholder="Add Commander" data-labelfor="commander1" value="@Model.Commander1?.Name">
+            <input type="hidden" name="Commander1" id="commander1" value="@Model.Commander1Id">
+        </div>
+        <div class="col-md-6">
+            <input class="form-control commander-search-input cardsearch placeholder-xs"
+                   placeholder="Add Commander" data-labelfor="commander2" value="@Model.Commander2?.Name">
+            <input type="hidden" name="Commander2" id="commander2" value="@Model.Commander2Id">
+        </div>
+    </div>
+    <div class="fst-italic">Damage Counters</div>
+    <div class="row align-items-center">
+        <div class="col-7" style="padding-right: 10px;"><span class="damage-type-header">Commander</span></div>
+        <div class="col-5">
+            <span class="float-end">
+                <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnDecreaseCommanderDamage btn-player-counter">-</button>
+                @Model.CommanderDamage
+                <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnIncreaseCommanderDamage btn-player-counter">+</button>
+            </span>
+        </div>
+    </div>
+    <div class="row align-items-center">
+        <div class="col-7" style="padding-right: 10px;"><span class="damage-type-header">Infect</span></span></div>
+        <div class="col-5 float-end">
+            <span class="float-end">
+                <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnDecreaseInfectDamage btn-player-counter">-</button>
+                @Model.InfectDamage
+                <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnIncreaseInfectDamage btn-player-counter">+</button>
+            </span>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+        //Auto complete for card search boxes
+        var cache = {};
+        $(".cardsearch").each(function () {
+            var input = $(this);
+            var hiddenInputId = input.data('labelfor');
+
+            input.autocomplete({
+                minLength: 2,
+                source: function (request, response) {
+                    var term = request.term;
+                    if (term in cache) {
+                        response(cache[term]);
+                        return;
+                    }
+
+                    $.getJSON("/Game/Home/SearchCards", { searchString: term }, function (data, status, xhr) {
+                        cache[term] = data;
+                        response(data);
+                    });
+                },
+                focus: function (event, ui) {
+                    input.val(ui.item.label);
+                    return false;
+                },
+                select: function (event, ui) {
+                    input.val(ui.item.label);
+                    $("#" + hiddenInputId).val(ui.item.value).trigger('change');
+                    return false;
+                }
+            });
+        });
+
+        //Update state when user selects a commander
+        $('#commander1').on('change', function () {
+            var newValue = $(this).val();
+
+            $.ajax({
+                url: '/Game/Home/UpdateCommander',
+                data: {
+                    gameId: '@(Model.GameId)',
+                    slot: 1,
+                    cardId: newValue
+                },
+                success: function (html) {
+                    var playerInfoElement = $('.playerInfo[data-userid="@Model.UserId"]:first');
+                    playerInfoElement.html(html);
+                }
+            });
+        });
+
+        $('#commander2').on('change', function () {
+            var newValue = $(this).val();
+
+            $.ajax({
+                url: '/Game/Home/UpdateCommander',
+                data: {
+                    gameId: '@(Model.GameId)',
+                    slot: 2,
+                    cardId: newValue
+                },
+                success: function (html) {
+                    var playerInfoElement = $('.playerInfo[data-userid="@Model.UserId"]:first');
+                    playerInfoElement.html(html);
+                }
+            });
+        });
+
+    });
+</script>
