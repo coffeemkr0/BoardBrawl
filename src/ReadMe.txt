@@ -24,3 +24,12 @@ from PM console in VS, with the BoarBrawl.Data project selected as the default p
 Delete migrations folder first and then run a command like this:
 Add-Migration InitialCreate -Context IdentityDbContext -OutputDir Identity\Migrations
 Add-Migration InitialCreate -Context ApplicationDbContext -OutputDir Application\Migrations
+
+Not sure what happens on the Digital Ocean droplet, but occasionally, .Net gets corrupted
+See this for correction - https://stackoverflow.com/questions/73753672/a-fatal-error-occurred-the-folder-usr-share-dotnet-host-fxr-does-not-exist
+
+sudo apt remove dotnet*
+sudo apt remove aspnetcore*
+sudo apt remove netstandard*
+sudo apt update
+sudo apt install dotnet-sdk-6.0
