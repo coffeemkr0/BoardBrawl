@@ -72,8 +72,27 @@
     .damage-type-header {
         margin-left: 10px;
     }
+
+    .text-with-popup {
+        position: relative;
+        display: inline-block;
+    }
+
+    .text-with-popup img {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 325px;
+        z-index:1000;
+    }
+
+    .text-with-popup:hover img {
+        display: block;
+    }
 </style>
-<div class="card bg-transparent border-0">
+<div class="card bg-transparent border-0" id="playerInfo1234">
     <div class="card-body text-white bg-dark" style="padding-top: 5px;">
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
@@ -84,9 +103,9 @@
                 </div>
                 <div class="ml-2" style="font-size: 12px;">
                     <div>
-                        <span>Player Name</span>
+                        <span>Mike</span>
                     </div>
-                    <div class="dropdown">
+                    <div class="dropdown" id="tooltipTest">
                         <div class="dropdown-toggle no-arrow shadow-none fst-italic" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                             @if(Model.Commander1 == null)
                             {
@@ -94,15 +113,24 @@
                             }
                             else
                             {
-                                <span>@Model.Commander1.Name</span>
+                                <span class="text-with-popup">
+                                    @Model.Commander1.Name
+                                    <img src="@Model.Commander1.ImageUri" alt="Commander Card Image">
+                                </span>
                             }
                             
                             @if (Model.Commander2 != null)
                             {
                                 <span> / </span>
-                                <span>@Model.Commander2.Name</span>
+
+                                <span class="text-with-popup">
+                                    @Model.Commander2.Name
+                                    <img src="@Model.Commander2.ImageUri" alt="Commander Card Image">
+                                </span>
                             }
                         </div>
+
+                        
 
                         <div class="mt-1">
                             @await Html.PartialAsync("_CardColors", Model.CommanderColors)
@@ -169,6 +197,8 @@
 <script>
     //Auto complete card search boxes
     $(function () {
+
+        //Auto complete for card search boxes
         var cache = {};
         $(".cardsearch").each(function () {
             var input = $(this);
@@ -200,6 +230,7 @@
             });
         });
 
+        //Update state when user selects a commander
         $('#commander1').on('change', function () {
             var newValue = $(this).val();
             
