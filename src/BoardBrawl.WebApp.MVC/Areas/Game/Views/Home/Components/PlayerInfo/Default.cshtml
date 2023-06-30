@@ -7,15 +7,6 @@
         margin-top: -5px;
     }
 
-    .dropdown-menu-extended {
-        max-height: 500px; /* Or any other value */
-
-    }
-
-    .custom-dropdown {
-        width: 600px; /* Or any other value */
-    }
-
     .no-arrow::after {
         display: none;
     }
@@ -24,7 +15,7 @@
         margin-left: 10px;
     }
 </style>
-<div class="card bg-transparent border-0" id="playerInfo1234">
+<div class="card bg-transparent border-0">
     <div class="card-body text-white bg-dark" style="padding-top: 5px;">
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
@@ -66,7 +57,7 @@
                                 @await Html.PartialAsync("_CardColors", Model.CommanderColors)
                             </div>
 
-                            <div id="playerInfoDropdownContent" class="dropdown-menu dropdown-menu-right text-white custom-dropdown" aria-labelledby="playerInfoDropDownToggle" style="background-color: slateblue;">
+                            <div id="playerInfoDropdownContent" class="dropdown-menu py-0" style="width:400px" aria-labelledby="playerInfoDropDownToggle">
                                 @await Html.PartialAsync("Components/PlayerInfo/_PlayerInfoDropdown", Model)
                             </div>
                         </div>
@@ -74,7 +65,7 @@
                 </div>
             </div>
 
-            <div class="dropdown">
+@*            <div class="dropdown">
                 <button class="btn shadow-none text-white p-0 no-arrow dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     ...
                 </button>
@@ -82,7 +73,7 @@
                     <div class="card-body" style="font-size: 12px; padding-top: 5px;">
                     </div>
                 </div>
-            </div>
+            </div>*@
         </div>
     </div>
 </div>
