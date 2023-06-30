@@ -73,23 +73,12 @@
         margin-left: 10px;
     }
 
-    .text-with-popup {
-        position: relative;
-        display: inline-block;
+    .card-tooltip-image {
+        width:250px;
     }
 
-    .text-with-popup img {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 325px;
-        z-index:1000;
-    }
-
-    .text-with-popup:hover img {
-        display: block;
+    .tooltip-inner {
+        max-width: 100% !important;
     }
 </style>
 <div class="card bg-transparent border-0" id="playerInfo1234">
@@ -113,9 +102,8 @@
                             }
                             else
                             {
-                                <span class="text-with-popup">
+                                <span data-toggle="tooltip" title="<img src='@Model.Commander1.ImageUri' alt='Commander Card Image' class='card-tooltip-image' />">
                                     @Model.Commander1.Name
-                                    <img src="@Model.Commander1.ImageUri" alt="Commander Card Image">
                                 </span>
                             }
                             
@@ -123,9 +111,8 @@
                             {
                                 <span> / </span>
 
-                                <span class="text-with-popup">
+                                <span data-toggle="tooltip" title="<img src='@Model.Commander2.ImageUri' alt='Commander Card Image' class='card-tooltip-image' />">
                                     @Model.Commander2.Name
-                                    <img src="@Model.Commander2.ImageUri" alt="Commander Card Image">
                                 </span>
                             }
                         </div>
@@ -263,6 +250,13 @@
                     playerInfoElement.html(html);
                 }
             });
+        });
+
+        //Tooltips for cards
+        $('span[data-toggle="tooltip"]').tooltip({
+            animated: 'fade',
+            placement: 'auto',
+            html: true
         });
     });
 </script>
