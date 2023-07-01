@@ -16,9 +16,9 @@
         InitializeLocalVideoStream();
         SetFocusedVideo();
 
-        $(document).off('click', '.playerListPlayer');
-        $(document).on('click', '.playerListPlayer', function () {
-            OnPlayerListPlayerClicked(this);
+        $(document).off('click', '.playerVideo');
+        $(document).on('click', '.playerVideo', function () {
+            OnPlayerVideoClicked(this);
         });
     });
 
@@ -100,10 +100,10 @@
         call.close();
     }
 
-    function OnPlayerListPlayerClicked(playerListPlayer) {
+    function OnPlayerVideoClicked(playerVideo) {
         //Set the main video to the clicked player
-        var videoElement = $(playerListPlayer).find('.playerVideo')[0];
-        var stream = videoElement.srcObject;
+        var playerListPlayer = $(playerVideo).closest('.playerListPlayer');
+        var stream = playerVideo.srcObject;
         var focusedPlayerVideo = $('#focusedPlayerVideo')[0];
         focusedPlayerVideo.srcObject = stream;
         focusedPlayerVideo.play();
