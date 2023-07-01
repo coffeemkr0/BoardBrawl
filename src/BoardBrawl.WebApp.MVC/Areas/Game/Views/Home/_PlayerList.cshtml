@@ -19,7 +19,7 @@
                 @{
                     <div class="playerListPlayer @(activePlayerClass) @(focusedPlayerClass)" data-playerid="@playerInfo.Id" style="position:relative;">
 
-                        <div class="playerInfo" data-userid="@playerInfo.UserId">@await Component.InvokeAsync("PlayerInfo", playerInfo)</div>
+                        <div class="playerInfo" data-userid="@playerInfo.UserId">@await Html.PartialAsync("_PlayerInfo", playerInfo)</div>
 
                         @if (playerInfo.UserId == Model.UserId)
                         {
