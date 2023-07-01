@@ -32,11 +32,11 @@
                     <div id="playerInfoDropdownContainer">
                         <div class="dropdown" id="playerInfoDropdown">
                             <div class="dropdown-toggle no-arrow shadow-none fst-italic" type="button" id="commanderInfo@(Model.Id)" data-bs-toggle="dropdown" aria-expanded="false">
-                                @await Html.PartialAsync("_CommanderInfo", Model)
+                                @await Html.PartialAsync("PlayerInfo/_CommanderInfo", Model)
                             </div>
 
                             <div id="playerInfoDropdownContent" class="dropdown-menu py-0" style="width:500px" aria-labelledby="commanderInfo@(Model.Id)">
-                                @await Html.PartialAsync("_PlayerInfoDropdown", Model)
+                                @await Html.PartialAsync("PlayerInfo/_PlayerInfoDropdown", Model)
                             </div>
                         </div>
                     </div>

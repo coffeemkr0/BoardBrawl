@@ -78,7 +78,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             //TODO:Get userId from Identity and get rid of gameId parameter
             var playerInfo = _mapper.Map<PlayerInfo>(_service.GetPlayer(userId));
             await LoadCommanderCardInfoCommand.Execute(playerInfo);
-            return PartialView("_PlayerInfo", playerInfo);
+            return PartialView("PlayerInfo/_PlayerInfo", playerInfo);
         }
 
         public IActionResult UpdateFocusedPlayer(int playerId, int focusedPlayerId)
@@ -91,14 +91,14 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
         {
             var playerInfo = _mapper.Map<PlayerInfo>(_service.DecreaseLifeTotal(gameId, userId, amount));
             await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfoChanged", userId);
-            return PartialView("_PlayerInfo", playerInfo);
+            return PartialView("PlayerInfo/_PlayerInfo", playerInfo);
         }
 
         public async Task<IActionResult> IncreaseLifeTotal(int gameId, string userId, int amount)
         {
             var playerInfo = _mapper.Map<PlayerInfo>(_service.IncreaseLifeTotal(gameId, userId, amount));
             await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfoChanged", userId);
-            return PartialView("_PlayerInfo", playerInfo);
+            return PartialView("PlayerInfo/_PlayerInfo", playerInfo);
         }
 
         public async Task<IActionResult> DecreaseCommanderDamage(int gameId, string userId, int amount)
@@ -112,21 +112,21 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
         {
             var playerInfo = _mapper.Map<PlayerInfo>(_service.IncreaseCommanderDamage(gameId, userId, amount));
             await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfoChanged", userId);
-            return PartialView("_PlayerInfo", playerInfo);
+            return PartialView("PlayerInfo/_PlayerInfo", playerInfo);
         }
 
         public async Task<IActionResult> DecreaseInfectDamage(int gameId, string userId, int amount)
         {
             var playerInfo = _mapper.Map<PlayerInfo>(_service.DecreaseInfectDamage(gameId, userId, amount));
             await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfoChanged", userId);
-            return PartialView("_PlayerInfo", playerInfo);
+            return PartialView("PlayerInfo/_PlayerInfo", playerInfo);
         }
 
         public async Task<IActionResult> IncreaseInfectDamage(int gameId, string userId, int amount)
         {
             var playerInfo = _mapper.Map<PlayerInfo>(_service.IncreaseInfectDamage(gameId, userId, amount));
             await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfoChanged", userId);
-            return PartialView("_PlayerInfo", playerInfo);
+            return PartialView("PlayerInfo/_PlayerInfo", playerInfo);
         }
 
         public async Task<IActionResult> SearchCards(string searchString)
@@ -174,7 +174,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
                 var playerInfoViewModel = _mapper.Map<PlayerInfo>(playerInfo);
                 await LoadCommanderCardInfoCommand.Execute(playerInfoViewModel);
                 await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfoChanged", userId);
-                return PartialView("_CommanderInfo", playerInfoViewModel);
+                return PartialView("PlayerInfo/_CommanderInfo", playerInfoViewModel);
             }
             catch (Exception ex)
             {
