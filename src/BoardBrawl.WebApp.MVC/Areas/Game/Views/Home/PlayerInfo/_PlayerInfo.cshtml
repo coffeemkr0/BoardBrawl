@@ -19,10 +19,8 @@
     <div class="card-body text-white bg-dark" style="padding-top: 5px;">
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
-                <div>
-                    <button data-userid="@Model.UserId" class="shadow-none text-white btn btn-transparent btn-sm btnDecreaseLife btn-player-counter">-</button>
-                    @Model.LifeTotal
-                    <button data-userid="@Model.UserId" class="shadow-none btn text-white btn-transparent btn-sm btnIncreaseLife btn-player-counter">+</button>
+                <div class="playerLifeTotalContainer" data-player-id="@Model.Id">
+                    @await Html.PartialAsync("PlayerInfo/_PlayerLifeTotal", Model)
                 </div>
                 <div class="ml-2" style="font-size: 12px;">
                     <div>
