@@ -29,6 +29,8 @@ namespace BoardBrawl.Repositories.Game
 
             playerEntity.GameId = gameId;
             _applicationDbContext.SaveChanges();
+
+            playerInfo.Id = playerEntity.Id;
         }
 
         public void CloseGame(GameInfo gameInfo)
@@ -59,17 +61,6 @@ namespace BoardBrawl.Repositories.Game
             var playerEntities = _applicationDbContext.Players.Where(i => i.GameId == gameId);
 
             return _mapper.Map<List<PlayerInfo>>(playerEntities);
-        }
-
-        public void UpdatePeerId(int gameId, string userId, Guid peerId)
-        {
-            var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.GameId == gameId && i.UserId == userId);
-
-            if (playerEntity != null)
-            {
-                playerEntity.PeerId = peerId;
-                _applicationDbContext.SaveChanges();
-            }
         }
 
         public void DecreaseCommanderDamage(int gameId, string userId, int amount)
@@ -162,6 +153,14 @@ namespace BoardBrawl.Repositories.Game
             _applicationDbContext.SaveChanges();
 
             return _mapper.Map<PlayerInfo>(playerEntity);
+        }
+
+        public void UpdatePeerId(int playerId, Guid peerId)
+        {
+            var playerEntity = _applicationDbContext.Players.First(i => i.Id == playerId);
+
+            playerEntity.PeerId = peerId;
+            _applicationDbContext.SaveChanges();
         }
     }
 }

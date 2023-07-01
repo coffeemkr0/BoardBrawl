@@ -35,7 +35,6 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.ViewComponents
             var model = new PlayerBoard
             {
                 GameId = gameId,
-                UserId = userId,
                 PlayerId = myPlayer.Id,
                 FocusedPlayerId = focusedPlayer?.Id ?? players.First().Id,
                 ActivePlayerId = gameInfo.ActivePlayerId

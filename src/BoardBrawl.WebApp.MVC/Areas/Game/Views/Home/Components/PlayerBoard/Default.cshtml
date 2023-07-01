@@ -39,7 +39,7 @@
         })
         .catch(error => {
             if (videoElement) videoElement.style.display = "none";
-            var errorImageElement = $('.errorImage[data-userid="@Model.UserId"]')[0];
+            var errorImageElement = $('.errorImage[data-player-id="@Model.PlayerId"]')[0];
             errorImageElement.style.display = "block";
         });
     }

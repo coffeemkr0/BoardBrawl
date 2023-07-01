@@ -42,17 +42,19 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             var userId = _userManager.GetUserId(User);
 
             //TODO:Check to see if player is already in the game first, also consider a command to create the player info
-            _service.AddPlayerToGame(id.Value, new Services.Game.Models.PlayerInfo
+            var playerInfo = new Services.Game.Models.PlayerInfo
             {
                 UserId = userId,
                 Name = $"Player {userId.ToString()[..5]}",
                 LifeTotal = 40
-            });
+            };
+
+            _service.AddPlayerToGame(id.Value, playerInfo);
 
             var model = new Model
             {
                 GameId = id.Value,
-                UserId = userId,
+                PlayerId = playerInfo.Id,
                 GameName = gameInfo.Name
             };
 
@@ -62,15 +64,12 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
         public IActionResult PassTurn(int gameId)
         {
             _service.PassTurn(gameId);
-
-            var userId = _userManager.GetUserId(User);
-            return ViewComponent("PlayerBoard", new { gameId, userId });
+            return ViewComponent("PlayerBoard", new { gameId });
         }
 
         public IActionResult PlayerBoard(int gameId)
         {
-            var userId = _userManager.GetUserId(User);
-            return ViewComponent("PlayerBoard", new { gameId, userId });
+            return ViewComponent("PlayerBoard", new { gameId });
         }
 
         public IActionResult UpdateFocusedPlayer(int playerId, int focusedPlayerId)
@@ -130,7 +129,6 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 
                 var playerInfoViewModel = _mapper.Map<PlayerInfo>(playerInfo);
                 await LoadCommanderCardInfoCommand.Execute(playerInfoViewModel);
-                await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfoChanged", userId);
                 return PartialView("PlayerInfo/_CommanderInfo", playerInfoViewModel);
             }
             catch (Exception ex)

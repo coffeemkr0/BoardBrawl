@@ -19,17 +19,17 @@
                 @{
                     <div class="playerListPlayer @(activePlayerClass) @(focusedPlayerClass)" data-playerid="@playerInfo.Id" style="position:relative;">
 
-                        <div class="playerInfo" data-userid="@playerInfo.UserId">@await Html.PartialAsync("PlayerInfo/_PlayerInfo", playerInfo)</div>
+                        <div class="playerInfo" data-plyaer-id="@playerInfo.Id">@await Html.PartialAsync("PlayerInfo/_PlayerInfo", playerInfo)</div>
 
-                        @if (playerInfo.UserId == Model.UserId)
+                        @if (playerInfo.Id == Model.PlayerId)
                         {
                             <video class="playerVideo localVideo" muted style="width:100%"></video>
-                            <div class="errorImage container" data-userid="@playerInfo.UserId" style="display:none"><img class="img-fluid" src="~/images/game/error-image-generic.png" /></div>
+                            <div class="errorImage container" data-player-id="@playerInfo.Id" style="display:none"><img class="img-fluid" src="~/images/game/error-image-generic.png" /></div>
                         }
                         else
                         {
-                            <video class="playerVideo remoteVideo" style="width:100%" data-userid="@playerInfo.UserId" data-peerid="@playerInfo.PeerId"></video>
-                            <div class="errorImage container" data-userid="@playerInfo.UserId" data-peerid="@playerInfo.PeerId" style="display:none"><img class="img-fluid" src="~/images/game/error-image-generic.png" /></div>
+                            <video class="playerVideo remoteVideo" style="width:100%" data-player-id="@playerInfo.Id" data-peerid="@playerInfo.PeerId"></video>
+                            <div class="errorImage container" data-player-id="@playerInfo.Id" data-peerid="@playerInfo.PeerId" style="display:none"><img class="img-fluid" src="~/images/game/error-image-generic.png" /></div>
                         }
 
                         @if (isFocusedPlayer)

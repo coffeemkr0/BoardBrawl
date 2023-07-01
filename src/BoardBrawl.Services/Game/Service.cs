@@ -18,7 +18,9 @@ namespace BoardBrawl.Services.Game
 
         public void AddPlayerToGame(int gameId, PlayerInfo playerInfo)
         {
-            _repository.AddPlayerToGame(gameId, _mapper.Map< Repositories.Game.Models.PlayerInfo >(playerInfo));
+            var repoPlayerInfo = _mapper.Map<Repositories.Game.Models.PlayerInfo>(playerInfo);
+            _repository.AddPlayerToGame(gameId, repoPlayerInfo);
+            playerInfo.Id = repoPlayerInfo.Id;
         }
 
         public GameInfo? GetGameInfo(int id)
@@ -38,11 +40,6 @@ namespace BoardBrawl.Services.Game
         {
             var repoPlayers = _repository.GetPlayers(gameId);
             return _mapper.Map<List<PlayerInfo>>(repoPlayers);
-        }
-
-        public void UpdatePeerId(int gameId, string userId, Guid peerId)
-        {
-            _repository.UpdatePeerId(gameId, userId, peerId);
         }
 
         public PlayerInfo IncreaseCommanderDamage(int gameId, string userId, int amount)
@@ -122,6 +119,11 @@ namespace BoardBrawl.Services.Game
         public PlayerInfo AdjustLifeTotal(int playerId, int amount)
         {
             return _mapper.Map<PlayerInfo>(_repository.AdjustLifeTotal(playerId, amount));
+        }
+
+        public void UpdatePeerId(int playerId, Guid peerId)
+        {
+            _repository.UpdatePeerId(playerId, peerId);
         }
     }
 }

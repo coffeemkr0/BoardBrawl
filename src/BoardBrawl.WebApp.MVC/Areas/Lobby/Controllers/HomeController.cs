@@ -53,14 +53,12 @@ namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
         
         public IActionResult JoinGame(int gameId)
         {
-            var userId = _userManager.GetUserId(User);
             return RedirectToAction("Index", "Home", new { area = "Game", id = gameId });
         }
 
         [HttpPost]
         public IActionResult DeleteGame(int gameId)
         {
-            var userId = _userManager.GetUserId(User);
             _service.DeleteGame(gameId);
             return RedirectToAction("Index");
         }

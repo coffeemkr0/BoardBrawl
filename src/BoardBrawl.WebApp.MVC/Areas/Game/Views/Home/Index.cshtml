@@ -77,15 +77,15 @@
             _gameHubConnection = new signalR.HubConnectionBuilder()
                 .withUrl("/GameHub").build();
 
-            _gameHubConnection.on("OnPlayerJoined", function (userId, peerId) {
-                OnPlayerJoinedGame(userId, peerId);
+            _gameHubConnection.on("OnPlayerJoined", function (playerId, peerId) {
+                OnPlayerJoinedGame(playerId, peerId);
             });
 
             _gameHubConnection.on("OnPlayerLifeTotalChanged", function (playerId) {
                 OnPlayerLifeTotalChanged(playerId);
             });
 
-            _gameHubConnection.on("OnPassTurn", function (userId, peerId) {
+            _gameHubConnection.on("OnPassTurn", function () {
                 OnPassTurn();
             });
         }
@@ -93,19 +93,17 @@
         async function JoinGameHub()
         {
             await _gameHubConnection.start();
-            await _gameHubConnection.invoke("JoinGameHub", '@Model.GameId', '@Model.UserId', _peerJsConnectionId);
+            await _gameHubConnection.invoke("JoinGameHub", '@Model.GameId', '@Model.PlayerId', _peerJsConnectionId);
         }
 
         //Game hub events
-        function OnPlayerJoinedGame(userId, peerId) 
+        function OnPlayerJoinedGame(playerId, peerId) 
         {
             RefreshPlayersList();
         }
 
         function OnPassTurn()
         {
-            console.log('On pass turn');
-
             $.ajax({
                 url: '/Game/Home/PlayerBoard/@Model.GameId',
                 data: {
@@ -120,7 +118,7 @@
 
         function OnPlayerLifeTotalChanged(playerId)
         {
-            console.log('player life total changed for player Id ' + playerId);
+            
         }
 
         //Methods
@@ -152,80 +150,6 @@
         {
             $(document).on('click', '#btnPassTurn', function () {
                 PassTurn();
-            });
-
-            $(document).on('click', '.btnDecreaseCommanderDamage', function () {
-                event.stopPropagation();
-                var userId = $(this).data('userid');
-
-                $.ajax({
-                    url: '/Game/Home/DecreaseCommanderDamage',
-                    data: {
-                        gameId: '@(Model.GameId)',
-                        userId: userId,
-                        amount: 1
-                    },
-                    success: function (html) {
-                        var playerInfoElement = $('.playerInfo[data-userid="' + userId + '"]:first');
-                        playerInfoElement.html(html);
-                    }
-                });
-            });
-
-            $(document).on('click', '.btnIncreaseCommanderDamage', function () {
-                event.stopPropagation();
-                var userId = $(this).data('userid');
-
-                $.ajax({
-                    url: '/Game/Home/IncreaseCommanderDamage',
-                    data: {
-                        gameId: '@(Model.GameId)',
-                        userId: userId,
-                        amount: 1
-                    },
-                    success: function (html) {
-                        var playerInfoElement = $('.playerInfo[data-userid="' + userId + '"]:first');
-                        playerInfoElement.html(html);
-                    }
-                });
-            });
-
-            $(document).on('click', '.btnDecreaseInfectDamage', function () {
-                event.stopPropagation();
-                var userId = $(this).data('userid');
-
-                $.ajax({
-                    url: '/Game/Home/DecreaseInfectDamage',
-                    data: {
-                        gameId: '@(Model.GameId)',
-                        userId: userId,
-                        amount: 1
-                    },
-                    success: function (html) {
-                        var playerInfoElement = $('.playerInfo[data-userid="' + userId + '"]:first');
-
-                        playerInfoElement.html(html);
-                    }
-                });
-            });
-
-            $(document).on('click', '.btnIncreaseInfectDamage', function () {
-                event.stopPropagation();
-                var userId = $(this).data('userid');
-
-                $.ajax({
-                    url: '/Game/Home/IncreaseInfectDamage',
-                    data: {
-                        gameId: '@(Model.GameId)',
-                        userId: userId,
-                        amount: 1
-                    },
-                    success: function (html) {
-                        var playerInfoElement = $('.playerInfo[data-userid="' + userId + '"]:first');
-
-                        playerInfoElement.html(html);
-                    }
-                });
             });
         }
 
