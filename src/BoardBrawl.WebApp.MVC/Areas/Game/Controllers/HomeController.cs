@@ -32,7 +32,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             _gameHubContext = gameHubContext;
         }
 
-        public IActionResult Index(int? id)
+        public async Task<IActionResult> Index(int? id)
         {
             if (id == null) { return Redirect("/Lobby"); }
 
@@ -58,18 +58,24 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
                 GameName = gameInfo.Name
             };
 
+            await LoadPlayerBoard(model.GameId, model.PlayerBoard);
+
             return View(model);
         }
 
-        public IActionResult PassTurn(int gameId)
+        public async Task<IActionResult> PassTurn(int gameId)
         {
             _service.PassTurn(gameId);
-            return ViewComponent("PlayerBoard", new { gameId });
+            var playerBoard = new PlayerBoard();
+            await LoadPlayerBoard(gameId, playerBoard);
+            return PartialView("_PlayerBoard", playerBoard);
         }
 
-        public IActionResult PlayerBoard(int gameId)
+        public async Task<IActionResult> PlayerBoard(int gameId)
         {
-            return ViewComponent("PlayerBoard", new { gameId });
+            var playerBoard = new PlayerBoard();
+            await LoadPlayerBoard(gameId, playerBoard);
+            return PartialView("_PlayerBoard", playerBoard);
         }
 
         public IActionResult UpdateFocusedPlayer(int playerId, int focusedPlayerId)
@@ -135,6 +141,30 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             {
                 _logger.LogError($"{ex}");
                 return NotFound();
+            }
+        }
+
+        private async Task LoadPlayerBoard(int gameId, PlayerBoard playerBoard)
+        {
+            var gameInfo = _service.GetGameInfo(gameId);
+
+            if (gameInfo == null) { throw new Exception($"Game not found with id {gameId}"); }
+
+            var userId = _userManager.GetUserId((System.Security.Claims.ClaimsPrincipal)User);
+            var players = _service.GetPlayers(gameId);
+            var myPlayer = players.First(i => i.UserId == userId);
+            var focusedPlayer = players.FirstOrDefault(i => i.Id == myPlayer.FocusedPlayerId);
+
+            playerBoard.GameId = gameId;
+            playerBoard.PlayerId = myPlayer.Id;
+            playerBoard.FocusedPlayerId = focusedPlayer?.Id ?? players.First().Id;
+            playerBoard.ActivePlayerId = gameInfo.ActivePlayerId;
+
+            playerBoard.Players.AddRange(_mapper.Map<List<PlayerInfo>>(players));
+
+            foreach (var player in playerBoard.Players)
+            {
+                await LoadCommanderCardInfoCommand.Execute(player);
             }
         }
     }

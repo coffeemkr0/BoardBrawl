@@ -24,7 +24,7 @@
 
     <div class="col h-100">
         <div id="playerBoardContainer" class="row h-100 border border-primary">
-            @await Component.InvokeAsync("PlayerBoard", new { gameId = Model.GameId })
+            @await Html.PartialAsync("_PlayerBoard", Model.PlayerBoard)
         </div>
     </div>
 
