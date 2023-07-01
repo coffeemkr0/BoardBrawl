@@ -109,39 +109,16 @@
             });
         });
 
-        //Update state when user selects a commander
         $('#commander1').on('change', function () {
             var newValue = $(this).val();
 
-            $.ajax({
-                url: '/Game/Home/UpdateCommander',
-                data: {
-                    gameId: '@(Model.GameId)',
-                    slot: 1,
-                    cardId: newValue
-                },
-                success: function (html) {
-                    var playerInfoElement = $('.playerInfo[data-userid="@Model.UserId"]:first');
-                    playerInfoElement.html(html);
-                }
-            });
+            PlayerInfo_CommanderChanged(1, newValue);
         });
 
         $('#commander2').on('change', function () {
             var newValue = $(this).val();
 
-            $.ajax({
-                url: '/Game/Home/UpdateCommander',
-                data: {
-                    gameId: '@(Model.GameId)',
-                    slot: 2,
-                    cardId: newValue
-                },
-                success: function (html) {
-                    var playerInfoElement = $('.playerInfo[data-userid="@Model.UserId"]:first');
-                    playerInfoElement.html(html);
-                }
-            });
+            PlayerInfo_CommanderChanged(2, newValue);
         });
 
         var slider = $("#infectSlider").slider({
