@@ -73,14 +73,6 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             return ViewComponent("PlayerBoard", new { gameId, userId });
         }
 
-        public async Task<IActionResult> PlayerInfo(int gameId, string userId)
-        {
-            //TODO:Get userId from Identity and get rid of gameId parameter
-            var playerInfo = _mapper.Map<PlayerInfo>(_service.GetPlayer(userId));
-            await LoadCommanderCardInfoCommand.Execute(playerInfo);
-            return PartialView("PlayerInfo/_PlayerInfo", playerInfo);
-        }
-
         public IActionResult UpdateFocusedPlayer(int playerId, int focusedPlayerId)
         {
             _service.UpdateFocusedPlayer(playerId, focusedPlayerId);

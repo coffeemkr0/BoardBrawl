@@ -22,24 +22,6 @@
         });
     });
 
-    function PlayerBoard_RefreshPlayerInfo(userId)
-    {
-        if(userId != '@Model.UserId')
-        {
-            $.ajax({
-                url: '/Game/Home/PlayerInfo',
-                data: {
-                    gameId: '@(Model.GameId)',
-                    userId: userId
-                },
-                success: function (html) {
-                    var playerInfoElement = $('.playerInfo[data-userid="' + userId + '"]:first');
-                    playerInfoElement.html(html);
-                }
-            });
-        }
-    }
-
     function InitializeLocalVideoStream() 
     {
         var videoElement = $(".localVideo")[0];

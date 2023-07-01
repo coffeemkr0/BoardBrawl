@@ -85,10 +85,6 @@
                 OnPlayerLifeTotalChanged(playerId);
             });
 
-            _gameHubConnection.on("OnPlayerInfoChanged", function (userId) {
-                OnPlayerInfoChanged(userId);
-            });
-
             _gameHubConnection.on("OnPassTurn", function (userId, peerId) {
                 OnPassTurn();
             });
@@ -120,11 +116,6 @@
                     PlayerBoard_LoadRemoteStreams(_peerJsObject);
                 }
             });
-        }
-
-        function OnPlayerInfoChanged(userId) 
-        {
-            PlayerBoard_RefreshPlayerInfo(userId);
         }
 
         function OnPlayerLifeTotalChanged(playerId)
