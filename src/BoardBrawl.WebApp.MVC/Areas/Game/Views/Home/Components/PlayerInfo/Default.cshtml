@@ -57,7 +57,7 @@
                                 @await Html.PartialAsync("_CardColors", Model.CommanderColors)
                             </div>
 
-                            <div id="playerInfoDropdownContent" class="dropdown-menu py-0" style="width:400px" aria-labelledby="playerInfoDropDownToggle">
+                            <div id="playerInfoDropdownContent" class="dropdown-menu py-0" style="width:500px" aria-labelledby="playerInfoDropDownToggle">
                                 @await Html.PartialAsync("Components/PlayerInfo/_PlayerInfoDropdown", Model)
                             </div>
                         </div>
@@ -81,6 +81,7 @@
 <script>
     $()
     {
+        //Make sure the player info drop down can extend outside of the parent container
         $('#playerInfoDropdown').on('show.bs.dropdown', function () {
             $('body').append($('#playerInfoDropdownContent').css({
                 position: 'absolute',
@@ -89,10 +90,15 @@
             }).detach());
         });
 
-        $('#playerInfoDropdown').on('hidden.bs.dropdown', function () {
-            $('#playerInfoDropdown').append($('#playerInfoDropdownContent').css({
-                position: false, left: false, top: false
-            }).detach());
+        //$('#playerInfoDropdown').on('hidden.bs.dropdown', function () {
+        //    $('#playerInfoDropdown').append($('#playerInfoDropdownContent').css({
+        //        position: false, left: false, top: false
+        //    }).detach());
+        //});
+
+        //Don't close the player info drop down when the user clicks on it
+        $("#playerInfoDropdownContent").on("click", function (event) {
+            event.stopPropagation();
         });
     }
 </script>
