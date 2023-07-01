@@ -31,33 +31,11 @@
 
                     <div id="playerInfoDropdownContainer">
                         <div class="dropdown" id="playerInfoDropdown">
-                            <div class="dropdown-toggle no-arrow shadow-none fst-italic" type="button" id="playerInfoDropDownToggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                @if (Model.Commander1 == null)
-                                {
-                                    <span>click to add commander(s)</span>
-                                }
-                                else
-                                {
-                                    <span class="card-tooltip" data-toggle="tooltip" title="<img src='@Model.Commander1.ImageUri' alt='Commander Card Image' class='card-tooltip-image' />">
-                                        @Model.Commander1.Name
-                                    </span>
-                                }
-
-                                @if (Model.Commander2 != null)
-                                {
-                                    <span> / </span>
-
-                                    <span class="card-tooltip" data-toggle="tooltip" title="<img src='@Model.Commander2.ImageUri' alt='Commander Card Image' class='card-tooltip-image' />">
-                                        @Model.Commander2.Name
-                                    </span>
-                                }
+                            <div class="dropdown-toggle no-arrow shadow-none fst-italic" type="button" id="commanderInfo@(Model.Id)" data-bs-toggle="dropdown" aria-expanded="false">
+                                @await Html.PartialAsync("_CommanderInfo", Model)
                             </div>
 
-                            <div class="mt-1">
-                                @await Html.PartialAsync("_CardColors", Model.CommanderColors)
-                            </div>
-
-                            <div id="playerInfoDropdownContent" class="dropdown-menu py-0" style="width:500px" aria-labelledby="playerInfoDropDownToggle">
+                            <div id="playerInfoDropdownContent" class="dropdown-menu py-0" style="width:500px" aria-labelledby="commanderInfo@(Model.Id)">
                                 @await Html.PartialAsync("_PlayerInfoDropdown", Model)
                             </div>
                         </div>
@@ -65,7 +43,7 @@
                 </div>
             </div>
 
-@*            <div class="dropdown">
+            @*<div class="dropdown">
                 <button class="btn shadow-none text-white p-0 no-arrow dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     ...
                 </button>
@@ -100,5 +78,21 @@
         $("#playerInfoDropdownContent").on("click", function (event) {
             event.stopPropagation();
         });
+
+        function PlayerInfo_CommanderChanged(slot, cardId) {
+            //Update state when user selects a commander
+            $.ajax({
+                url: '/Game/Home/UpdateCommander',
+                data: {
+                    gameId: '@(Model.GameId)',
+                    slot: slot,
+                    cardId: cardId
+                },
+                success: function (html) {
+                    var commanderInfoContainer = $('#commanderInfo@(Model.Id)');
+                    commanderInfoContainer.html(html);
+                }
+            });
+        }
     }
 </script>

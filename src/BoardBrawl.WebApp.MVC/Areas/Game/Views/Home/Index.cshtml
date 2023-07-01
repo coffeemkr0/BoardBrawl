@@ -273,22 +273,5 @@
                 html: true
             });
         }
-
-        function PlayerInfo_CommanderChanged(slot, cardId)
-        {
-            //Update state when user selects a commander
-            $.ajax({
-                url: '/Game/Home/UpdateCommander',
-                data: {
-                    gameId: '@(Model.GameId)',
-                    slot: slot,
-                    cardId: cardId
-                },
-                success: function (html) {
-                    var playerInfoElement = $('.playerInfo[data-userid="@Model.UserId"]:first');
-                    playerInfoElement.html(html);
-                }
-            });
-        }
     </script>
 }

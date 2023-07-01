@@ -174,7 +174,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
                 var playerInfoViewModel = _mapper.Map<PlayerInfo>(playerInfo);
                 await LoadCommanderCardInfoCommand.Execute(playerInfoViewModel);
                 await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfoChanged", userId);
-                return PartialView("_PlayerInfo", playerInfoViewModel);
+                return PartialView("_CommanderInfo", playerInfoViewModel);
             }
             catch (Exception ex)
             {
