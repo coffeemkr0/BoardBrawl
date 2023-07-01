@@ -42,17 +42,6 @@ namespace BoardBrawl.Repositories.Game
             }
         }
 
-        public void DecreaseLifeTotal(int gameId, string userId, int amount)
-        {
-            var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.GameId == gameId && i.UserId == userId);
-
-            if (playerEntity != null)
-            {
-                playerEntity.LifeTotal -= amount;
-                _applicationDbContext.SaveChanges();
-            }
-        }
-
         public GameInfo? GetGameInfo(int id)
         {
             var gameEntity = _applicationDbContext.Games.Include(i => i.Players).FirstOrDefault(i => i.Id == id);
@@ -70,17 +59,6 @@ namespace BoardBrawl.Repositories.Game
             var playerEntities = _applicationDbContext.Players.Where(i => i.GameId == gameId);
 
             return _mapper.Map<List<PlayerInfo>>(playerEntities);
-        }
-
-        public void IncreaseLifeTotal(int gameId, string userId, int amount)
-        {
-            var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.GameId == gameId && i.UserId == userId);
-
-            if (playerEntity != null)
-            {
-                playerEntity.LifeTotal += amount;
-                _applicationDbContext.SaveChanges();
-            }
         }
 
         public void UpdatePeerId(int gameId, string userId, Guid peerId)
@@ -174,6 +152,16 @@ namespace BoardBrawl.Repositories.Game
 
             _mapper.Map(playerInfo, playerEntity);
             _applicationDbContext.SaveChanges();
+        }
+
+        public PlayerInfo AdjustLifeTotal(int playerId, int amount)
+        {
+            var playerEntity = _applicationDbContext.Players.First(i => i.Id == playerId);
+
+            playerEntity.LifeTotal += amount;
+            _applicationDbContext.SaveChanges();
+
+            return _mapper.Map<PlayerInfo>(playerEntity);
         }
     }
 }

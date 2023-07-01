@@ -15,6 +15,7 @@
         public string? Commander2Id { get; set; }
         public CardInfo? Commander2 { get; set; }
         public List<Colors> CommanderColors { get; }
+        public bool IsSelf { get; set; }
 
         public PlayerInfo()
         {

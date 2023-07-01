@@ -81,6 +81,10 @@
                 OnPlayerJoinedGame(userId, peerId);
             });
 
+            _gameHubConnection.on("OnPlayerLifeTotalChanged", function (playerId) {
+                OnPlayerLifeTotalChanged(playerId);
+            });
+
             _gameHubConnection.on("OnPlayerInfoChanged", function (userId) {
                 OnPlayerInfoChanged(userId);
             });
@@ -123,6 +127,11 @@
             PlayerBoard_RefreshPlayerInfo(userId);
         }
 
+        function OnPlayerLifeTotalChanged(playerId)
+        {
+            console.log('player life total changed for player Id ' + playerId);
+        }
+
         //Methods
         function RefreshPlayersList() 
         {
@@ -152,42 +161,6 @@
         {
             $(document).on('click', '#btnPassTurn', function () {
                 PassTurn();
-            });
-
-            $(document).on('click', '.btnDecreaseLife', function () {
-                event.stopPropagation();
-                var userId = $(this).data('userid');
-
-                $.ajax({
-                    url: '/Game/Home/DecreaseLifeTotal',
-                    data: {
-                        gameId: '@(Model.GameId)',
-                        userId: userId,
-                        amount: 1
-                    },
-                    success: function (html) {
-                        var playerInfoElement = $('.playerInfo[data-userid="' + userId + '"]:first');
-                        playerInfoElement.html(html);
-                    }
-                });
-            });
-
-            $(document).on('click', '.btnIncreaseLife', function () {
-                event.stopPropagation();
-                var userId = $(this).data('userid');
-
-                $.ajax({
-                    url: '/Game/Home/IncreaseLifeTotal',
-                    data: {
-                        gameId: '@(Model.GameId)',
-                        userId: userId,
-                        amount: 1
-                    },
-                    success: function (html) {
-                        var playerInfoElement = $('.playerInfo[data-userid="' + userId + '"]:first');
-                        playerInfoElement.html(html);
-                    }
-                });
             });
 
             $(document).on('click', '.btnDecreaseCommanderDamage', function () {

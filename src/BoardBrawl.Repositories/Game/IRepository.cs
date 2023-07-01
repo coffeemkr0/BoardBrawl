@@ -12,8 +12,7 @@ namespace BoardBrawl.Repositories.Game
         PlayerInfo GetPlayer(string userId);
         void UpdateFocusedPlayer(int playerId, int focusedPlayerId);
         void UpdatePeerId(int gameId, string userId, Guid peerId);
-        void DecreaseLifeTotal(int gameId, string userId, int amount);
-        void IncreaseLifeTotal(int gameId, string userId, int amount);
+        PlayerInfo AdjustLifeTotal(int playerId, int amount);
         void DecreaseCommanderDamage(int gameId, string userId, int amount);
         void IncreaseCommanderDamage(int gameId, string userId, int amount);
         void DecreaseInfectDamage(int gameId, string userId, int amount);
