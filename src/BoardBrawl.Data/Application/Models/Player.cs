@@ -1,4 +1,6 @@
-﻿namespace BoardBrawl.Data.Application.Models
+﻿using BoardBrawl.Repositories.Game.Models;
+
+namespace BoardBrawl.Data.Application.Models
 {
     public class Player
     {
@@ -16,8 +18,6 @@
 
         public int LifeTotal { get; set; }
 
-        public int CommanderDamage { get; set; }
-
         public int InfectDamage { get; set; }
 
         public string? Commander1Id { get; set; }
@@ -25,5 +25,7 @@
         public string? Commander2Id { get; set; }
 
         public Game Game { get; set; }
+
+        public ICollection<CommanderDamage> CommanderDamages { get; set; }
     }
 }

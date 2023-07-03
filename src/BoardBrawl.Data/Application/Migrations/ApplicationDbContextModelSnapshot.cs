@@ -65,9 +65,6 @@ namespace BoardBrawl.Data.Application.Migrations
                     b.Property<string>("Commander2Id")
                         .HasColumnType("longtext");
 
-                    b.Property<int>("CommanderDamage")
-                        .HasColumnType("int");
-
                     b.Property<int?>("FocusedPlayerId")
                         .HasColumnType("int");
 
@@ -98,6 +95,33 @@ namespace BoardBrawl.Data.Application.Migrations
                     b.ToTable("Players");
                 });
 
+            modelBuilder.Entity("BoardBrawl.Repositories.Game.Models.CommanderDamage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("CardId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CommanderName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Damage")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("CommanderDamages");
+                });
+
             modelBuilder.Entity("BoardBrawl.Data.Application.Models.Player", b =>
                 {
                     b.HasOne("BoardBrawl.Data.Application.Models.Game", "Game")
@@ -109,9 +133,25 @@ namespace BoardBrawl.Data.Application.Migrations
                     b.Navigation("Game");
                 });
 
+            modelBuilder.Entity("BoardBrawl.Repositories.Game.Models.CommanderDamage", b =>
+                {
+                    b.HasOne("BoardBrawl.Data.Application.Models.Player", "Player")
+                        .WithMany("CommanderDamages")
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Player");
+                });
+
             modelBuilder.Entity("BoardBrawl.Data.Application.Models.Game", b =>
                 {
                     b.Navigation("Players");
+                });
+
+            modelBuilder.Entity("BoardBrawl.Data.Application.Models.Player", b =>
+                {
+                    b.Navigation("CommanderDamages");
                 });
 #pragma warning restore 612, 618
         }

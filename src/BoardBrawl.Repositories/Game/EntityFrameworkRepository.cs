@@ -59,28 +59,6 @@ namespace BoardBrawl.Repositories.Game
             return _mapper.Map<List<PlayerInfo>>(playerEntities);
         }
 
-        public void DecreaseCommanderDamage(int gameId, string userId, int amount)
-        {
-            var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.GameId == gameId && i.UserId == userId);
-
-            if (playerEntity != null)
-            {
-                playerEntity.CommanderDamage -= amount;
-                _applicationDbContext.SaveChanges();
-            }
-        }
-
-        public void IncreaseCommanderDamage(int gameId, string userId, int amount)
-        {
-            var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.GameId == gameId && i.UserId == userId);
-
-            if (playerEntity != null)
-            {
-                playerEntity.CommanderDamage += amount;
-                _applicationDbContext.SaveChanges();
-            }
-        }
-
         public void DecreaseInfectDamage(int gameId, string userId, int amount)
         {
             var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.GameId == gameId && i.UserId == userId);

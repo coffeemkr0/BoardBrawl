@@ -35,24 +35,9 @@ namespace BoardBrawl.Services.Game
             return _mapper.Map<List<PlayerInfo>>(repoPlayers);
         }
 
-        public PlayerInfo IncreaseCommanderDamage(int gameId, string userId, int amount)
-        {
-            _repository.IncreaseCommanderDamage(gameId, userId, amount);
-            var repoPlayer = _repository.GetPlayers(gameId).First(i => i.UserId == userId);
-            var servicePlayer = _mapper.Map<PlayerInfo>(repoPlayer);
-
-            return servicePlayer;
-        }
-
         public PlayerInfo IncreaseInfectDamage(int gameId, string userId, int amount)
         {
             _repository.IncreaseInfectDamage(gameId, userId, amount);
-            return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));
-        }
-
-        public PlayerInfo DecreaseCommanderDamage(int gameId, string userId, int amount)
-        {
-            _repository.DecreaseCommanderDamage(gameId, userId, amount);
             return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));
         }
 

@@ -50,7 +50,6 @@ namespace BoardBrawl.Data.Application.Migrations
                     GameId = table.Column<int>(type: "int", nullable: false),
                     FocusedPlayerId = table.Column<int>(type: "int", nullable: true),
                     LifeTotal = table.Column<int>(type: "int", nullable: false),
-                    CommanderDamage = table.Column<int>(type: "int", nullable: false),
                     InfectDamage = table.Column<int>(type: "int", nullable: false),
                     Commander1Id = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -69,6 +68,36 @@ namespace BoardBrawl.Data.Application.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "CommanderDamages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    PlayerId = table.Column<int>(type: "int", nullable: false),
+                    CommanderName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CardId = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Damage = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CommanderDamages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CommanderDamages_Players_PlayerId",
+                        column: x => x.PlayerId,
+                        principalTable: "Players",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CommanderDamages_PlayerId",
+                table: "CommanderDamages",
+                column: "PlayerId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Players_GameId",
                 table: "Players",
@@ -77,6 +106,9 @@ namespace BoardBrawl.Data.Application.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "CommanderDamages");
+
             migrationBuilder.DropTable(
                 name: "Players");
 
