@@ -262,14 +262,14 @@
         function InitializeInfectTrackers()
         {
             // Button click event handlers
-            $(".increaseInfect").on("click", function () {
+            $(document).on("click", '.increaseInfect', function () {
                 var tracker = $(this).closest('.infectTracker');
                 var progressBar = tracker.find('.progress-bar').first();
 
                 ChangeProgress(progressBar, 1);
             });
 
-            $(".decreaseInfect").on("click", function () {
+            $(document).on("click", '.decreaseInfect', function () {
                 var tracker = $(this).closest('.infectTracker');
                 var progressBar = tracker.find('.progress-bar').first();
 
