@@ -171,20 +171,31 @@
         {
             //Make sure the player info drop down can extend outside of the parent container
             $(document).on('show.bs.dropdown', '.playerInfoDropdown', function () {
-                var dropdownMenu = $(this).find('.dropdown-menu').first();
-                $('body').append(dropdownMenu.css({
-                    position: 'absolute',
-                    left: $('.dropdown').offset().left,
-                    top: $('.dropdown').offset().top
-                }).detach());
+                var dropdown = $(this).closest('.dropdown');
+                var dropdownMenu = dropdown.find('.dropdown-menu').first();
+
+                if (dropdownMenu.length != 0) 
+                {
+                    $('body').append(dropdownMenu.css({
+                        position: 'absolute',
+                        left: dropdown.offset().left,
+                        top: dropdown.offset().top
+                    }).detach());
+                }
             });
         }
 
         function PreventDropdownsFromClosingOnClick()
         {
             $(document).on('hide.bs.dropdown', function (e) {
-                if ($(e.clickEvent.target).closest('.dropdown-menu').length > 0) {
-                    e.preventDefault();
+                var target = $(e.clickEvent.target);
+                if (target.hasClass("keepopen") || target.parents(".keepopen").length) 
+                {
+                    return false;
+                }
+                else 
+                {
+                    return true;
                 }
             });
         }
@@ -193,7 +204,8 @@
         {
             //Auto complete for commander inputs
             var cache = {};
-            $(".commander-search").each(function () {
+
+            $(document).on('focus', '.commander-search', function () {
                 var input = $(this);
                 var hiddenInput = input.next("input[type='hidden']");
 
@@ -217,7 +229,7 @@
                     },
                     select: function (event, ui) {
                         input.val(ui.item.label);
-                        hiddenInput.val(ui.item.value).triggerHandler('change');
+                        hiddenInput.val(ui.item.value).trigger('change');
                         return false;
                     },
                     appendTo: input.closest('.commander-inputs')
@@ -225,7 +237,7 @@
             });
 
             //When a player changes their commander, update the server
-            $('.commander-id').on('change', function () {
+            $('body').on('change', '.commander-id', function () {
                 var input = $(this);
                 var cardId = input.val();
                 var slot = input.data('slot');
