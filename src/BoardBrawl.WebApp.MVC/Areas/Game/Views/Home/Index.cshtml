@@ -44,8 +44,10 @@
         //Initialization
         $(document).ready(function () 
         {
+            //TODO:Some of this stuff gets messed up when part of the page reloads (for example, Pass Turn)
             InitializeGameHubConnection();
             InitializeUiEventHandlers();
+            PreventDropdownsFromClosingOnClick();
             InitializeTooltipsForCards();
             InitializePlayerInfoDropdowns();
             InitializeCommanderInputs();
@@ -168,7 +170,7 @@
         function InitializePlayerInfoDropdowns()
         {
             //Make sure the player info drop down can extend outside of the parent container
-            $('.playerInfoDropdown').on('show.bs.dropdown', function () {
+            $(document).on('show.bs.dropdown', '.playerInfoDropdown', function () {
                 var dropdownMenu = $(this).find('.dropdown-menu').first();
                 $('body').append(dropdownMenu.css({
                     position: 'absolute',
@@ -176,10 +178,14 @@
                     top: $('.dropdown').offset().top
                 }).detach());
             });
+        }
 
-            //Don't close the player info drop down when the user clicks on it
-            $(".playerInfoDropdown-menu").on("click", function (event) {
-                event.stopPropagation();
+        function PreventDropdownsFromClosingOnClick()
+        {
+            $(document).on('hide.bs.dropdown', function (e) {
+                if ($(e.clickEvent.target).closest('.dropdown-menu').length > 0) {
+                    e.preventDefault();
+                }
             });
         }
 
