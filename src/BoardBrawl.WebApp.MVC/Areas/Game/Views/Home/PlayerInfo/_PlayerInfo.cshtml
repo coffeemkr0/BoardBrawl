@@ -27,13 +27,13 @@
                         <span>@Model.PlayerName</span>
                     </div>
 
-                    <div id="playerInfoDropdownContainer">
+                    <div>
                         <div class="dropdown playerInfoDropdown">
-                            <div class="dropdown-toggle no-arrow shadow-none fst-italic" type="button" id="commanderInfo@(Model.Id)" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div id="commanderInfo@(Model.Id)" class="dropdown-toggle no-arrow shadow-none fst-italic" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 @await Html.PartialAsync("PlayerInfo/_CommanderInfo", Model)
                             </div>
 
-                            <div class="dropdown-menu py-0" style="width:500px" aria-labelledby="commanderInfo@(Model.Id)">
+                            <div class="dropdown-menu py-0 playerInfoDropdown-menu" style="width:500px" aria-labelledby="commanderInfo@(Model.Id)">
                                 @await Html.PartialAsync("PlayerInfo/_PlayerInfoDropdown", Model)
                             </div>
                         </div>
@@ -53,39 +53,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    $()
-    {
-        //Make sure the player info drop down can extend outside of the parent container
-        $('.playerInfoDropdown').on('show.bs.dropdown', function () {
-            var dropdownMenu = $(this).find('.dropdown-menu').first();
-            $('body').append(dropdownMenu.css({
-                position: 'absolute',
-                left: $('.dropdown').offset().left,
-                top: $('.dropdown').offset().top
-            }).detach());
-        });
-
-        //Don't close the player info drop down when the user clicks on it
-        $("#playerInfoDropdownContent").on("click", function (event) {
-            event.stopPropagation();
-        });
-
-        function PlayerInfo_CommanderChanged(slot, cardId) {
-            //Update state when user selects a commander
-            $.ajax({
-                url: '/Game/Home/UpdateCommander',
-                data: {
-                    gameId: '@(Model.GameId)',
-                    slot: slot,
-                    cardId: cardId
-                },
-                success: function (html) {
-                    var commanderInfoContainer = $('#commanderInfo@(Model.Id)');
-                    commanderInfoContainer.html(html);
-                }
-            });
-        }
-    }
-</script>

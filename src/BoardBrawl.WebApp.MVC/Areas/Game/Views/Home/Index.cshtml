@@ -47,6 +47,8 @@
             InitializeGameHubConnection();
             InitializeUiEventHandlers();
             InitializeTooltipsForCards();
+            InitializePlayerInfoDropdowns();
+            InitializeCommanderInputs();
 
             _peerJsObject = new Peer();
             _peerJsObject.on('open', id => {
@@ -159,6 +161,82 @@
                 animated: 'fade',
                 placement: 'auto',
                 html: true
+            });
+        }
+
+        function InitializePlayerInfoDropdowns()
+        {
+            //Make sure the player info drop down can extend outside of the parent container
+            $('.playerInfoDropdown').on('show.bs.dropdown', function () {
+                var dropdownMenu = $(this).find('.dropdown-menu').first();
+                $('body').append(dropdownMenu.css({
+                    position: 'absolute',
+                    left: $('.dropdown').offset().left,
+                    top: $('.dropdown').offset().top
+                }).detach());
+            });
+
+            //Don't close the player info drop down when the user clicks on it
+            $(".playerInfoDropdown-menu").on("click", function (event) {
+                event.stopPropagation();
+            });
+        }
+
+        function InitializeCommanderInputs()
+        {
+            //Auto complete for commander inputs
+            var cache = {};
+            $(".commander-search").each(function () {
+                var input = $(this);
+                var hiddenInput = input.next("input[type='hidden']");
+
+                input.autocomplete({
+                    minLength: 2,
+                    source: function (request, response) {
+                        var term = request.term;
+                        if (term in cache) {
+                            response(cache[term]);
+                            return;
+                        }
+
+                        $.getJSON("/Game/Home/SearchCards", { searchString: term }, function (data, status, xhr) {
+                            cache[term] = data;
+                            response(data);
+                        });
+                    },
+                    focus: function (event, ui) {
+                        input.val(ui.item.label);
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        input.val(ui.item.label);
+                        hiddenInput.val(ui.item.value).triggerHandler('change');
+                        return false;
+                    },
+                    appendTo: input.closest('.commander-inputs')
+                });
+            });
+
+            //When a player changes their commander, update the server
+            $('.commander-id').on('change', function () {
+                var input = $(this);
+                var cardId = input.val();
+                var slot = input.data('slot');
+                var playerId = input.closest('.commander-inputs').data('player-id');
+
+                //Update state when user selects a commander
+                $.ajax({
+                    url: '/Game/Home/UpdateCommander',
+                    data: {
+                        gameId: '@(Model.GameId)',
+                        slot: slot,
+                        cardId: cardId
+                    },
+                    success: function (html) {
+                        var commanderInfoContainer = $('#commanderInfo' + playerId);
+                        commanderInfoContainer.html(html);
+                    }
+                });
             });
         }
     </script>

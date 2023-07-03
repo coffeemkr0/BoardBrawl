@@ -16,12 +16,12 @@
         <div class="pb-2">
             <small class="fst-italic text-muted">Commander(s)</small>
         </div>
-        <div id="commanderInputs" class="row text-xs">
+        <div class="row text-xs commander-inputs" data-player-id="@Model.Id">
             <div class="col px-2">
                 @if(Model.IsSelf)
                 {
-                    <input class="form-control input-commander text-xs" placeholder="Add Commander" data-labelfor="commander1" value="@Model.Commander1?.Name">
-                    <input type="hidden" name="Commander1" id="commander1" value="@Model.Commander1Id">
+                    <input class="form-control commander-search text-xs" placeholder="Add Commander" value="@Model.Commander1?.Name">
+                    <input class="commander-id" type="hidden" data-slot="1" value="@Model.Commander1Id">
                 }
                 else
                 {
@@ -31,8 +31,8 @@
             <div class="col px-2">
                 @if(Model.IsSelf)
                 {
-                    <input class="form-control input-commander text-xs" placeholder="Add Commander" data-labelfor="commander2" value="@Model.Commander2?.Name">
-                    <input type="hidden" name="Commander2" id="commander2" value="@Model.Commander2Id">
+                    <input class="form-control commander-search text-xs" data-input-for="Commander2" placeholder="Add Commander" value="@Model.Commander2?.Name">
+                    <input class="commander-id" type="hidden" data-slot="2" value="@Model.Commander2Id">
                 }
                 else
                 {
@@ -88,52 +88,7 @@
 
 <script>
     $(function () {
-
-        //Auto complete for commander inputs
-        var cache = {};
-        $(".input-commander").each(function () {
-            var input = $(this);
-            var hiddenInputId = input.data('labelfor');
-
-            input.autocomplete({
-                minLength: 2,
-                source: function (request, response) {
-                    var term = request.term;
-                    if (term in cache) {
-                        response(cache[term]);
-                        return;
-                    }
-
-                    $.getJSON("/Game/Home/SearchCards", { searchString: term }, function (data, status, xhr) {
-                        cache[term] = data;
-                        response(data);
-                    });
-                },
-                focus: function (event, ui) {
-                    input.val(ui.item.label);
-                    return false;
-                },
-                select: function (event, ui) {
-                    input.val(ui.item.label);
-                    $("#" + hiddenInputId).val(ui.item.value).trigger('change');
-                    return false;
-                },
-                appendTo: '#commanderInputs'
-            });
-        });
-
-        $('#commander1').on('change', function () {
-            var newValue = $(this).val();
-
-            PlayerInfo_CommanderChanged(1, newValue);
-        });
-
-        $('#commander2').on('change', function () {
-            var newValue = $(this).val();
-
-            PlayerInfo_CommanderChanged(2, newValue);
-        });
-
+        //TODO:Move these to the main page so that they are not loaded multiple times
         var slider = $("#infectSlider").slider({
             range: "max",
             min: 0,
