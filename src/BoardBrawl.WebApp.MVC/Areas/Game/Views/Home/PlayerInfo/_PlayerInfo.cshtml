@@ -28,12 +28,12 @@
                     </div>
 
                     <div id="playerInfoDropdownContainer">
-                        <div class="dropdown" id="playerInfoDropdown">
+                        <div class="dropdown playerInfoDropdown">
                             <div class="dropdown-toggle no-arrow shadow-none fst-italic" type="button" id="commanderInfo@(Model.Id)" data-bs-toggle="dropdown" aria-expanded="false">
                                 @await Html.PartialAsync("PlayerInfo/_CommanderInfo", Model)
                             </div>
 
-                            <div id="playerInfoDropdownContent" class="dropdown-menu py-0" style="width:500px" aria-labelledby="commanderInfo@(Model.Id)">
+                            <div class="dropdown-menu py-0" style="width:500px" aria-labelledby="commanderInfo@(Model.Id)">
                                 @await Html.PartialAsync("PlayerInfo/_PlayerInfoDropdown", Model)
                             </div>
                         </div>
@@ -58,19 +58,14 @@
     $()
     {
         //Make sure the player info drop down can extend outside of the parent container
-        //$('#playerInfoDropdown').on('show.bs.dropdown', function () {
-        //    $('body').append($('#playerInfoDropdownContent').css({
-        //        position: 'absolute',
-        //        left: $('.dropdown').offset().left,
-        //        top: $('.dropdown').offset().top
-        //    }).detach());
-        //});
-
-        //$('#playerInfoDropdown').on('hidden.bs.dropdown', function () {
-        //    $('#playerInfoDropdown').append($('#playerInfoDropdownContent').css({
-        //        position: false, left: false, top: false
-        //    }).detach());
-        //});
+        $('.playerInfoDropdown').on('show.bs.dropdown', function () {
+            var dropdownMenu = $(this).find('.dropdown-menu').first();
+            $('body').append(dropdownMenu.css({
+                position: 'absolute',
+                left: $('.dropdown').offset().left,
+                top: $('.dropdown').offset().top
+            }).detach());
+        });
 
         //Don't close the player info drop down when the user clicks on it
         $("#playerInfoDropdownContent").on("click", function (event) {
