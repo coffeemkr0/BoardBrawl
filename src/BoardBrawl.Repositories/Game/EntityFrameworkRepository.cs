@@ -31,6 +31,7 @@ namespace BoardBrawl.Repositories.Game
             _applicationDbContext.SaveChanges();
 
             playerInfo.Id = playerEntity.Id;
+            playerInfo.GameId = gameId;
         }
 
         public void CloseGame(GameInfo gameInfo)
@@ -44,16 +45,11 @@ namespace BoardBrawl.Repositories.Game
             }
         }
 
-        public GameInfo? GetGameInfo(int id)
+        public GameInfo GetGameInfo(int id)
         {
-            var gameEntity = _applicationDbContext.Games.Include(i => i.Players).FirstOrDefault(i => i.Id == id);
+            var gameEntity = _applicationDbContext.Games.Include(i => i.Players).First(i => i.Id == id);
 
-            if (gameEntity != null)
-            {
-                return _mapper.Map<GameInfo>(gameEntity);
-            }
-
-            return null;
+            return _mapper.Map<GameInfo>(gameEntity);
         }
 
         public List<PlayerInfo> GetPlayers(int gameId)
@@ -127,9 +123,16 @@ namespace BoardBrawl.Repositories.Game
             }
         }
 
-        public PlayerInfo GetPlayer(string userId)
+        public PlayerInfo? GetPlayer(string userId)
         {
-            return _mapper.Map<PlayerInfo>(_applicationDbContext.Players.First(i => i.UserId == userId));
+            var playerInfoEntity = _applicationDbContext.Players.FirstOrDefault(i => i.UserId == userId);
+
+            if (playerInfoEntity != null)
+            {
+                return _mapper.Map<PlayerInfo>(playerInfoEntity);
+            }
+
+            return null;
         }
 
         public void UpdatePlayerInfo(PlayerInfo playerInfo)

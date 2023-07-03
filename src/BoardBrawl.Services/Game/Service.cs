@@ -16,13 +16,6 @@ namespace BoardBrawl.Services.Game
             _mapper = mapper;
         }
 
-        public void AddPlayerToGame(int gameId, PlayerInfo playerInfo)
-        {
-            var repoPlayerInfo = _mapper.Map<Repositories.Game.Models.PlayerInfo>(playerInfo);
-            _repository.AddPlayerToGame(gameId, repoPlayerInfo);
-            playerInfo.Id = repoPlayerInfo.Id;
-        }
-
         public GameInfo? GetGameInfo(int id)
         {
             var repoGameInfo = _repository.GetGameInfo(id);
@@ -124,6 +117,33 @@ namespace BoardBrawl.Services.Game
         public void UpdatePeerId(int playerId, Guid peerId)
         {
             _repository.UpdatePeerId(playerId, peerId);
+        }
+
+        public PlayerInfo JoinGame(int gameId, string userId)
+        {
+            var repoPlayerInfo = _repository.GetPlayer(userId);
+
+            if (repoPlayerInfo == null)
+            {
+                //The user does not have a player in a game, create a new one
+                var newPlayer = CreateNewPlayer(userId);
+                repoPlayerInfo = _mapper.Map<Repositories.Game.Models.PlayerInfo>(newPlayer);
+            }
+
+            _repository.AddPlayerToGame(gameId, repoPlayerInfo);
+
+            return _mapper.Map<PlayerInfo>(repoPlayerInfo);
+        }
+
+        private PlayerInfo CreateNewPlayer(string userId)
+        {
+            //TODO:Get default player name from user preferences
+            return new PlayerInfo
+            {
+                UserId = userId,
+                Name = $"Player {userId.ToString()[..5]}",
+                LifeTotal = 40
+            };
         }
     }
 }

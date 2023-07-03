@@ -7,7 +7,7 @@ namespace BoardBrawl.Services.Game
     {
         GameInfo? GetGameInfo(int id);
         void PassTurn(int gameId);
-        void AddPlayerToGame(int gameId, PlayerInfo playerInfo);
+        PlayerInfo JoinGame(int gameId, string userId);
         List<PlayerInfo> GetPlayers(int gameId);
         PlayerInfo GetPlayer(string userId);
         void UpdatePeerId(int playerId, Guid peerId);

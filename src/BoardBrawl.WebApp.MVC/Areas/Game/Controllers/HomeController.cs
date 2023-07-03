@@ -40,21 +40,12 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             if (gameInfo == null) { return Redirect("/Lobby"); }
 
             var userId = _userManager.GetUserId(User);
-
-            //TODO:Check to see if player is already in the game first, also consider a command to create the player info
-            var playerInfo = new Services.Game.Models.PlayerInfo
-            {
-                UserId = userId,
-                Name = $"Player {userId.ToString()[..5]}",
-                LifeTotal = 40
-            };
-
-            _service.AddPlayerToGame(id.Value, playerInfo);
+            var servicePlayerInfo = _service.JoinGame(gameInfo.Id, userId);
 
             var model = new Model
             {
                 GameId = id.Value,
-                PlayerId = playerInfo.Id,
+                PlayerId = servicePlayerInfo.Id,
                 GameName = gameInfo.Name
             };
 

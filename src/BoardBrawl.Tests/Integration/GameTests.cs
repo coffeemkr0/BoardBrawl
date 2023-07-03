@@ -39,18 +39,10 @@ namespace BoardBrawl.Tests.Integration
 
             _lobbyService.CreateGame(lobbyGameInfo);
 
-            //Add a player to the game
-            var playerInfo = new Services.Game.Models.PlayerInfo
-            {
-                UserId = Guid.NewGuid().ToString(),
-                Name = $"Test player",
-                LifeTotal = 40
-            };
-            
-            _gameService.AddPlayerToGame(lobbyGameInfo.Id, playerInfo);
+            //Join the game
+            var playerInfo = _gameService.JoinGame(lobbyGameInfo.Id, "userId 1");
 
             //Add a commander to the player
-            playerInfo = _gameService.GetPlayer(playerInfo.UserId);
             var commanderId = Guid.NewGuid().ToString();
             playerInfo.Commander1Id = commanderId;
             _gameService.UpdatePlayerInfo(playerInfo);

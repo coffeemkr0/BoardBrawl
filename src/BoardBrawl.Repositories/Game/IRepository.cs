@@ -4,12 +4,12 @@ namespace BoardBrawl.Repositories.Game
 {
     public interface IRepository
     {
-        GameInfo? GetGameInfo(int id);
+        GameInfo GetGameInfo(int id);
         void UpdateGameInfo(GameInfo gameInfo);
         void CloseGame(GameInfo gameInfo);
         void AddPlayerToGame(int gameId, PlayerInfo playerInfo);            
         List<PlayerInfo> GetPlayers(int gameId);
-        PlayerInfo GetPlayer(string userId);
+        PlayerInfo? GetPlayer(string userId);
         void UpdateFocusedPlayer(int playerId, int focusedPlayerId);
         void UpdatePeerId(int playerId, Guid peerId);
         PlayerInfo AdjustLifeTotal(int playerId, int amount);
