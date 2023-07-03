@@ -1,9 +1,17 @@
 ﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models
 @model PlayerInfo
 
-<button class="shadow-none text-white btn btn-transparent btn-sm btnDecreaseLife btn-player-counter" onclick="DecreaseLife(this)">-</button>
+@if (Model.IsSelf)
+{
+    <button class="shadow-none text-white btn btn-transparent btn-sm btnDecreaseLife btn-player-counter" onclick="DecreaseLife(this)">-</button>
+}
+
 @Model.LifeTotal
-<button class="shadow-none btn text-white btn-transparent btn-sm btnIncreaseLife btn-player-counter" onclick="IncreaseLife(this)">+</button>
+
+@if (Model.IsSelf)
+{
+    <button class="shadow-none btn text-white btn-transparent btn-sm btnIncreaseLife btn-player-counter" onclick="IncreaseLife(this)">+</button>
+}
 
 <script>
     function DecreaseLife(sender)

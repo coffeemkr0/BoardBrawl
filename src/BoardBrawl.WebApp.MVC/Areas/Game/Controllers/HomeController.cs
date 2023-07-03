@@ -77,7 +77,10 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 
         public async Task<IActionResult> AdjustLifeTotal(int gameId, int playerId, int amount)
         {
-            var playerInfo = _mapper.Map<PlayerInfo>(_service.AdjustLifeTotal(playerId, amount));
+            var userId = _userManager.GetUserId(User);
+            var servicePlayerInfo = _service.AdjustLifeTotal(playerId, amount);
+            var playerInfo = _mapper.Map<PlayerInfo>(servicePlayerInfo);
+            playerInfo.IsSelf = servicePlayerInfo.UserId == userId;
             await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerLifeTotalChanged", playerId);
             return PartialView("PlayerInfo/_PlayerLifeTotal", playerInfo);
         }
@@ -141,7 +144,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 
             if (gameInfo == null) { throw new Exception($"Game not found with id {gameId}"); }
 
-            var userId = _userManager.GetUserId((System.Security.Claims.ClaimsPrincipal)User);
+            var userId = _userManager.GetUserId(User);
             var players = _service.GetPlayers(gameId);
             var myPlayer = players.First(i => i.UserId == userId);
             var focusedPlayer = players.FirstOrDefault(i => i.Id == myPlayer.FocusedPlayerId);
@@ -152,6 +155,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             playerBoard.ActivePlayerId = gameInfo.ActivePlayerId;
 
             playerBoard.Players.AddRange(_mapper.Map<List<PlayerInfo>>(players));
+            playerBoard.Players.First(i => i.Id == myPlayer.Id).IsSelf = true;
 
             foreach (var player in playerBoard.Players)
             {
