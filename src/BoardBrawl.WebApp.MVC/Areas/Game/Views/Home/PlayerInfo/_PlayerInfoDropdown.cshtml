@@ -18,13 +18,26 @@
         </div>
         <div id="commanderInputs" class="row text-xs">
             <div class="col px-2">
-                <input class="form-control input-commander text-xs" placeholder="Add Commander" data-labelfor="commander1" value="@Model.Commander1?.Name">
-                <input type="hidden" name="Commander1" id="commander1" value="@Model.Commander1Id">
+                @if(Model.IsSelf)
+                {
+                    <input class="form-control input-commander text-xs" placeholder="Add Commander" data-labelfor="commander1" value="@Model.Commander1?.Name">
+                    <input type="hidden" name="Commander1" id="commander1" value="@Model.Commander1Id">
+                }
+                else
+                {
+                    <input class="form-control text-xs" value="@Model.Commander1?.Name">
+                }
             </div>
             <div class="col px-2">
-                <input class="form-control input-commander text-xs"
-                       placeholder="Add Commander" data-labelfor="commander2" value="@Model.Commander2?.Name">
-                <input type="hidden" name="Commander2" id="commander2" value="@Model.Commander2Id">
+                @if(Model.IsSelf)
+                {
+                    <input class="form-control input-commander text-xs" placeholder="Add Commander" data-labelfor="commander2" value="@Model.Commander2?.Name">
+                    <input type="hidden" name="Commander2" id="commander2" value="@Model.Commander2Id">
+                }
+                else
+                {
+                    <input readonly class="form-control text-xs" value="@Model.Commander2?.Name">
+                }
             </div>
         </div>
     </div>

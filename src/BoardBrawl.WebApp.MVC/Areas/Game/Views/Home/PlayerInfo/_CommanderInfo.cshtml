@@ -1,7 +1,7 @@
 ﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models;
 @model PlayerInfo
 
-@if (Model.Commander1 == null)
+@if (Model.Commander1 == null && Model.IsSelf)
 {
     <span>click to add commander(s)</span>
 }

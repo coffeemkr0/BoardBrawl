@@ -128,6 +128,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
                 _service.UpdatePlayerInfo(playerInfo);
 
                 var playerInfoViewModel = _mapper.Map<PlayerInfo>(playerInfo);
+                playerInfoViewModel.IsSelf = playerInfo.UserId == userId;
                 await LoadCommanderCardInfoCommand.Execute(playerInfoViewModel);
                 return PartialView("PlayerInfo/_CommanderInfo", playerInfoViewModel);
             }
