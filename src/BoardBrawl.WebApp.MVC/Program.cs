@@ -69,6 +69,8 @@ builder.Services.AddScoped<BoardBrawl.Services.Lobby.IService, BoardBrawl.Servic
 builder.Services.AddScoped<BoardBrawl.Repositories.Game.IRepository, BoardBrawl.Repositories.Game.EntityFrameworkRepository>();
 builder.Services.AddScoped<BoardBrawl.Services.Game.IService, BoardBrawl.Services.Game.Service>();
 
+builder.Services.AddScoped<BoardBrawl.Services.Test.TestService, BoardBrawl.Services.Test.TestService>();
+
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 var app = builder.Build();

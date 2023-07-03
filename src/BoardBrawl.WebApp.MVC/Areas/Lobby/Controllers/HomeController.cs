@@ -4,6 +4,7 @@ using BoardBrawl.WebApp.MVC.Areas.Lobby.Models;
 using BoardBrawl.Core.AutoMapping;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using BoardBrawl.Services.Test;
 
 namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
 {
@@ -15,14 +16,16 @@ namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IService _service;
         private readonly IMapper _mapper;
+        private readonly TestService _testService;
 
         public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager,
-            IService service, IMapper mapper)
+            IService service, IMapper mapper, TestService testService)
         {
             _logger = logger;
             _userManager = userManager;
             _service = service;
             _mapper = mapper;
+            _testService = testService;
         }
 
         public IActionResult Index()
@@ -46,6 +49,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
             newGame.CreatedByUserId = userId;
 
             _service.CreateGame(newGame);
+            _testService.AddTestPlayersToGame(newGame.Id);
 
             return RedirectToAction("Index", "Home", new { area = "Game", id = newGame.Id });
         }
