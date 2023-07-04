@@ -1,5 +1,4 @@
 ﻿using BoardBrawl.Data.Application.Models;
-using BoardBrawl.Repositories.Game.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BoardBrawl.Data.Application

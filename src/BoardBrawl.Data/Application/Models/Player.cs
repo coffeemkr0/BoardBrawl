@@ -1,6 +1,4 @@
-﻿using BoardBrawl.Repositories.Game.Models;
-
-namespace BoardBrawl.Data.Application.Models
+﻿namespace BoardBrawl.Data.Application.Models
 {
     public class Player
     {
@@ -25,7 +23,5 @@ namespace BoardBrawl.Data.Application.Models
         public string? Commander2Id { get; set; }
 
         public Game Game { get; set; }
-
-        public ICollection<CommanderDamage> CommanderDamages { get; set; }
     }
 }
