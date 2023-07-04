@@ -1,0 +1,31 @@
+﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models
+@model CommanderDamage
+
+<div class="card">
+    <div class="card-header commanderDamageTracker">
+        <h6>@Model.CommanderOwnerName</h6>
+        <div class="d-flex justify-content-between">
+            <div class="pt-2">
+                <small>@Model.CommanderName</small>
+            </div>
+
+            <div class="d-flex">
+                <div class="btn btn-sm adjustCommanderDamage" data-player-id="@Model.PlayerId" data-amount="-1">
+                    <i class="bi bi-file-minus" style="font-size: 1.5rem;"></i>
+                </div>
+
+                <div class="pt-2">
+                    <span class="infectCount">@Model.Damage</span>
+                </div>
+
+                <div class="btn btn-sm adjustCommanderDamage" data-player-id="@Model.PlayerId" data-amount="1">
+                    <i class="bi bi-file-plus" style="font-size: 1.5rem;"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar" style="width:@Model.DamagePercentage%" data-value="@Model.Damage" role="progressbar" aria-valuenow="@Model.Damage" aria-valuemin="0" aria-valuemax="20"></div>
+        </div>
+    </div>
+</div>

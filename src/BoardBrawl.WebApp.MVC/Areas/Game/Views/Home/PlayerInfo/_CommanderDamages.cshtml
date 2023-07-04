@@ -1,0 +1,9 @@
+﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models
+@model PlayerInfo
+
+@foreach(var commanderDamage in Model.CommanderDamages)
+{
+    <div>
+        @await Html.PartialAsync("PlayerInfo/_CommanderDamageTracker", commanderDamage)
+    </div>
+}

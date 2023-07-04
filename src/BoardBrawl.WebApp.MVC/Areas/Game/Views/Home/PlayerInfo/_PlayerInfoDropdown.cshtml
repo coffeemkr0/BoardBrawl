@@ -13,7 +13,7 @@
     </div>
 
     <div class="card-body py-2">
-        @await Html.PartialAsync("PlayerInfo/_CommanderInputs", Model);
+        @await Html.PartialAsync("PlayerInfo/_CommanderInputs", Model)
     </div>
 
     <div class="card-footer">
@@ -22,7 +22,7 @@
         </div>
 
         <div>
-            @*TODO: Insert commander damage here*@
+            @await Html.PartialAsync("PlayerInfo/_CommanderDamages", Model)
         </div>
 
         <div>
