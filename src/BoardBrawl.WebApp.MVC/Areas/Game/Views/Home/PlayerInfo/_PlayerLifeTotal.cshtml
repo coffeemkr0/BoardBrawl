@@ -1,20 +1,18 @@
 ﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models
 @model PlayerInfo
 
-@if (Model.IsSelf)
-{
+<div class="d-flex align-items-center w-100">
     <button class="shadow-none text-white btn btn-transparent btn-sm btnAdjustLifeTotal btn-player-counter"
-            data-player-id="@Model.Id" data-amount="-1">
+            data-player-id="@Model.Id" data-amount="-1"
+            style="@(!Model.IsSelf ? "visibility:hidden" : "")">
         -
     </button>
-}
 
-@Model.LifeTotal
+    <span class="lifeTotal">@Model.LifeTotal</span>
 
-@if (Model.IsSelf)
-{
     <button class="shadow-none btn text-white btn-transparent btn-sm btnAdjustLifeTotal btn-player-counter"
-            data-player-id="@Model.Id" data-amount="1">
+            data-player-id="@Model.Id" data-amount="1"
+            style="@(!Model.IsSelf ? "visibility:hidden" : "")">
         +
     </button>
-}
+</div>

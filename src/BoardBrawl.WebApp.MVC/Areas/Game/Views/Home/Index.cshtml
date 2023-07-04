@@ -280,10 +280,11 @@
         function btnAdjustLifeTotal_Click()
         {
             var button = $(this);
-            var parentElement = button.closest('.playerLifeTotal');
             var playerId = button.data('player-id');
             var amount = parseFloat(button.data('amount'));
-
+            var lifeTotalElement = button.siblings('.lifeTotal');
+            var newLifeTotal = parseFloat(lifeTotalElement.text()) + amount;
+            
             $.ajax({
                 url: '/Game/Home/AdjustLifeTotal',
                 data: {
@@ -291,8 +292,8 @@
                     playerId: playerId,
                     amount: amount
                 },
-                success: function (html) {
-                    parentElement.html(html);
+                success: function () {
+                    lifeTotalElement.text(newLifeTotal);
                 }
             });
         }

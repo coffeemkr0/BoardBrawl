@@ -83,7 +83,18 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             var playerInfo = gameInfo.Players.First(i=>i.Id == playerId);
             var playerInfoViewModel = _mapper.Map<PlayerInfo>(playerInfo);
             await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerLifeTotalChanged", playerId);
-            return PartialView("PlayerInfo/_PlayerLifeTotal", playerInfoViewModel);
+            return Ok();
+        }
+
+        public async Task<IActionResult> AdjustInfectCount(int gameId, int playerId, int amount)
+        {
+            var userId = _userManager.GetUserId(User);
+            _service.AdjustInfectCount(playerId, amount);
+            var gameInfo = _service.GetGameInfo(gameId, userId);
+            var playerInfo = gameInfo.Players.First(i => i.Id == playerId);
+            var playerInfoViewModel = _mapper.Map<PlayerInfo>(playerInfo);
+            await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfectCountChanged", playerId);
+            return Ok();
         }
 
         public async Task<IActionResult> SearchCards(string searchString)

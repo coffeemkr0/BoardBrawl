@@ -48,7 +48,7 @@ namespace BoardBrawl.Repositories.Game
         public GameInfo GetGameInfo(int id)
         {
             var gameEntity = _applicationDbContext.Games.Include(i => i.Players).First(i => i.Id == id);
-
+            gameEntity.Players = gameEntity.Players.OrderBy(i => i.Id).ToList();
             return _mapper.Map<GameInfo>(gameEntity);
         }
 
