@@ -50,7 +50,6 @@
             InitializeTooltipsForCards();
             InitializePlayerInfoDropdowns();
             InitializeCommanderInputs();
-            InitializeInfectTrackers();
 
             _peerJsObject = new Peer();
             _peerJsObject.on('open', id => {
@@ -150,6 +149,8 @@
             $(document).on('click', '#btnPassTurn', btnPassTurn_Click);
 
             $(document).on('click', '.btnAdjustLifeTotal', btnAdjustLifeTotal_Click);
+
+            $(document).on("click", '.adjustInfectCount', btnAdjustInfectCount_Click);
         }
 
         function InitializeTooltipsForCards()
@@ -254,24 +255,6 @@
             });
         }
 
-        function InitializeInfectTrackers()
-        {
-            // Button click event handlers
-            $(document).on("click", '.increaseInfect', function () {
-                var tracker = $(this).closest('.infectTracker');
-                var progressBar = tracker.find('.progress-bar').first();
-
-                ChangeProgress(progressBar, 1);
-            });
-
-            $(document).on("click", '.decreaseInfect', function () {
-                var tracker = $(this).closest('.infectTracker');
-                var progressBar = tracker.find('.progress-bar').first();
-
-                ChangeProgress(progressBar, -1);
-            });
-        }
-
         async function btnPassTurn_Click()
         {
             await _gameHubConnection.invoke("PassTurn", '@Model.GameId');
@@ -298,19 +281,51 @@
             });
         }
 
+        function btnAdjustInfectCount_Click() {
+            var button = $(this);
+            var playerId = button.data('player-id');
+            var amount = parseFloat(button.data('amount'));
+            var infectCountElement = button.parent().find('.infectCount').first();
+            var newCount = parseFloat(infectCountElement.text()) + amount;
+
+            if(newCount > 0)
+            {
+                var tracker = $(this).closest('.infectTracker');
+                var progressBar = tracker.find('.progress-bar').first();
+
+                $.ajax({
+                    url: '/Game/Home/AdjustInfectCount',
+                    data: {
+                        gameId: '@(Model.GameId)',
+                        playerId: playerId,
+                        amount: amount
+                    },
+                    success: function () {
+                        infectCountElement.text(newCount);
+                        ChangeProgress(progressBar, amount);
+                    }
+                });
+            }
+        }
+
         function ChangeProgress(progressBar, amount) {
             var minValue = parseFloat(progressBar.attr('aria-valuemin'));
             var maxValue = parseFloat(progressBar.attr('aria-valuemax'));
             var currentValue = parseFloat(progressBar.data('value'));
             var newValue = currentValue + amount;
 
-            if (newValue <= maxValue && newValue >= minValue) {
-                var percentage = ((newValue - minValue) / (maxValue - minValue)) * 100;
+            var percentage = ((newValue - minValue) / (maxValue - minValue)) * 100;
+            progressBar.css('width', percentage + '%');
+            progressBar.attr('aria-valuenow', percentage);
+            progressBar.data('value', newValue);
 
-                progressBar.css('width', percentage + '%');
-                progressBar.attr('aria-valuenow', percentage);
-                progressBar.data('value', newValue);
-            }
+            //if (newValue <= maxValue && newValue >= minValue) {
+            //    var percentage = ((newValue - minValue) / (maxValue - minValue)) * 100;
+
+            //    progressBar.css('width', percentage + '%');
+            //    progressBar.attr('aria-valuenow', percentage);
+            //    progressBar.data('value', newValue);
+            //}
         }
     </script>
 }

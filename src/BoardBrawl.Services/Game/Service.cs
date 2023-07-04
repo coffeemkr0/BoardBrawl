@@ -23,8 +23,8 @@ namespace BoardBrawl.Services.Game
             {
                 var gameInfo = _mapper.Map<GameInfo>(repoGameInfo);
 
-                var myPlayer = gameInfo.Players.FirstOrDefault(i => i.UserId == userId);
-                if(myPlayer != null) { myPlayer.IsSelf = true; }
+                LoadIsSelf(userId, gameInfo);
+                LoadInfectPercentages(gameInfo);
 
                 return gameInfo;
             }
@@ -95,6 +95,16 @@ namespace BoardBrawl.Services.Game
             _repository.AddPlayerToGame(gameId, repoPlayerInfo);
         }
 
+        public void UpdateCommander(int playerId, int slot, string cardId)
+        {
+            _repository.UpdateCommander(playerId, slot, cardId);
+        }
+
+        public void AdjustInfectCount(int playerId, int amount)
+        {
+            _repository.AdjustInfectCount(playerId, amount);
+        }
+
         private PlayerInfo CreateNewPlayer(string userId)
         {
             //TODO:Get default player name from user preferences
@@ -106,14 +116,18 @@ namespace BoardBrawl.Services.Game
             };
         }
 
-        public void UpdateCommander(int playerId, int slot, string cardId)
+        private void LoadIsSelf(string userId, GameInfo gameInfo)
         {
-            _repository.UpdateCommander(playerId, slot, cardId);
+            var myPlayer = gameInfo.Players.FirstOrDefault(i => i.UserId == userId);
+            if (myPlayer != null) { myPlayer.IsSelf = true; }
         }
 
-        public void AdjustInfectCount(int playerId, int amount)
+        private void LoadInfectPercentages(GameInfo gameInfo)
         {
-            _repository.AdjustInfectCount(playerId, amount);
+            foreach (var player in gameInfo.Players)
+            {
+                player.InfectPercentage = Math.Min(100, Convert.ToInt32(((float)player.InfectCount / 10.0f) * 100));
+            }
         }
     }
 }

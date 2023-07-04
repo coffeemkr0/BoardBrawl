@@ -10,7 +10,8 @@
         public Guid PeerId { get; set; }
         public string Name { get; set; }
         public int LifeTotal { get; set; }
-        public int InfectDamage { get; set; }
+        public int InfectCount { get; set; }
+        public int InfectPercentage { get; set; }
         public string Commander1Id { get; set; }
         public string Commander2Id { get; set; }
         public List<CommanderDamage> CommanderDamages { get; }

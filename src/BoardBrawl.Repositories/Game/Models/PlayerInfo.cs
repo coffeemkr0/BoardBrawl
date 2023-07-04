@@ -9,7 +9,7 @@
         public int? FocusedPlayerId { get; set; }
         public Guid PeerId { get; set; }
         public int LifeTotal { get; set; }
-        public int InfectDamage { get; set; }
+        public int InfectCount { get; set; }
         public string Commander1Id { get; set; }
         public string Commander2Id { get; set; }
     }
