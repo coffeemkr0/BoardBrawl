@@ -81,6 +81,15 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             return Ok();
         }
 
+        public async Task<IActionResult> AdjustCommanderDamage(int gameId, int playerId, int ownerPlayerId, string cardId, int amount)
+        {
+            _service.AdjustCommanderDamage(gameId, playerId, ownerPlayerId, cardId, amount);
+
+            await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnCommanderDamageChanged", playerId);
+
+            return Ok();
+        }
+
         public async Task<IActionResult> SearchCards(string searchString)
         {
             try

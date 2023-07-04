@@ -14,6 +14,8 @@ namespace BoardBrawl.Repositories.Game
         void UpdatePeerId(int playerId, Guid peerId);
         void AdjustLifeTotal(int playerId, int amount);
         void AdjustInfectCount(int playerId, int amount);
+        void AdjustCommanderDamage(int gameId, int playerId, int ownerPlayerId, string cardId, int amount);
+
         void UpdateCommander(int playerId, int slot, string cardId);
     }
 }

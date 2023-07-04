@@ -106,6 +106,11 @@ namespace BoardBrawl.Services.Game
             _repository.AdjustInfectCount(playerId, amount);
         }
 
+        public void AdjustCommanderDamage(int gameId, int playerId, int ownerPlayerId, string cardId, int amount)
+        {
+            _repository.AdjustCommanderDamage(gameId, playerId, ownerPlayerId, cardId, amount);
+        }
+
         private PlayerInfo CreateNewPlayer(string userId)
         {
             //TODO:Get default player name from user preferences
@@ -165,14 +170,14 @@ namespace BoardBrawl.Services.Game
                         var commanderDamage = new Models.CommanderDamage
                         {
                             PlayerId = player.Id,
-                            CommanderOwnerPlayerId = ownerPlayerId,
-                            CommanderOwnerName = ownerPlayer.Name,
+                            OwnerPlayerId = ownerPlayerId,
+                            OwnerPlayerName = ownerPlayer.Name,
                             CardId = commanderId
                         };
 
                         //If the repo contains an existing damage entry, assign the damage value to the entry
                         var repoCommanderDamage = repoCommanderDamages.FirstOrDefault(i => 
-                            i.PlayerId == player.Id && i.CommanderOwnerPlayerId == ownerPlayerId && i.CardId == commanderId);
+                            i.PlayerId == player.Id && i.OwnerPlayerId == ownerPlayerId && i.CardId == commanderId);
 
                         if(repoCommanderDamage != null )
                         {

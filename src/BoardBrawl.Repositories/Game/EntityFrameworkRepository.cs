@@ -47,7 +47,11 @@ namespace BoardBrawl.Repositories.Game
 
         public GameInfo GetGameInfo(int id)
         {
-            var gameEntity = _applicationDbContext.Games.Include(i => i.Players).First(i => i.Id == id);
+            var gameEntity = _applicationDbContext.Games
+                .Include(i => i.Players)
+                .Include(i=>i.CommanderDamages)
+                .First(i => i.Id == id);
+
             gameEntity.Players = gameEntity.Players.OrderBy(i => i.Id).ToList();
             return _mapper.Map<GameInfo>(gameEntity);
         }
@@ -129,6 +133,29 @@ namespace BoardBrawl.Repositories.Game
             var playerEntity = _applicationDbContext.Players.First(i => i.Id == playerId);
 
             playerEntity.InfectCount += amount;
+            _applicationDbContext.SaveChanges();
+        }
+
+        public void AdjustCommanderDamage(int gameId, int playerId, int ownerPlayerId, string cardId, int amount)
+        {
+            var commanderDamageEntity = _applicationDbContext.CommanderDamages.FirstOrDefault(i =>
+                i.GameId == gameId && i.PlayerId == playerId && i.OwnerPlayerId == ownerPlayerId && i.CardId == cardId);
+
+            if (commanderDamageEntity == null)
+            {
+                commanderDamageEntity = new Data.Application.Models.CommanderDamage
+                {
+                    GameId = gameId,
+                    PlayerId = playerId,
+                    OwnerPlayerId = ownerPlayerId,
+                    CardId = cardId
+                };
+
+                _applicationDbContext.CommanderDamages.Add(commanderDamageEntity);
+            }
+
+            commanderDamageEntity.Damage += amount;
+
             _applicationDbContext.SaveChanges();
         }
     }

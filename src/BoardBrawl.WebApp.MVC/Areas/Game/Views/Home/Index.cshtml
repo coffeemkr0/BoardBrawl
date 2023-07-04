@@ -150,7 +150,9 @@
 
             $(document).on('click', '.btnAdjustLifeTotal', btnAdjustLifeTotal_Click);
 
-            $(document).on("click", '.adjustInfectCount', btnAdjustInfectCount_Click);
+            $(document).on("click", '.btnAdjustInfectCount', btnAdjustInfectCount_Click);
+
+            $(document).on('click', '.btnAdjustCommanderDamage', btnAdjustCommanderDamage_Click);
         }
 
         function InitializeTooltipsForCards()
@@ -302,6 +304,37 @@
                     },
                     success: function () {
                         infectCountElement.text(newCount);
+                        ChangeProgress(progressBar, amount);
+                    }
+                });
+            }
+        }
+
+        function btnAdjustCommanderDamage_Click()
+        {
+            var button = $(this);
+            var playerId = button.data('player-id');
+            var ownerPlayerId = button.data('owner-player-id');
+            var cardId = button.data('card-id');
+            var amount = parseFloat(button.data('amount'));
+            var damageCountElement = button.parent().find('.damageCount').first();
+            var newCount = parseFloat(damageCountElement.text()) + amount;
+
+            if (newCount > 0) {
+                var tracker = $(this).closest('.commanderDamageTracker');
+                var progressBar = tracker.find('.progress-bar').first();
+
+                $.ajax({
+                    url: '/Game/Home/AdjustCommanderDamage',
+                    data: {
+                        gameId: '@(Model.GameId)',
+                        playerId: playerId,
+                        ownerPlayerId: ownerPlayerId,
+                        cardId: cardId,
+                        amount: amount
+                    },
+                    success: function () {
+                        damageCountElement.text(newCount);
                         ChangeProgress(progressBar, amount);
                     }
                 });

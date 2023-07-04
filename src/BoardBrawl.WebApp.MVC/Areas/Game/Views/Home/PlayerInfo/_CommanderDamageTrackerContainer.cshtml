@@ -3,9 +3,9 @@
 
 <div class="card">
     <div class="card-header">
-        <h6>@Model.FirstOrDefault()?.CommanderOwnerName</h6>
+        <h6>@Model.FirstOrDefault()?.OwnerPlayerName</h6>
 
-        <div class="commanderDamageTracker">
+        <div>
             @foreach(var commanderDamage in Model)
             {
                 @await Html.PartialAsync("PlayerInfo/_CommanderDamageTracker", commanderDamage);
