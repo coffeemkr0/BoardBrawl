@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoardBrawl.Data.Application.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230704134550_InitialCreate")]
+    [Migration("20230704164128_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,7 +102,7 @@ namespace BoardBrawl.Data.Application.Migrations
                     b.Property<int>("GameId")
                         .HasColumnType("int");
 
-                    b.Property<int>("InfectDamage")
+                    b.Property<int>("InfectCount")
                         .HasColumnType("int");
 
                     b.Property<int>("LifeTotal")

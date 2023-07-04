@@ -59,28 +59,6 @@ namespace BoardBrawl.Repositories.Game
             return _mapper.Map<List<PlayerInfo>>(playerEntities);
         }
 
-        public void DecreaseInfectDamage(int gameId, string userId, int amount)
-        {
-            var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.GameId == gameId && i.UserId == userId);
-
-            if (playerEntity != null)
-            {
-                playerEntity.InfectDamage -= amount;
-                _applicationDbContext.SaveChanges();
-            }
-        }
-
-        public void IncreaseInfectDamage(int gameId, string userId, int amount)
-        {
-            var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.GameId == gameId && i.UserId == userId);
-
-            if (playerEntity != null)
-            {
-                playerEntity.InfectDamage += amount;
-                _applicationDbContext.SaveChanges();
-            }
-        }
-
         public void UpdateGameInfo(GameInfo gameInfo)
         {
             var gameInfoEntity = _applicationDbContext.Games.First(i => i.Id == gameInfo.Id);
@@ -113,14 +91,12 @@ namespace BoardBrawl.Repositories.Game
             return null;
         }
 
-        public PlayerInfo AdjustLifeTotal(int playerId, int amount)
+        public void AdjustLifeTotal(int playerId, int amount)
         {
             var playerEntity = _applicationDbContext.Players.First(i => i.Id == playerId);
 
             playerEntity.LifeTotal += amount;
             _applicationDbContext.SaveChanges();
-
-            return _mapper.Map<PlayerInfo>(playerEntity);
         }
 
         public void UpdatePeerId(int playerId, Guid peerId)
@@ -145,6 +121,14 @@ namespace BoardBrawl.Repositories.Game
                     break;
             }
 
+            _applicationDbContext.SaveChanges();
+        }
+
+        public void AdjustInfectCount(int playerId, int amount)
+        {
+            var playerEntity = _applicationDbContext.Players.First(i => i.Id == playerId);
+
+            playerEntity.InfectCount += amount;
             _applicationDbContext.SaveChanges();
         }
     }

@@ -100,7 +100,7 @@ namespace BoardBrawl.Data.Application.Migrations
                     b.Property<int>("GameId")
                         .HasColumnType("int");
 
-                    b.Property<int>("InfectDamage")
+                    b.Property<int>("InfectCount")
                         .HasColumnType("int");
 
                     b.Property<int>("LifeTotal")

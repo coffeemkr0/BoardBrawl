@@ -3,48 +3,18 @@
 
 @if (Model.IsSelf)
 {
-    <button class="shadow-none text-white btn btn-transparent btn-sm btnDecreaseLife btn-player-counter" onclick="DecreaseLife(this)">-</button>
+    <button class="shadow-none text-white btn btn-transparent btn-sm btnAdjustLifeTotal btn-player-counter"
+            data-player-id="@Model.Id" data-amount="-1">
+        -
+    </button>
 }
 
 @Model.LifeTotal
 
 @if (Model.IsSelf)
 {
-    <button class="shadow-none btn text-white btn-transparent btn-sm btnIncreaseLife btn-player-counter" onclick="IncreaseLife(this)">+</button>
+    <button class="shadow-none btn text-white btn-transparent btn-sm btnAdjustLifeTotal btn-player-counter"
+            data-player-id="@Model.Id" data-amount="1">
+        +
+    </button>
 }
-
-<script>
-    function DecreaseLife(sender)
-    {
-        var parentElement = $(sender).closest('.playerLifeTotal');
-
-        $.ajax({
-            url: '/Game/Home/AdjustLifeTotal',
-            data: {
-                gameId: '@(Model.GameId)',
-                playerId: '@Model.Id',
-                amount: -1
-            },
-            success: function (html) {
-                parentElement.html(html);
-            }
-        });
-    }
-
-    function IncreaseLife(sender)
-    {
-        var parentElement = $(sender).closest('.playerLifeTotal');
-
-        $.ajax({
-            url: '/Game/Home/AdjustLifeTotal',
-            data: {
-                gameId: '@(Model.GameId)',
-                playerId: '@Model.Id',
-                amount: 1
-            },
-            success: function (html) {
-                parentElement.html(html);
-            }
-        });
-    }
-</script>

@@ -34,18 +34,6 @@ namespace BoardBrawl.Services.Game
             }
         }
 
-        public PlayerInfo IncreaseInfectDamage(int gameId, string userId, int amount)
-        {
-            _repository.IncreaseInfectDamage(gameId, userId, amount);
-            return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));
-        }
-
-        public PlayerInfo DecreaseInfectDamage(int gameId, string userId, int amount)
-        {
-            _repository.DecreaseInfectDamage(gameId, userId, amount);
-            return _mapper.Map<PlayerInfo>(_repository.GetPlayers(gameId).First(i => i.UserId == userId));
-        }
-
         public void PassTurn(int gameId)
         {
             var repoGameInfo = _repository.GetGameInfo(gameId);
@@ -83,9 +71,9 @@ namespace BoardBrawl.Services.Game
             _repository.UpdateFocusedPlayer(playerId, focusedPlayerId);
         }
 
-        public PlayerInfo AdjustLifeTotal(int playerId, int amount)
+        public void AdjustLifeTotal(int playerId, int amount)
         {
-            return _mapper.Map<PlayerInfo>(_repository.AdjustLifeTotal(playerId, amount));
+            _repository.AdjustLifeTotal(playerId, amount);
         }
 
         public void UpdatePeerId(int playerId, Guid peerId)
@@ -121,6 +109,11 @@ namespace BoardBrawl.Services.Game
         public void UpdateCommander(int playerId, int slot, string cardId)
         {
             _repository.UpdateCommander(playerId, slot, cardId);
+        }
+
+        public void AdjustInfectCount(int playerId, int amount)
+        {
+            _repository.AdjustInfectCount(playerId, amount);
         }
     }
 }

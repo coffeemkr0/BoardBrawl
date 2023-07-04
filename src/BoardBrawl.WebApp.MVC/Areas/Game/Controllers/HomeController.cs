@@ -78,10 +78,12 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
         public async Task<IActionResult> AdjustLifeTotal(int gameId, int playerId, int amount)
         {
             var userId = _userManager.GetUserId(User);
-            var servicePlayerInfo = _service.AdjustLifeTotal(playerId, amount);
-            var playerInfo = _mapper.Map<PlayerInfo>(servicePlayerInfo);
+            _service.AdjustLifeTotal(playerId, amount);
+            var gameInfo = _service.GetGameInfo(gameId, userId);
+            var playerInfo = gameInfo.Players.First(i=>i.Id == playerId);
+            var playerInfoViewModel = _mapper.Map<PlayerInfo>(playerInfo);
             await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerLifeTotalChanged", playerId);
-            return PartialView("PlayerInfo/_PlayerLifeTotal", playerInfo);
+            return PartialView("PlayerInfo/_PlayerLifeTotal", playerInfoViewModel);
         }
 
         public async Task<IActionResult> SearchCards(string searchString)

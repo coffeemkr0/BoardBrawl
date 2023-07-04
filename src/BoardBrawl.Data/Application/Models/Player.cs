@@ -16,7 +16,7 @@
 
         public int LifeTotal { get; set; }
 
-        public int InfectDamage { get; set; }
+        public int InfectCount { get; set; }
 
         public string? Commander1Id { get; set; }
 
