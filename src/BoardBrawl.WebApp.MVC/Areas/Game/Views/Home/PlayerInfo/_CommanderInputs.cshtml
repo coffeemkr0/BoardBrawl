@@ -1,0 +1,30 @@
+﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models
+@model PlayerInfo
+
+<div class="pb-2">
+    <small class="fst-italic text-muted">Commander(s)</small>
+</div>
+<div class="row text-xs commander-inputs" data-player-id="@Model.Id">
+    <div class="col px-2">
+        @if (Model.IsSelf)
+        {
+            <input class="form-control commander-search text-xs" placeholder="Add Commander" value="@Model.Commander1?.Name">
+            <input class="commander-id" type="hidden" data-slot="1" value="@Model.Commander1Id">
+        }
+        else
+        {
+            <input readonly class="form-control text-xs" value="@Model.Commander1?.Name">
+        }
+    </div>
+    <div class="col px-2">
+        @if (Model.IsSelf)
+        {
+            <input class="form-control commander-search text-xs" data-input-for="Commander2" placeholder="Add Commander" value="@Model.Commander2?.Name">
+            <input class="commander-id" type="hidden" data-slot="2" value="@Model.Commander2Id">
+        }
+        else
+        {
+            <input readonly class="form-control text-xs" value="@Model.Commander2?.Name">
+        }
+    </div>
+</div>
