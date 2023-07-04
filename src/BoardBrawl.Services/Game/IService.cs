@@ -14,7 +14,6 @@ namespace BoardBrawl.Services.Game
         PlayerInfo AdjustLifeTotal(int playerId, int amount);
         PlayerInfo DecreaseInfectDamage(int gameId, string userId, int amount);
         PlayerInfo IncreaseInfectDamage(int gameId, string userId, int amount);
-        void UpdatePlayerInfo(PlayerInfo playerInfo);
         void UpdateCommander(int playerId, int slot, string cardId);
     }
 }

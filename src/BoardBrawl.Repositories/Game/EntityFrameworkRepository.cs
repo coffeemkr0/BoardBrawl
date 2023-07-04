@@ -113,19 +113,6 @@ namespace BoardBrawl.Repositories.Game
             return null;
         }
 
-        public void UpdatePlayerInfo(PlayerInfo playerInfo)
-        {
-            var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.Id == playerInfo.Id);
-
-            if (playerEntity == null)
-            {
-                playerEntity = new Player();
-            }
-
-            _mapper.Map(playerInfo, playerEntity);
-            _applicationDbContext.SaveChanges();
-        }
-
         public PlayerInfo AdjustLifeTotal(int playerId, int amount)
         {
             var playerEntity = _applicationDbContext.Players.First(i => i.Id == playerId);

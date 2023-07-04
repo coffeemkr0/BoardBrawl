@@ -83,11 +83,6 @@ namespace BoardBrawl.Services.Game
             _repository.UpdateFocusedPlayer(playerId, focusedPlayerId);
         }
 
-        public void UpdatePlayerInfo(PlayerInfo playerInfo)
-        {
-            _repository.UpdatePlayerInfo(_mapper.Map<Repositories.Game.Models.PlayerInfo>(playerInfo));
-        }
-
         public PlayerInfo AdjustLifeTotal(int playerId, int amount)
         {
             return _mapper.Map<PlayerInfo>(_repository.AdjustLifeTotal(playerId, amount));
