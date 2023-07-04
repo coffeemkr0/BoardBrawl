@@ -109,7 +109,7 @@ namespace BoardBrawl.Services.Game
             _repository.UpdatePeerId(playerId, peerId);
         }
 
-        public PlayerInfo JoinGame(int gameId, string userId)
+        public void JoinGame(int gameId, string userId)
         {
             var repoPlayerInfo = _repository.GetPlayer(userId);
 
@@ -121,8 +121,6 @@ namespace BoardBrawl.Services.Game
             }
 
             _repository.AddPlayerToGame(gameId, repoPlayerInfo);
-
-            return _mapper.Map<PlayerInfo>(repoPlayerInfo);
         }
 
         private PlayerInfo CreateNewPlayer(string userId)
@@ -134,6 +132,11 @@ namespace BoardBrawl.Services.Game
                 Name = $"Player {userId.ToString()[..5]}",
                 LifeTotal = 40
             };
+        }
+
+        public void UpdateCommander(int playerId, int slot, string cardId)
+        {
+            _repository.UpdateCommander(playerId, slot, cardId);
         }
     }
 }

@@ -18,11 +18,12 @@ namespace BoardBrawl.Services.Test
         {
             //Join as a new player
             var userId = Guid.NewGuid().ToString();
-            var playerInfo = _gameService.JoinGame(gameId, userId);
+            _gameService.JoinGame(gameId, userId);
 
             //Add a commander to the player (The Ur Dragon)
-            playerInfo.Commander1Id = "10d42b35-844f-4a64-9981-c6118d45e826";
-            _gameService.UpdatePlayerInfo(playerInfo);
+            var game = _gameService.GetGameInfo(gameId, userId);
+            var testPlayer = game.Players.First(i => i.UserId == userId);
+            _gameService.UpdateCommander(testPlayer.Id, 1, "10d42b35-844f-4a64-9981-c6118d45e826");
         }
     }
 }

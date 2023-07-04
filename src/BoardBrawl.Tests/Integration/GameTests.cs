@@ -8,6 +8,8 @@ namespace BoardBrawl.Tests.Integration
     [TestClass]
     public class GameTests
     {
+        const string CardId_TheUrDragon = "10d42b35-844f-4a64-9981-c6118d45e826";
+
         private Services.Game.IService _gameService;
         private Services.Lobby.IService _lobbyService;
 
@@ -30,27 +32,32 @@ namespace BoardBrawl.Tests.Integration
         [TestMethod]
         public void TestUpdateCommanders()
         {
+            var userId = Guid.NewGuid().ToString();
+
             //Create a game
             var lobbyGameInfo = new Services.Lobby.Models.GameInfo
             {
                 Name = "Test Game",
-                CreatedByUserId = "userId 1"
+                CreatedByUserId = userId
             };
 
             _lobbyService.CreateGame(lobbyGameInfo);
 
             //Join the game
-            var playerInfo = _gameService.JoinGame(lobbyGameInfo.Id, "userId 1");
+            _gameService.JoinGame(lobbyGameInfo.Id, userId);
+
+            //Get the updated game
+            var gameInfo = _gameService.GetGameInfo(lobbyGameInfo.Id, userId);
+            var myPlayer = gameInfo.Players.First(i => i.IsSelf);
 
             //Add a commander to the player
-            var commanderId = Guid.NewGuid().ToString();
-            playerInfo.Commander1Id = commanderId;
-            _gameService.UpdatePlayerInfo(playerInfo);
+            _gameService.UpdateCommander(myPlayer.Id, 1, CardId_TheUrDragon);
 
             //Make sure the player info comes back correctly
-            playerInfo = _gameService.GetPlayer(playerInfo.UserId);
+            gameInfo = _gameService.GetGameInfo(lobbyGameInfo.Id, userId);
+            myPlayer = gameInfo.Players.First(i => i.IsSelf);
 
-            Assert.IsTrue(playerInfo.Commander1Id == commanderId);
+            Assert.IsTrue(myPlayer.Commander1Id == CardId_TheUrDragon);
         }
 
         [TestMethod]
@@ -68,18 +75,18 @@ namespace BoardBrawl.Tests.Integration
             _lobbyService.CreateGame(lobbyGameInfo);
 
             //Join the game
-            var playerInfo = _gameService.JoinGame(lobbyGameInfo.Id, userId);
+            _gameService.JoinGame(lobbyGameInfo.Id, userId);
 
-            //Add a commander to the player
-            var commanderId = Guid.NewGuid().ToString();
-            playerInfo.Commander1Id = commanderId;
-            _gameService.UpdatePlayerInfo(playerInfo);
+            //Get the updated game
+            var game = _gameService.GetGameInfo(lobbyGameInfo.Id, userId);
+            var myPlayer = game.Players.First(i => i.IsSelf);
 
             //Make sure the player info comes back correctly
-            var game = _gameService.GetGameInfo(lobbyGameInfo.Id, userId);
+            game = _gameService.GetGameInfo(lobbyGameInfo.Id, userId);
+            myPlayer = game.Players.First(i => i.IsSelf);
 
             Assert.IsTrue(game.Players.Count() == 1);
-            Assert.AreEqual(game.Players.First().Id, playerInfo.Id);
+            Assert.AreEqual(game.Players.First().Id, myPlayer.Id);
             Assert.IsTrue(game.Players.First().IsSelf);
         }
     }

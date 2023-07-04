@@ -143,5 +143,22 @@ namespace BoardBrawl.Repositories.Game
             playerEntity.PeerId = peerId;
             _applicationDbContext.SaveChanges();
         }
+
+        public void UpdateCommander(int playerId, int slot, string cardId)
+        {
+            var playerEntity = _applicationDbContext.Players.First(i => i.Id == playerId);
+
+            switch (slot)
+            {
+                case 1:
+                    playerEntity.Commander1Id = cardId;
+                    break;
+                case 2:
+                    playerEntity.Commander2Id = cardId;
+                    break;
+            }
+
+            _applicationDbContext.SaveChanges();
+        }
     }
 }

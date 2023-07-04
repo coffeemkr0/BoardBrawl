@@ -37,15 +37,15 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             if (id == null) { return Redirect("/Lobby"); }
 
             var userId = _userManager.GetUserId(User);
-            var gameInfo = _service.GetGameInfo(id.Value, userId);
-            if (gameInfo == null) { return Redirect("/Lobby"); }
+            _service.JoinGame(id.Value, userId);
 
-            var servicePlayerInfo = _service.JoinGame(gameInfo.Id, userId);
+            var gameInfo = _service.GetGameInfo(id.Value, userId);
+            var myPlayer = gameInfo.Players.First(i => i.IsSelf);
 
             var model = new Model
             {
                 GameId = id.Value,
-                PlayerId = servicePlayerInfo.Id,
+                PlayerId = myPlayer.Id,
                 GameName = gameInfo.Name
             };
 
