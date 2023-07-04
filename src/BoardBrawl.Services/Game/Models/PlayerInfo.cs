@@ -14,11 +14,11 @@
         public int InfectPercentage { get; set; }
         public string Commander1Id { get; set; }
         public string Commander2Id { get; set; }
-        public List<CommanderDamage> CommanderDamages { get; }
+        public Dictionary<int, List<CommanderDamage>> CommanderDamages { get; }
 
         public PlayerInfo()
         {
-            CommanderDamages = new List<CommanderDamage>();
+            CommanderDamages = new Dictionary<int, List<CommanderDamage>>();
         }
     }
 }

@@ -15,12 +15,12 @@
         public CardInfo? Commander2 { get; set; }
         public List<Colors> CommanderColors { get; }
         public bool IsSelf { get; set; }
-        public List<CommanderDamage> CommanderDamages { get; }
+        public Dictionary<int, List<CommanderDamage>> CommanderDamages { get; }
 
         public PlayerInfo()
         {
             CommanderColors = new List<Colors>();
-            CommanderDamages = new List<CommanderDamage>();
+            CommanderDamages = new Dictionary<int, List<CommanderDamage>>();
         }
     }
 }

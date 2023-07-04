@@ -156,6 +156,8 @@ namespace BoardBrawl.Services.Game
             {
                 foreach (var ownerPlayerId in commanderDictionary.Keys)
                 {
+                    player.CommanderDamages.Add(ownerPlayerId, new List<Models.CommanderDamage>());
+
                     var ownerPlayer = gameInfo.Players.First(i => i.Id == ownerPlayerId);
 
                     foreach (var commanderId in commanderDictionary[ownerPlayerId])
@@ -178,7 +180,7 @@ namespace BoardBrawl.Services.Game
                             commanderDamage.DamagePercentage = Convert.ToInt32(((float)commanderDamage.Damage / 20.0f) * 100);
                         }
 
-                        player.CommanderDamages.Add(commanderDamage);
+                        player.CommanderDamages[ownerPlayerId].Add(commanderDamage);
                     }
                 }
             }

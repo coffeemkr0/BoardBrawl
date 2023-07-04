@@ -25,10 +25,13 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 
         private static async Task LoadCommanderDamageCardInfo(PlayerInfo player)
         {
-            foreach (var commanderDamage in player.CommanderDamages)
+            foreach (var ownerPlayerId in player.CommanderDamages.Keys)
             {
-                var cardInfo = await GetCardInfo(commanderDamage.CardId);
-                commanderDamage.CommanderName = cardInfo == null ? "" : cardInfo.Name;
+                foreach (var commanderDamage in player.CommanderDamages[ownerPlayerId])
+                {
+                    var cardInfo = await GetCardInfo(commanderDamage.CardId);
+                    commanderDamage.CommanderName = cardInfo == null ? "" : cardInfo.Name;
+                }
             }
         }
 
