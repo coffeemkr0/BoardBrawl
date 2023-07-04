@@ -36,10 +36,10 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
         {
             if (id == null) { return Redirect("/Lobby"); }
 
-            var gameInfo = _service.GetGameInfo(id.Value);
+            var userId = _userManager.GetUserId(User);
+            var gameInfo = _service.GetGameInfo(id.Value, userId);
             if (gameInfo == null) { return Redirect("/Lobby"); }
 
-            var userId = _userManager.GetUserId(User);
             var servicePlayerInfo = _service.JoinGame(gameInfo.Id, userId);
 
             var model = new Model
@@ -141,11 +141,11 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 
         private async Task LoadPlayerBoard(int gameId, PlayerBoard playerBoard)
         {
-            var gameInfo = _service.GetGameInfo(gameId);
+            var userId = _userManager.GetUserId(User);
+            var gameInfo = _service.GetGameInfo(gameId, userId);
 
             if (gameInfo == null) { throw new Exception($"Game not found with id {gameId}"); }
 
-            var userId = _userManager.GetUserId(User);
             var players = _service.GetPlayers(gameId);
             var myPlayer = players.First(i => i.UserId == userId);
             var focusedPlayer = players.FirstOrDefault(i => i.Id == myPlayer.FocusedPlayerId);

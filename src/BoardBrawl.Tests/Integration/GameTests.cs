@@ -52,5 +52,35 @@ namespace BoardBrawl.Tests.Integration
 
             Assert.IsTrue(playerInfo.Commander1Id == commanderId);
         }
+
+        [TestMethod]
+        public void TestCreateGameAndGetGame()
+        {
+            var userId = Guid.NewGuid().ToString();
+
+            //Create a game
+            var lobbyGameInfo = new Services.Lobby.Models.GameInfo
+            {
+                Name = "Test Game",
+                CreatedByUserId = userId
+            };
+
+            _lobbyService.CreateGame(lobbyGameInfo);
+
+            //Join the game
+            var playerInfo = _gameService.JoinGame(lobbyGameInfo.Id, userId);
+
+            //Add a commander to the player
+            var commanderId = Guid.NewGuid().ToString();
+            playerInfo.Commander1Id = commanderId;
+            _gameService.UpdatePlayerInfo(playerInfo);
+
+            //Make sure the player info comes back correctly
+            var game = _gameService.GetGameInfo(lobbyGameInfo.Id, userId);
+
+            Assert.IsTrue(game.Players.Count() == 1);
+            Assert.AreEqual(game.Players.First().Id, playerInfo.Id);
+            Assert.IsTrue(game.Players.First().IsSelf);
+        }
     }
 }

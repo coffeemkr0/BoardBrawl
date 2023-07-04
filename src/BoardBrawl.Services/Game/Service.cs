@@ -16,12 +16,17 @@ namespace BoardBrawl.Services.Game
             _mapper = mapper;
         }
 
-        public GameInfo? GetGameInfo(int id)
+        public GameInfo? GetGameInfo(int id, string userId)
         {
             var repoGameInfo = _repository.GetGameInfo(id);
             if (repoGameInfo != null)
             {
-                return _mapper.Map<GameInfo>(repoGameInfo);
+                var gameInfo = _mapper.Map<GameInfo>(repoGameInfo);
+
+                var myPlayer = gameInfo.Players.FirstOrDefault(i => i.UserId == userId);
+                if(myPlayer != null) { myPlayer.IsSelf = true; }
+
+                return gameInfo;
             }
             else
             {

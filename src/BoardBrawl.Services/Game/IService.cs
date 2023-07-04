@@ -5,7 +5,7 @@ namespace BoardBrawl.Services.Game
 {
     public interface IService
     {
-        GameInfo? GetGameInfo(int id);
+        GameInfo? GetGameInfo(int id, string userId);
         void PassTurn(int gameId);
         PlayerInfo JoinGame(int gameId, string userId);
         List<PlayerInfo> GetPlayers(int gameId);
