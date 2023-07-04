@@ -80,7 +80,6 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             var userId = _userManager.GetUserId(User);
             var servicePlayerInfo = _service.AdjustLifeTotal(playerId, amount);
             var playerInfo = _mapper.Map<PlayerInfo>(servicePlayerInfo);
-            playerInfo.IsSelf = servicePlayerInfo.UserId == userId;
             await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerLifeTotalChanged", playerId);
             return PartialView("PlayerInfo/_PlayerLifeTotal", playerInfo);
         }
@@ -109,26 +108,18 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             }
         }
 
-        public async Task<IActionResult> UpdateCommander(int gameId, int slot, string cardId)
+        public async Task<IActionResult> UpdateCommander(int gameId, int playerId, int slot, string cardId)
         {
             try
             {
-                var userId = _userManager.GetUserId(User);
-                var playerInfo = _service.GetPlayer(userId);
-                switch (slot)
-                {
-                    case 1:
-                        playerInfo.Commander1Id = cardId;
-                        break;
+                _service.UpdateCommander(playerId, slot, cardId);
 
-                    case 2:
-                        playerInfo.Commander2Id = cardId;
-                        break;
-                }
-                _service.UpdatePlayerInfo(playerInfo);
+                //TODO:This has to refresh all player infos to update commander damage tracking
+                var userId = _userManager.GetUserId(User);
+                var gameInfo = _service.GetGameInfo(gameId, userId);
+                var playerInfo = gameInfo.Players.First(i => i.Id == playerId);
 
                 var playerInfoViewModel = _mapper.Map<PlayerInfo>(playerInfo);
-                playerInfoViewModel.IsSelf = playerInfo.UserId == userId;
                 await LoadCommanderCardInfoCommand.Execute(playerInfoViewModel);
                 return PartialView("PlayerInfo/_CommanderInfo", playerInfoViewModel);
             }
@@ -146,17 +137,15 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 
             if (gameInfo == null) { throw new Exception($"Game not found with id {gameId}"); }
 
-            var players = _service.GetPlayers(gameId);
-            var myPlayer = players.First(i => i.UserId == userId);
-            var focusedPlayer = players.FirstOrDefault(i => i.Id == myPlayer.FocusedPlayerId);
+            var myPlayer = gameInfo.Players.First(i => i.IsSelf);
+            var focusedPlayer = gameInfo.Players.FirstOrDefault(i => i.Id == myPlayer.FocusedPlayerId);
 
             playerBoard.GameId = gameId;
             playerBoard.PlayerId = myPlayer.Id;
-            playerBoard.FocusedPlayerId = focusedPlayer?.Id ?? players.First().Id;
+            playerBoard.FocusedPlayerId = focusedPlayer?.Id ?? gameInfo.Players.First().Id;
             playerBoard.ActivePlayerId = gameInfo.ActivePlayerId;
 
-            playerBoard.Players.AddRange(_mapper.Map<List<PlayerInfo>>(players));
-            playerBoard.Players.First(i => i.Id == myPlayer.Id).IsSelf = true;
+            playerBoard.Players.AddRange(_mapper.Map<List<PlayerInfo>>(gameInfo.Players));
 
             foreach (var player in playerBoard.Players)
             {

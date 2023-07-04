@@ -34,12 +34,6 @@ namespace BoardBrawl.Services.Game
             }
         }
 
-        public List<PlayerInfo> GetPlayers(int gameId)
-        {
-            var repoPlayers = _repository.GetPlayers(gameId);
-            return _mapper.Map<List<PlayerInfo>>(repoPlayers);
-        }
-
         public PlayerInfo IncreaseInfectDamage(int gameId, string userId, int amount)
         {
             _repository.IncreaseInfectDamage(gameId, userId, amount);
@@ -87,11 +81,6 @@ namespace BoardBrawl.Services.Game
         public void UpdateFocusedPlayer(int playerId, int focusedPlayerId)
         {
             _repository.UpdateFocusedPlayer(playerId, focusedPlayerId);
-        }
-
-        public PlayerInfo GetPlayer(string userId)
-        {
-            return _mapper.Map<PlayerInfo>(_repository.GetPlayer(userId));
         }
 
         public void UpdatePlayerInfo(PlayerInfo playerInfo)

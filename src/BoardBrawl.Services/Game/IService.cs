@@ -9,8 +9,6 @@ namespace BoardBrawl.Services.Game
 
         void PassTurn(int gameId);
         void JoinGame(int gameId, string userId);
-        List<PlayerInfo> GetPlayers(int gameId);
-        PlayerInfo GetPlayer(string userId);
         void UpdatePeerId(int playerId, Guid peerId);
         void UpdateFocusedPlayer(int playerId, int focusedPlayerId);
         PlayerInfo AdjustLifeTotal(int playerId, int amount);
