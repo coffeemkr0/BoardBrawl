@@ -1,5 +1,4 @@
 ﻿using BoardBrawl.Core.AutoMapping;
-using BoardBrawl.Data.Application.Models;
 using BoardBrawl.Services.Game;
 using BoardBrawl.WebApp.MVC.Areas.Game.Hubs;
 using BoardBrawl.WebApp.MVC.Areas.Game.Models;
@@ -36,20 +35,9 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
         {
             if (id == null) { return Redirect("/Lobby"); }
 
-            var userId = _userManager.GetUserId(User);
-            _service.JoinGame(id.Value, userId);
+            _service.JoinGame(id.Value, _userManager.GetUserId(User));
 
-            var gameInfo = _service.GetGameInfo(id.Value, userId);
-            var myPlayer = gameInfo.Players.First(i => i.IsSelf);
-
-            var model = new Model
-            {
-                GameId = id.Value,
-                PlayerId = myPlayer.Id,
-                GameName = gameInfo.Name
-            };
-
-            await LoadPlayerBoard(model.GameId, model.PlayerBoard);
+            var model = await LoadModel(id.Value);
 
             return View(model);
         }
@@ -57,16 +45,16 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
         public async Task<IActionResult> PassTurn(int gameId)
         {
             _service.PassTurn(gameId);
-            var playerBoard = new PlayerBoard();
-            await LoadPlayerBoard(gameId, playerBoard);
-            return PartialView("_PlayerBoard", playerBoard);
+
+            var model = await LoadModel(gameId);
+
+            return PartialView("_PlayerBoard", model.PlayerBoard);
         }
 
         public async Task<IActionResult> PlayerBoard(int gameId)
         {
-            var playerBoard = new PlayerBoard();
-            await LoadPlayerBoard(gameId, playerBoard);
-            return PartialView("_PlayerBoard", playerBoard);
+            var model = await (LoadModel(gameId));
+            return PartialView("_PlayerBoard", model.PlayerBoard);
         }
 
         public IActionResult UpdateFocusedPlayer(int playerId, int focusedPlayerId)
@@ -77,23 +65,19 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 
         public async Task<IActionResult> AdjustLifeTotal(int gameId, int playerId, int amount)
         {
-            var userId = _userManager.GetUserId(User);
             _service.AdjustLifeTotal(playerId, amount);
-            var gameInfo = _service.GetGameInfo(gameId, userId);
-            var playerInfo = gameInfo.Players.First(i=>i.Id == playerId);
-            var playerInfoViewModel = _mapper.Map<PlayerInfo>(playerInfo);
+
             await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerLifeTotalChanged", playerId);
+
             return Ok();
         }
 
         public async Task<IActionResult> AdjustInfectCount(int gameId, int playerId, int amount)
         {
-            var userId = _userManager.GetUserId(User);
             _service.AdjustInfectCount(playerId, amount);
-            var gameInfo = _service.GetGameInfo(gameId, userId);
-            var playerInfo = gameInfo.Players.First(i => i.Id == playerId);
-            var playerInfoViewModel = _mapper.Map<PlayerInfo>(playerInfo);
+
             await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfectCountChanged", playerId);
+
             return Ok();
         }
 
@@ -123,47 +107,38 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 
         public async Task<IActionResult> UpdateCommander(int gameId, int playerId, int slot, string cardId)
         {
-            try
-            {
-                _service.UpdateCommander(playerId, slot, cardId);
+            _service.UpdateCommander(playerId, slot, cardId);
 
-                //TODO:This has to refresh all player infos to update commander damage tracking
-                var userId = _userManager.GetUserId(User);
-                var gameInfo = _service.GetGameInfo(gameId, userId);
-                var playerInfo = gameInfo.Players.First(i => i.Id == playerId);
+            var model = await LoadModel(gameId);
 
-                var playerInfoViewModel = _mapper.Map<PlayerInfo>(playerInfo);
-                await LoadCommanderCardInfoCommand.Execute(playerInfoViewModel);
-                return PartialView("PlayerInfo/_CommanderInfo", playerInfoViewModel);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"{ex}");
-                return NotFound();
-            }
+            return PartialView("PlayerInfo/_CommanderInfo", model.PlayerBoard.Players.First(i => i.Id == playerId));
         }
 
-        private async Task LoadPlayerBoard(int gameId, PlayerBoard playerBoard)
+        private async Task<Model> LoadModel(int gameId)
         {
             var userId = _userManager.GetUserId(User);
             var gameInfo = _service.GetGameInfo(gameId, userId);
-
-            if (gameInfo == null) { throw new Exception($"Game not found with id {gameId}"); }
-
             var myPlayer = gameInfo.Players.First(i => i.IsSelf);
+
+            var model = new Model
+            {
+                GameId = gameId,
+                PlayerId = myPlayer.Id,
+                GameName = gameInfo.Name
+            };
+
             var focusedPlayer = gameInfo.Players.FirstOrDefault(i => i.Id == myPlayer.FocusedPlayerId);
 
-            playerBoard.GameId = gameId;
-            playerBoard.PlayerId = myPlayer.Id;
-            playerBoard.FocusedPlayerId = focusedPlayer?.Id ?? gameInfo.Players.First().Id;
-            playerBoard.ActivePlayerId = gameInfo.ActivePlayerId;
+            model.PlayerBoard.GameId = gameId;
+            model.PlayerBoard.PlayerId = myPlayer.Id;
+            model.PlayerBoard.FocusedPlayerId = focusedPlayer?.Id ?? gameInfo.Players.First().Id;
+            model.PlayerBoard.ActivePlayerId = gameInfo.ActivePlayerId;
 
-            playerBoard.Players.AddRange(_mapper.Map<List<PlayerInfo>>(gameInfo.Players));
+            model.PlayerBoard.Players.AddRange(_mapper.Map<List<PlayerInfo>>(gameInfo.Players));
 
-            foreach (var player in playerBoard.Players)
-            {
-                await LoadCommanderCardInfoCommand.Execute(player);
-            }
+            await LoadCardInfoCommand.Execute(model.PlayerBoard.Players);
+
+            return model;
         }
     }
 }

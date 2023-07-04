@@ -3,36 +3,53 @@ using Flurl.Http;
 
 namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 {
-    public static class LoadCommanderCardInfoCommand
+    public static class LoadCardInfoCommand
     {
-        public static async Task Execute(PlayerInfo playerInfo)
-        {
-            await LoadCommandersCardInfo(playerInfo);
-            LoadCombinedCommanderColors(playerInfo);
-        }
+        private static Dictionary<string, CardInfo> _cardInfoCache = new Dictionary<string, CardInfo>();
 
-        private static async Task LoadCommandersCardInfo(PlayerInfo playerInfo)
+        public static async Task Execute(List<PlayerInfo> players)
         {
-            playerInfo.Commander1 = await GetCardInfo(playerInfo.Commander1Id);
-            playerInfo.Commander2 = await GetCardInfo(playerInfo.Commander2Id);
-        }
-
-        private static void LoadCombinedCommanderColors(PlayerInfo playerInfo)
-        {
-            playerInfo.CommanderColors.Clear();
-            if (playerInfo.Commander1 != null)
+            foreach (var player in players)
             {
-                playerInfo.CommanderColors.AddRange(playerInfo.Commander1.Colors);
+                await LoadCommandersCardInfo(player);
+                LoadCombinedCommanderColors(player);
+                await LoadCommanderDamageCardInfo(player);
             }
-            if (playerInfo.Commander2 != null)
+        }
+
+        private static async Task LoadCommandersCardInfo(PlayerInfo player)
+        {
+            player.Commander1 = await GetCardInfo(player.Commander1Id);
+            player.Commander2 = await GetCardInfo(player.Commander2Id);
+        }
+
+        private static async Task LoadCommanderDamageCardInfo(PlayerInfo player)
+        {
+            foreach (var commanderDamage in player.CommanderDamages)
             {
-                playerInfo.CommanderColors.AddRange(playerInfo.Commander2.Colors.Where(i => !playerInfo.CommanderColors.Contains(i)));
+                var cardInfo = await GetCardInfo(commanderDamage.CardId);
+                commanderDamage.CommanderName = cardInfo == null ? "" : cardInfo.Name;
+            }
+        }
+
+        private static void LoadCombinedCommanderColors(PlayerInfo player)
+        {
+            player.CommanderColors.Clear();
+            if (player.Commander1 != null)
+            {
+                player.CommanderColors.AddRange(player.Commander1.Colors);
+            }
+            if (player.Commander2 != null)
+            {
+                player.CommanderColors.AddRange(player.Commander2.Colors.Where(i => !player.CommanderColors.Contains(i)));
             }
         }
 
         private static async Task<CardInfo?> GetCardInfo(string? cardId)
         {
             if (string.IsNullOrEmpty(cardId)) return null;
+
+            if (_cardInfoCache.ContainsKey(cardId)) return _cardInfoCache[cardId];
 
             var cardInfo = new CardInfo
             {
@@ -45,6 +62,8 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             LoadName(cardInfo, jsonResponse);
             LoadImages(cardInfo, jsonResponse);
             LoadColors(cardInfo, jsonResponse);
+
+            _cardInfoCache.Add(cardId, cardInfo);
 
             return cardInfo;
         }

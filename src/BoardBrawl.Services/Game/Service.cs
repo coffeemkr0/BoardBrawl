@@ -25,6 +25,7 @@ namespace BoardBrawl.Services.Game
 
                 LoadIsSelf(userId, gameInfo);
                 LoadInfectPercentages(gameInfo);
+                LoadCommanderDamages(gameInfo, repoGameInfo.CommanderDamages);
 
                 return gameInfo;
             }
@@ -127,6 +128,57 @@ namespace BoardBrawl.Services.Game
             foreach (var player in gameInfo.Players)
             {
                 player.InfectPercentage = Math.Min(100, Convert.ToInt32(((float)player.InfectCount / 10.0f) * 100));
+            }
+        }
+
+        private void LoadCommanderDamages(GameInfo gameInfo, List<Repositories.Game.Models.CommanderDamage> repoCommanderDamages)
+        {
+            //Get a collection of all commanders in the game, stored per player
+            var commanderDictionary = new Dictionary<int, List<string>>();
+
+            foreach (var ownerPlayer in gameInfo.Players)
+            {
+                commanderDictionary[ownerPlayer.Id] = new List<string>();
+
+                if(!string.IsNullOrEmpty(ownerPlayer.Commander1Id)) 
+                {
+                    commanderDictionary[ownerPlayer.Id].Add(ownerPlayer.Commander1Id);
+                }
+
+                if (!string.IsNullOrEmpty(ownerPlayer.Commander2Id))
+                {
+                    commanderDictionary[ownerPlayer.Id].Add(ownerPlayer.Commander2Id);
+                }
+            }
+
+            //Iterate each player and create a commander damage entry for each commander in the game
+            foreach (var player in gameInfo.Players)
+            {
+                foreach (var ownerPlayerId in commanderDictionary.Keys)
+                {
+                    var ownerPlayer = gameInfo.Players.First(i => i.Id == ownerPlayerId);
+
+                    foreach (var commanderId in commanderDictionary[ownerPlayerId])
+                    {
+                        var commanderDamage = new Models.CommanderDamage
+                        {
+                            CommanderOwnerPlayerId = ownerPlayerId,
+                            CommanderOwnerName = ownerPlayer.Name,
+                            CardId = commanderId
+                        };
+
+                        //If the repo contains an existing damage entry, assign the damage value to the entry
+                        var repoCommanderDamage = repoCommanderDamages.FirstOrDefault(i => 
+                            i.PlayerId == player.Id && i.CommanderOwnerPlayerId == ownerPlayerId && i.CardId == commanderId);
+
+                        if(repoCommanderDamage != null )
+                        {
+                            commanderDamage.Damage = repoCommanderDamage.Damage;
+                        }
+
+                        player.CommanderDamages.Add(commanderDamage);
+                    }
+                }
             }
         }
     }

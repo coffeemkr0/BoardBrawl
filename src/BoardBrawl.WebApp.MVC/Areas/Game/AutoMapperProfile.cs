@@ -11,6 +11,8 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game
                     dest => dest.PlayerName,
                     opt => opt.MapFrom(src => src.Name)
                 );
+
+            CreateMap<Services.Game.Models.CommanderDamage, Models.CommanderDamage>();
         }
     }
 }
