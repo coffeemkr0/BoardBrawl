@@ -26,34 +26,7 @@
         </div>
 
         <div>
-            <div class="card">
-                <div class="card-header infectTracker">
-                    <h6>Misc</h6>
-                    <div class="d-flex justify-content-between">
-                        <div class="pt-2">
-                            <small>Infect</small>
-                        </div>
-                        
-                        <div class="d-flex">
-                            <div class="btn btn-sm adjustInfectCount" data-player-id="@Model.Id" data-amount="-1">
-                                <i class="bi bi-file-minus" style="font-size: 1.5rem;"></i>
-                            </div>
-
-                            <div class="pt-2">
-                                <span class="infectCount">@Model.InfectCount</span>
-                            </div>
-
-                            <div class="btn btn-sm adjustInfectCount" data-player-id="@Model.Id" data-amount="1">
-                                <i class="bi bi-file-plus" style="font-size: 1.5rem;"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                     <div class="progress">
-                        <div class="progress-bar" style="width:@Model.InfectPercentage%" data-value="@Model.InfectCount" role="progressbar" aria-valuenow="@Model.InfectCount" aria-valuemin="0" aria-valuemax="10"></div>
-                    </div>
-                </div>
-            </div>
+            @await Html.PartialAsync("PlayerInfo/_InfectTracker")
         </div>
     </div>
 </div>
