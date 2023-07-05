@@ -118,6 +118,8 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
         {
             _service.UpdateCommander(playerId, slot, cardId);
 
+            await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnCommanderChanged", playerId);
+
             var model = await LoadModel(gameId);
 
             return PartialView("PlayerInfo/_CommanderInfo", model.PlayerBoard.Players.First(i => i.Id == playerId));
