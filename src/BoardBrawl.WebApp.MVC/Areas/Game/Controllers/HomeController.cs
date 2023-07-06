@@ -122,6 +122,10 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 
             var model = await LoadModel(gameId);
 
+            //When the player changes a commander, the following parts need to be reloaded:
+                //1. The commander damage tracker for this player, on each player in the game
+                //2. The commander info for the player
+
             return PartialView("PlayerInfo/_CommanderInfo", model.PlayerBoard.Players.First(i => i.Id == playerId));
         }
 
