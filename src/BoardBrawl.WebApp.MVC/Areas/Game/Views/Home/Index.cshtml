@@ -265,6 +265,8 @@
         function btnAdjustLifeTotal_Click()
         {
             var button = $(this);
+            button.prop('disabled', true);
+
             var playerId = button.data('player-id');
             var amount = parseFloat(button.data('amount'));
             var lifeTotalElement = button.siblings('.lifeTotal');
@@ -279,18 +281,23 @@
                 },
                 success: function () {
                     lifeTotalElement.text(newLifeTotal);
+                },
+                complete: function () {
+                    button.prop('disabled', false);
                 }
             });
         }
 
         function btnAdjustInfectCount_Click() {
             var button = $(this);
+            button.prop('disabled', true);
+
             var playerId = button.data('player-id');
             var amount = parseFloat(button.data('amount'));
             var infectCountElement = button.parent().find('.infectCount').first();
             var newCount = parseFloat(infectCountElement.text()) + amount;
 
-            if(newCount > 0)
+            if(newCount >= 0)
             {
                 var tracker = $(this).closest('.infectTracker');
                 var progressBar = tracker.find('.progress-bar').first();
@@ -305,14 +312,23 @@
                     success: function () {
                         infectCountElement.text(newCount);
                         ChangeProgress(progressBar, amount);
+                    },
+                    complete: function () {
+                        button.prop('disabled', false);
                     }
                 });
+            }
+            else
+            {
+                button.prop('disabled', false);
             }
         }
 
         function btnAdjustCommanderDamage_Click()
         {
             var button = $(this);
+            button.prop('disabled', true);
+
             var playerId = button.data('player-id');
             var ownerPlayerId = button.data('owner-player-id');
             var cardId = button.data('card-id');
@@ -320,7 +336,7 @@
             var damageCountElement = button.parent().find('.damageCount').first();
             var newCount = parseFloat(damageCountElement.text()) + amount;
 
-            if (newCount > 0) {
+            if (newCount >= 0) {
                 var tracker = $(this).closest('.commanderDamageTracker');
                 var progressBar = tracker.find('.progress-bar').first();
 
@@ -336,8 +352,15 @@
                     success: function () {
                         damageCountElement.text(newCount);
                         ChangeProgress(progressBar, amount);
+                    },
+                    complete: function () {
+                        button.prop('disabled', false);
                     }
                 });
+            }
+            else
+            {
+                button.prop('disabled', false);
             }
         }
 
