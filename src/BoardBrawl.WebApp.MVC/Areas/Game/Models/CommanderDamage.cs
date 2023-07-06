@@ -9,5 +9,6 @@
         public string CommanderName { get; set; }
         public int Damage { get; set; }
         public int DamagePercentage { get; set; }
+        public bool ReadOnly { get; set; }
     }
 }

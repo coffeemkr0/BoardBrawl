@@ -151,6 +151,8 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 
             model.PlayerBoard.Players.AddRange(_mapper.Map<List<PlayerInfo>>(gameInfo.Players));
 
+            LoadCommanderDamageCommand.Execute(model);
+
             await LoadCardInfoCommand.Execute(model.PlayerBoard.Players);
 
             return model;
