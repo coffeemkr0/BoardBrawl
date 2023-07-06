@@ -231,6 +231,12 @@
                     },
                     appendTo: input.closest('.commander-inputs')
                 });
+
+                input.on('input', function () {
+                    if (input.val().trim() === '') {
+                        hiddenInput.val('').trigger('change');
+                    }
+                });
             });
 
             //When a player changes their commander, update the server
