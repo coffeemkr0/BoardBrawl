@@ -3,7 +3,7 @@ using BoardBrawl.Data.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
 
-namespace BoardBrawl.WebApp.MVC
+namespace BoardBrawl.WebApp.MVC.Utils
 {
     public static class DatabaseUpdater
     {

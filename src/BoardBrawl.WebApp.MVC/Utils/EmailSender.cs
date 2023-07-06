@@ -2,7 +2,7 @@
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
-namespace BoardBrawl.WebApp.MVC
+namespace BoardBrawl.WebApp.MVC.Utils
 {
     public class EmailSender : IEmailSender
     {

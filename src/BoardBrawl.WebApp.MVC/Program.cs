@@ -6,10 +6,10 @@ using BoardBrawl.WebApp.MVC.AutoMapping;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.HttpOverrides;
-using BoardBrawl.WebApp.MVC;
 using BoardBrawl.Data.Identity;
 using BoardBrawl.Data.Application;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using BoardBrawl.WebApp.MVC.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
