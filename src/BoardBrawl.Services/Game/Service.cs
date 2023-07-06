@@ -1,4 +1,5 @@
 ﻿using BoardBrawl.Core.AutoMapping;
+using BoardBrawl.Data.Application;
 using BoardBrawl.Data.Application.Models;
 using BoardBrawl.Repositories.Game;
 using BoardBrawl.Services.Game.Models;
@@ -49,7 +50,7 @@ namespace BoardBrawl.Services.Game
                 repoGameInfo.GameStart = now;
             }
 
-            //Set active player to next player in list
+            //Set active player to next player in list (this assumes the players are already orded by TurnOrder from the repo)
             if (repoGameInfo.ActivePlayerId == null)
             {
                 repoGameInfo.ActivePlayerId = repoGameInfo.Players.First().Id;
@@ -92,6 +93,10 @@ namespace BoardBrawl.Services.Game
                 var newPlayer = CreateNewPlayer(userId);
                 repoPlayerInfo = _mapper.Map<Repositories.Game.Models.PlayerInfo>(newPlayer);
             }
+
+            //Put the player at the end of the turn order
+            var turnOrder = _repository.GetPlayers(gameId).OrderBy(i => i.TurnOrder).LastOrDefault()?.TurnOrder + 1;
+            repoPlayerInfo.TurnOrder = turnOrder ?? 0;
 
             _repository.AddPlayerToGame(gameId, repoPlayerInfo);
         }

@@ -113,13 +113,17 @@ namespace BoardBrawl.Data.Application.Migrations
                     b.Property<Guid>("PeerId")
                         .HasColumnType("char(36)");
 
+                    b.Property<int>("TurnOrder")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameId");
+                    b.HasIndex("GameId", "TurnOrder")
+                        .IsUnique();
 
                     b.ToTable("Players");
                 });

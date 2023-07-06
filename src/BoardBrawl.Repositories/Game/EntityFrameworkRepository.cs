@@ -52,7 +52,7 @@ namespace BoardBrawl.Repositories.Game
                 .Include(i=>i.CommanderDamages)
                 .First(i => i.Id == id);
 
-            gameEntity.Players = gameEntity.Players.OrderBy(i => i.Id).ToList();
+            gameEntity.Players = gameEntity.Players.OrderBy(i => i.TurnOrder).ToList();
             return _mapper.Map<GameInfo>(gameEntity);
         }
 

@@ -79,7 +79,8 @@ namespace BoardBrawl.Data.Application.Migrations
                     Commander1Id = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Commander2Id = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TurnOrder = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -99,9 +100,10 @@ namespace BoardBrawl.Data.Application.Migrations
                 column: "GameId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Players_GameId",
+                name: "IX_Players_GameId_TurnOrder",
                 table: "Players",
-                column: "GameId");
+                columns: new[] { "GameId", "TurnOrder" },
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

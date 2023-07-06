@@ -22,6 +22,8 @@
 
         public string? Commander2Id { get; set; }
 
+        public int TurnOrder { get; set; }
+
         public Game Game { get; set; }
     }
 }

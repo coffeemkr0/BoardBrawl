@@ -12,5 +12,6 @@
         public int InfectCount { get; set; }
         public string Commander1Id { get; set; }
         public string Commander2Id { get; set; }
+        public int TurnOrder { get; set; }
     }
 }
