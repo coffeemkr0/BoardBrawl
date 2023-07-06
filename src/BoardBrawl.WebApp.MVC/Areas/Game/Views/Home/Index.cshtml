@@ -239,13 +239,13 @@
                 var cardId = input.val();
                 var slot = input.data('slot');
                 var playerId = input.closest('.commander-inputs').data('player-id');
-
+     
                 //Update state when user selects a commander
                 $.ajax({
                     url: '/Game/Home/UpdateCommander',
                     data: {
                         gameId: '@(Model.GameId)',
-                        playerId: '@(Model.PlayerId)',
+                        playerId: playerId,
                         slot: slot,
                         cardId: cardId
                     },
@@ -256,10 +256,10 @@
                         commanderInfoContainer.html(result.commanderInfo);
 
                         //Update commander damage trackers for all players
-                        for (var playerId in result.commanderDamages) {
-                            if (result.commanderDamages.hasOwnProperty(playerId)) {
-                                var commanderDamagesHtml = result.commanderDamages[playerId];
-                                $('.commanderDamages[data-player-id="' + playerId + '"]').html(commanderDamagesHtml);
+                        for (var key in result.commanderDamages) {
+                            if (result.commanderDamages.hasOwnProperty(key)) {
+                                var commanderDamagesHtml = result.commanderDamages[key];
+                                $('.commanderDamages[data-player-id="' + key + '"]').html(commanderDamagesHtml);
                             }
                         }
                     }
