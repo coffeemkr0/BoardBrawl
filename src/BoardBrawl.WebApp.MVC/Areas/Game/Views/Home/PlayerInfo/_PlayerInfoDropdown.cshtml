@@ -21,7 +21,7 @@
             <small class="fst-italic text-muted">Damage totals</small>
         </div>
 
-        <div>
+        <div class="commanderDamages" data-player-id="@Model.Id">
             @await Html.PartialAsync("PlayerInfo/_CommanderDamages", Model)
         </div>
 

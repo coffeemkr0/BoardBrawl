@@ -2,6 +2,7 @@
 using BoardBrawl.Services.Game;
 using BoardBrawl.WebApp.MVC.Areas.Game.Hubs;
 using BoardBrawl.WebApp.MVC.Areas.Game.Models;
+using BoardBrawl.WebApp.MVC.Utils;
 using Flurl;
 using Flurl.Http;
 using Microsoft.AspNetCore.Authorization;
@@ -122,11 +123,19 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 
             var model = await LoadModel(gameId);
 
-            //When the player changes a commander, the following parts need to be reloaded:
-                //1. The commander damage tracker for this player, on each player in the game
-                //2. The commander info for the player
+            //When the player changes a commander, several things need to be refreshed
+            //Refresh the commander info for the player
+            var myPlayer = model.PlayerBoard.Players.First(i => i.IsSelf);
+            var commanderInfo = await this.RenderViewAsync("PlayerInfo/_CommanderInfo", myPlayer, true);
 
-            return PartialView("PlayerInfo/_CommanderInfo", model.PlayerBoard.Players.First(i => i.Id == playerId));
+            //Refresh all the commander damage trackers
+            var commanderDamages = new Dictionary<int, string>();
+            foreach (var player in model.PlayerBoard.Players)
+            {
+                commanderDamages.Add(player.Id, await this.RenderViewAsync("PlayerInfo/_CommanderDamages", player, true));
+            }
+
+            return Json(new { commanderInfo, commanderDamages });
         }
 
         private async Task<Model> LoadModel(int gameId)

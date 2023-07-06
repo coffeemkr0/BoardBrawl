@@ -249,9 +249,19 @@
                         slot: slot,
                         cardId: cardId
                     },
-                    success: function (html) {
+                    success: function (result) 
+                    {
+                        //Update the commander info for the player
                         var commanderInfoContainer = $('#commanderInfo' + playerId);
-                        commanderInfoContainer.html(html);
+                        commanderInfoContainer.html(result.commanderInfo);
+
+                        //Update commander damage trackers for all players
+                        for (var playerId in result.commanderDamages) {
+                            if (result.commanderDamages.hasOwnProperty(playerId)) {
+                                var commanderDamagesHtml = result.commanderDamages[playerId];
+                                $('.commanderDamages[data-player-id="' + playerId + '"]').html(commanderDamagesHtml);
+                            }
+                        }
                     }
                 });
             });
