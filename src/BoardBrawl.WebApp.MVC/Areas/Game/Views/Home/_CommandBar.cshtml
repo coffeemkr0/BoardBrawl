@@ -1,4 +1,7 @@
-﻿@*Inspired by https://www.codeply.com/p/WGCqYEiPBg*@
+﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models
+@model PlayerBoard
+
+@*Inspired by https://www.codeply.com/p/WGCqYEiPBg*@
 
 <div class="d-flex flex-column px-3 pt-2" style="min-height: 100%;">
     <ul class="nav mb-sm-auto justify-content-center">
@@ -26,3 +29,5 @@
         </li>
     </ul>
 </div>
+
+@await Html.PartialAsync("CommandBar/_PlayerTurnOrder", Model)

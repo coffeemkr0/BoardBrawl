@@ -23,7 +23,7 @@
 
 <div class="row bg-dark text-white" style="height:100%;" id="main">
     <div class="col-1 h-100" style="overflow-y:auto; overflow-x:clip; min-width: 94px; max-width: 94px;">
-        @await Html.PartialAsync("_CommandBar", null)
+        @await Html.PartialAsync("_CommandBar", Model.PlayerBoard)
     </div>
 
     <div class="col h-100">
@@ -156,6 +156,10 @@
             $(document).on("click", '.btnAdjustInfectCount', btnAdjustInfectCount_Click);
 
             $(document).on('click', '.btnAdjustCommanderDamage', btnAdjustCommanderDamage_Click);
+
+            $(document).on('click', '#btnPlayerTurnOrder', btnPlayerTurnOrder_Click);
+
+            $(document).on('click', '.btnClosePlayerTurnOderDialog', btnClosePlayerTurnOrderDialog_Click);
         }
 
         function InitializeTooltipsForCards()
@@ -378,6 +382,20 @@
             progressBar.css('width', percentage + '%');
             progressBar.attr('aria-valuenow', percentage);
             progressBar.data('value', newValue);
+        }
+
+        function btnPlayerTurnOrder_Click()
+        {
+            var playerTurnOrderDialog = $('#playerTurnOrderDialog');
+
+            playerTurnOrderDialog[0].showModal();
+        }
+
+        function btnClosePlayerTurnOrderDialog_Click()
+        {
+            var playerTurnOrderDialog = $('#playerTurnOrderDialog');
+
+            playerTurnOrderDialog[0].close();
         }
     </script>
 }
