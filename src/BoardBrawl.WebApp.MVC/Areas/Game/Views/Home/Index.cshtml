@@ -46,7 +46,6 @@
         {
             InitializeGameHubConnection();
             InitializeUiEventHandlers();
-            PreventDropdownsFromClosingOnClick();
             InitializeTooltipsForCards();
             InitializePlayerInfoDropdowns();
             InitializeCommanderInputs();
@@ -178,21 +177,6 @@
                         left: dropdown.offset().left,
                         top: dropdown.offset().top
                     }).detach());
-                }
-            });
-        }
-
-        function PreventDropdownsFromClosingOnClick()
-        {
-            $(document).on('hide.bs.dropdown', function (e) {
-                var target = $(e.clickEvent.target);
-                if (target.hasClass("keepopen") || target.parents(".keepopen").length) 
-                {
-                    return false;
-                }
-                else 
-                {
-                    return true;
                 }
             });
         }
