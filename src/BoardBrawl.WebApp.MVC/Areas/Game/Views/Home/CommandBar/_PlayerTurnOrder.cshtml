@@ -1,27 +1,29 @@
 ﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models
 @model PlayerBoard
 
-<dialog id="playerTurnOrderDialog">
-    <form action="/Game/Home/AdjustPlayerTurnOrder" method="post">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Player Turn Order</h5>
-                <button type="button" class="close btnClosePlayerTurnOderDialog">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <ul class="playerTurnOrder list-group">
-                        @foreach (var player in Model.Players)
-                        {
-                            <span class="list-group-item list-group-item-action bi bi-arrows-move btn"><span class="ps-2">@player.PlayerName</span></span>
-                        }
-                    </ul>
+<div id="playerTurnOrderModal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <form action="/Game/Home/AdjustPlayerTurnOrder" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Player Turn Order</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <ul class="playerTurnOrder list-group">
+                            @foreach (var player in Model.Players)
+                            {
+                                <span class="list-group-item list-group-item-action bi bi-arrows-move btn"><span class="ps-2">@player.PlayerName</span></span>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Ok</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Ok</button>
-                <button type="button" class="btn btn-secondary btnClosePlayerTurnOderDialog">Cancel</button>
-            </div>
-        </div>
-    </form>
-</dialog>
+        </form>
+    </div>
+</div>
