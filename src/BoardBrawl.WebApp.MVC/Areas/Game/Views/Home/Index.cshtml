@@ -53,6 +53,7 @@
             InitializeTooltipsForCards();
             InitializePlayerInfoDropdowns();
             InitializeCommanderInputs();
+            InitializePlayerTurnOrderDialog();
 
             _peerJsObject = new Peer();
             _peerJsObject.on('open', id => {
@@ -396,6 +397,13 @@
             var playerTurnOrderDialog = $('#playerTurnOrderDialog');
 
             playerTurnOrderDialog[0].close();
+        }
+
+        function InitializePlayerTurnOrderDialog()
+        {
+            $(".playerTurnOrder").sortable({
+                axis: "y"
+            });
         }
     </script>
 }

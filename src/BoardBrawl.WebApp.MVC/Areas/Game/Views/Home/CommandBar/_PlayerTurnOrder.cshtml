@@ -10,8 +10,12 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="gameName">Name:</label>
-                    <input type="text" class="form-control" id="gameName" name="Name">
+                    <ul class="playerTurnOrder list-group">
+                        @foreach (var player in Model.Players)
+                        {
+                            <span class="list-group-item list-group-item-action bi bi-arrows-move btn"><span class="ps-2">@player.PlayerName</span></span>
+                        }
+                    </ul>
                 </div>
             </div>
             <div class="modal-footer">
