@@ -1,19 +1,28 @@
-﻿<div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white" style="min-height: 100%;">
+﻿@*Inspired by https://www.codeply.com/p/WGCqYEiPBg*@
 
-    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start">
+<div class="d-flex flex-column px-3 pt-2" style="min-height: 100%;">
+    <ul class="nav mb-sm-auto justify-content-center">
         <li class="nav-item">
-            <button type="button" class="btn btn-primary align-middle" id="btnPassTurn">
+            <button type="button" class="btn btn-primary" id="btnPassTurn">
                 <i class="bi bi-arrow-bar-right"></i>
             </button>
         </li>
     </ul>
 
-    <ul class="nav nav-pills flex-column align-items-center align-items-sm-start pb-4">
+    <ul class="nav pb-4 justify-content-center">
         <li class="nav-item">
-            <a href="#" class="nav-link align-middle px-0">
+            <div class="dropend btn-group position-static">
+                <button type="button" class="btn btn-secondary dropdown-toggle no-arrow" data-bs-toggle="dropdown"
+                        data-boundary="#main" aria-haspopup="true" aria-expanded="false">
+                    <i class="bi bi-gear"></i>
+                </button>
+                @await Html.PartialAsync("CommandBar/_SettingsMenu")
+            </div>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link px-0">
                 <i class="fs-4"><img src="~/images/game/board-brawl-logo.png" /></i>
             </a>
         </li>
     </ul>
-
 </div>

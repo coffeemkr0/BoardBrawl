@@ -15,9 +15,13 @@
     .tooltip-inner {
         max-width: 100% !important;
     }
+
+    .no-arrow::after {
+        display: none !important;
+    }
 </style>
 
-<div class="row bg-dark text-white" style="height:100%;">
+<div class="row bg-dark text-white" style="height:100%;" id="main">
     <div class="col-1 h-100" style="overflow-y:auto; overflow-x:clip; min-width: 94px; max-width: 94px;">
         @await Html.PartialAsync("_CommandBar", null)
     </div>
