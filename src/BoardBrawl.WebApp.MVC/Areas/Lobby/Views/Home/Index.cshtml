@@ -1,4 +1,4 @@
-﻿@using BoardBrawl.WebApp.MVC.Areas.Lobby.Models;
+﻿@using BoardBrawl.WebApp.MVC.Areas.Lobby.Models
 @model Model
 
 @{
@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-12">
             <span class="h2">Your Games</span>
-            <button type="button" class="btn btn-success float-end" id="btnCreateGame">
+            <button type="button" class="btn btn-success float-end" data-bs-toggle="modal" data-bs-target="#createGameModal">
                 <i class="bi bi-plus me-1"></i> Create Game
             </button>
         </div>
@@ -44,37 +44,7 @@
     </div>
 </div>
 
-<dialog id="createGameDialog">
-    <form action="/Lobby/Home/CreateGame" method="post">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Create Game</h5>
-                <button type="button" class="close btnCloseCreateGameDialog">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="gameName">Name:</label>
-                    <input type="text" class="form-control" id="gameName" name="Name">
-                </div>
-                <div class="form-group">
-                    <label for="gameDescription">Description:</label>
-                    <textarea class="form-control" id="gameDescription" name="Description"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="isPublic">Public:</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="isPublic" name="IsPublic" value="true">
-                        <label class="form-check-label" for="isPublic">Yes</label>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" id="btnOk">Create</button>
-                <button type="button" class="btn btn-secondary btnCloseCreateGameDialog">Cancel</button>
-            </div>
-        </div>
-    </form>
-</dialog>
+@await Html.PartialAsync("_CreateGameModal")
 
 <dialog id="invitePlayersDialog">
     <div class="modal-content">
@@ -121,18 +91,6 @@
 
 @section Scripts{
     <script>
-        //Create game dialog
-        const createGameButton = document.getElementById('btnCreateGame');
-        const createGameDialog = document.getElementById('createGameDialog');
-
-        createGameButton.addEventListener('click', () => {
-            createGameDialog.showModal();
-        });
-
-        $(document).on('click', '.btnCloseCreateGameDialog', function () {
-            createGameDialog.close();
-        });
-
         //Invite players dialog
         const invitePlayersDialog = document.getElementById('invitePlayersDialog');
 
