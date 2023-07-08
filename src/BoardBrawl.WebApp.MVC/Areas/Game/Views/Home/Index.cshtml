@@ -82,7 +82,7 @@
 
         $(document).ajaxComplete(function () {
             //Re-initialize tooltips after any part of the board is reloaded
-            InitializeTooltipsForCards();
+            InitializeTooltips();
         });
 
         async function OnPeerJsOpen(peerJsConnectionId) 
@@ -176,6 +176,8 @@
             $(document).on("click", '.btnAdjustInfectCount', btnAdjustInfectCount_Click);
 
             $(document).on('click', '.btnAdjustCommanderDamage', btnAdjustCommanderDamage_Click);
+
+            $(document).on('click', '.btnPromoteToGameOwner', btnPromoteToGameOwner_Click);
         }
 
         function InitializeTooltips()
@@ -392,6 +394,23 @@
             {
                 button.prop('disabled', false);
             }
+        }
+
+        function btnPromoteToGameOwner_Click()
+        {
+            var button = $(this);
+            var playerId = button.data('player-id');
+
+            $.ajax({
+                url: '/Game/Home/PromoteToGameOwner',
+                data: {
+                    gameId: '@(Model.GameId)',
+                    playerId: playerId
+                },
+                success: function (result) {
+                    window.location.href = result.redirectUrl;
+                }
+            });
         }
 
         function ChangeProgress(progressBar, amount) {

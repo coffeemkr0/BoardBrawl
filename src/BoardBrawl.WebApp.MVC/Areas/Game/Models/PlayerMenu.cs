@@ -2,6 +2,7 @@
 {
     public class PlayerMenu
     {
+        public int PlayerId { get; set; }
         public bool CanBeMadeGameOwner { get; set; }
     }
 }

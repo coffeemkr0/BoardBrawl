@@ -10,6 +10,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 
             foreach (var player in model.PlayerBoard.Players)
             {
+                player.PlayerMenu.PlayerId = player.Id;
                 player.PlayerMenu.CanBeMadeGameOwner = myPlayer.IsGameOwner && !player.IsSelf;
             }
         }
