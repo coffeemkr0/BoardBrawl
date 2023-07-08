@@ -53,7 +53,7 @@ builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 builder.Services.AddAuthentication(DebugAuthHandler.AuthenticationScheme)
                 .AddScheme<DebugAuthHandlerOptions, DebugAuthHandler>(DebugAuthHandler.AuthenticationScheme, options => 
                 { 
-                    options.UserId = Guid.NewGuid().ToString();
+                    
                 });
 #endif
 

@@ -129,7 +129,10 @@
         //Game hub events
         function OnPlayerJoinedGame(playerId, peerId) 
         {
-            RefreshPlayersList();
+            if(playerId != '@Model.PlayerId')
+            {
+                RefreshPlayersList();
+            }
         }
 
         function OnPassTurn()
