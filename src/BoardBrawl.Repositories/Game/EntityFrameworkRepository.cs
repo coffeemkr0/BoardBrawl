@@ -158,5 +158,36 @@ namespace BoardBrawl.Repositories.Game
 
             _applicationDbContext.SaveChanges();
         }
+
+        public void UpdatePlayerTurnOrder(int gameId, List<int> playerIds)
+        {
+            var playerEntities = _applicationDbContext.Players.Where(i => i.GameId == gameId);
+
+            if (playerIds.Count != playerEntities.Count()) throw new ArgumentException(
+                $"playerIds contains {playerIds.Count} while there were {playerEntities.Count()} players found for game Id {gameId}");
+
+            _applicationDbContext.ChangeTracker.AutoDetectChangesEnabled = false;
+
+            try
+            {
+                for (int i = 0; i < playerIds.Count; i++)
+                {
+                    var playerEntity = playerEntities.FirstOrDefault(p => p.Id == playerIds[i]);
+                    if (playerEntity != null)
+                    {
+                        playerEntity.TurnOrder = i;
+                    }
+                    else
+                    {
+                        throw new ArgumentException($"No player with Id {playerIds[i]} exists");
+                    }
+                }
+                _applicationDbContext.SaveChanges();
+            }
+            finally
+            {
+                _applicationDbContext.ChangeTracker.AutoDetectChangesEnabled = true;
+            }
+        }
     }
 }

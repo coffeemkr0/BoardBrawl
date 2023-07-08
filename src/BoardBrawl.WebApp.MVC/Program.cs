@@ -24,8 +24,12 @@ builder.Services.AddDbContext<IdentityDbContext>(options =>
     options.UseMySql(identityConnetionString, ServerVersion.Parse("10.11.3")));
 
 var applicationConnectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySql(applicationConnectionString, ServerVersion.Parse("10.11.3")));
+builder.Services.AddDbContext<ApplicationDbContext>(
+    options =>
+    {
+        options.EnableSensitiveDataLogging(true);
+        options.UseMySql(applicationConnectionString, ServerVersion.Parse("10.11.3"));
+    });
 
 builder.Services.AddDefaultIdentity<IdentityUser>(
     options =>

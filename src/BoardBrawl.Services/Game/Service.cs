@@ -195,5 +195,10 @@ namespace BoardBrawl.Services.Game
                 }
             }
         }
+
+        public void UpdatePlayerTurnOrder(int gameId, List<int> playerIds)
+        {
+            _repository.UpdatePlayerTurnOrder(gameId, playerIds);
+        }
     }
 }

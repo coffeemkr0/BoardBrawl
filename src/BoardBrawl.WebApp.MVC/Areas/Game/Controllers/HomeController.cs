@@ -140,13 +140,11 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 
         public async Task<IActionResult> AdjustPlayerTurnOrder([FromForm]PlayerTurnOrder playerTurnOrder)
         {
-            //Call service to update turn order
+            _service.UpdatePlayerTurnOrder(playerTurnOrder.GameId, playerTurnOrder.Players.Select(i => i.Id).ToList());
 
             var model = await LoadModel(playerTurnOrder.GameId);
             return View("Index", model);
         }
-
-
 
         private async Task<Model> LoadModel(int gameId)
         {
