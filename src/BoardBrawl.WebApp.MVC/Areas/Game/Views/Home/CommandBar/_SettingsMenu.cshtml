@@ -4,9 +4,9 @@
 <ul class="dropdown-menu dropdown-menu-dark text-md shadow no-arrow">
     <li><button class="dropdown-item @(!Model.IsGameOwner ? "disabled" : "")" id="btnPlayerTurnOrder" data-bs-toggle="modal" data-bs-target="#playerTurnOrderModal">Player Turn Order</button></li>
     <li><button class="dropdown-item">Inputs</button></li>
-    <li><button class="dropdown-item">Profile</button></li>
+    <li><a class="btn-hover-warning dropdown-item" href="@Url.Action("LeaveGame", new { gameId = Model.GameId, playerId = Model.PlayerId })">Leave Game</a></li>
     <li>
         <hr class="dropdown-divider">
     </li>
-    <li><button class="dropdown-item bg-danger">Close Game</button></li>
+    <li><button class="btn-hover-danger dropdown-item">Close Game</button></li>
 </ul>

@@ -177,6 +177,13 @@ namespace BoardBrawl.Repositories.Game
             _applicationDbContext.SaveChanges();
         }
 
+        public void DeletePlayer(int playerId)
+        {
+            var playerEntity = _applicationDbContext.Players.First(i => i.Id == playerId);
+            _applicationDbContext.Players.Remove(playerEntity);
+            _applicationDbContext.SaveChanges();
+        }
+
         public void DeleteGame(int gameId)
         {
             var gameEntity = _applicationDbContext.Games.FirstOrDefault(i => i.Id == gameId);

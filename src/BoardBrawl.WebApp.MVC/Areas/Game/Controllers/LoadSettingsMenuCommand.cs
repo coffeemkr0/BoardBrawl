@@ -8,6 +8,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
         {
             var myPlayer = model.PlayerBoard.Players.First(i => i.IsSelf);
 
+            model.SettingsMenu.GameId = model.GameId;
             model.SettingsMenu.PlayerId = myPlayer.Id;
             model.SettingsMenu.IsGameOwner = myPlayer.IsGameOwner;
         }
