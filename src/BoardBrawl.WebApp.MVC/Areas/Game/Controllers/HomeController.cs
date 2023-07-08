@@ -95,11 +95,14 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             return Ok();
         }
 
-        public  IActionResult PromoteToGameOwner(int gameId, int playerId)
+        public async Task<IActionResult> PromoteToGameOwner(int gameId, int playerId)
         {
             _service.PromoteToGameOwner(gameId, playerId);
             var redirectUrl = Url.Action("Index", "Home", new { area = "Game", id = gameId });
-            return Json(new { redirectUrl });
+
+            await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnGameOwnerChanged", redirectUrl);
+
+            return Ok();
         }
 
         public async Task<IActionResult> SearchCards(string searchString)

@@ -67,7 +67,7 @@
         //Initialization
         $(document).ready(function () 
         {
-            InitializeGameHubConnection();
+            InitializeGameHub();
             InitializeUiEventHandlers();
             InitializeTooltips();
             InitializePlayerInfoDropdowns();
@@ -98,7 +98,7 @@
             PlayerBoard_LoadRemoteStreams(_peerJsObject);
         }
 
-        function InitializeGameHubConnection() 
+        function InitializeGameHub() 
         {
             _gameHubConnection = new signalR.HubConnectionBuilder()
                 .withUrl("/GameHub").build();
@@ -113,6 +113,10 @@
 
             _gameHubConnection.on("OnPassTurn", function () {
                 OnPassTurn();
+            });
+
+            _gameHubConnection.on("OnGameOwnerChanged", function (redirectUrl) {
+                OnGameOwnerChanged(redirectUrl);
             });
         }
 
@@ -145,6 +149,11 @@
         function OnPlayerLifeTotalChanged(playerId)
         {
             
+        }
+
+        function OnGameOwnerChanged(redirectUrl)
+        {
+            window.location.href = redirectUrl;
         }
 
         //Methods
@@ -406,9 +415,6 @@
                 data: {
                     gameId: '@(Model.GameId)',
                     playerId: playerId
-                },
-                success: function (result) {
-                    window.location.href = result.redirectUrl;
                 }
             });
         }
