@@ -4,6 +4,8 @@
 <div id="playerTurnOrderModal" class="modal" data-bs-backdrop="static" tabindex="-1">
     <div class="modal-dialog">
         <form action="/Game/Home/AdjustPlayerTurnOrder" method="post">
+            <input type="hidden" name="GameId" value="@Model.GameId">
+
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Player Turn Order</h5>
@@ -12,9 +14,19 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <ul class="playerTurnOrder list-group">
-                            @foreach (var player in Model.Players)
+                            @*@foreach (var player in Model.Players)
                             {
                                 <span class="list-group-item list-group-item-action bi bi-arrows-move btn"><span class="ps-2">@player.PlayerName</span></span>
+                            }*@
+                            @for (int i = 0; i < Model.Players.Count; i++)
+                            {
+                                var player = Model.Players[i];
+                                <li class="list-group-item list-group-item-action bi bi-arrows-move btn">
+                                    <span class="ps-2">@player.PlayerName</span>
+                                    <input type="hidden" name="Players.Index" value="@i" />
+                                    <input type="hidden" name="Players[@i].Id" value="@player.Id" />
+                                    <input type="hidden" name="Players[@i].PlayerName" value="@player.PlayerName" />
+                                </li>
                             }
                         </ul>
                     </div>

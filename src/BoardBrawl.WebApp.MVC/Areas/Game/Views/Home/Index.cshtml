@@ -384,7 +384,23 @@
         function InitializePlayerTurnOrderDialog()
         {
             $(".playerTurnOrder").sortable({
-                axis: "y"
+                axis: "y",
+                update: function (event, ui) {
+                    UpdatePlayerTurnOrderValues();
+                }
+            });
+        }
+
+        function UpdatePlayerTurnOrderValues()
+        {
+            $(".playerTurnOrder li").each(function (index) {
+                var inputIndex = $(this).find('input[name="Players.Index"]');
+                var inputId = $(this).find('input[name^="Players["][name$="].Id"]');
+                var inputPlayerName = $(this).find('input[name^="Players["][name$="].PlayerName"]');
+
+                inputIndex.val(index);
+                inputId.attr('name', 'Players[' + index + '].Id');
+                inputPlayerName.attr('name', 'Players[' + index + '].PlayerName');
             });
         }
     </script>
