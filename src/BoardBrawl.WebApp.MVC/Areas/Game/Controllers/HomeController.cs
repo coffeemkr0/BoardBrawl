@@ -36,7 +36,11 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
         {
             if (id == null) { return Redirect("/Lobby"); }
 
-            _service.JoinGame(id.Value, _userManager.GetUserId(User));
+            var userId = _userManager.GetUserId(User);
+            if (!_service.IsPlayerInGame(id.Value, userId))
+            {
+                _service.JoinGame(id.Value, _userManager.GetUserId(User));
+            }
 
             var model = await LoadModel(id.Value);
 
@@ -143,7 +147,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             _service.UpdatePlayerTurnOrder(playerTurnOrder.GameId, playerTurnOrder.Players.Select(i => i.Id).ToList());
 
             var model = await LoadModel(playerTurnOrder.GameId);
-            return View("Index", model);
+            return RedirectToAction("Index", new {id = playerTurnOrder.GameId});
         }
 
         private async Task<Model> LoadModel(int gameId)

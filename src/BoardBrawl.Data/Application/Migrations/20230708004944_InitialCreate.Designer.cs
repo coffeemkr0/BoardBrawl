@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoardBrawl.Data.Application.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230706230933_InitialCreate")]
+    [Migration("20230708004944_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -124,8 +124,7 @@ namespace BoardBrawl.Data.Application.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameId", "TurnOrder")
-                        .IsUnique();
+                    b.HasIndex("GameId");
 
                     b.ToTable("Players");
                 });

@@ -8,6 +8,7 @@ namespace BoardBrawl.Services.Game
         GameInfo? GetGameInfo(int id, string userId);
 
         void PassTurn(int gameId);
+        bool IsPlayerInGame(int gameId, string userId);
         void JoinGame(int gameId, string userId);
         void UpdatePeerId(int playerId, Guid peerId);
         void UpdateFocusedPlayer(int playerId, int focusedPlayerId);

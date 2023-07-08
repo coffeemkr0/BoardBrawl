@@ -19,9 +19,9 @@ namespace BoardBrawl.Data.Application
             base.OnModelCreating(modelBuilder);
 
 
-            modelBuilder.Entity<Player>()
-                .HasIndex(p => new { p.GameId, p.TurnOrder })
-                .IsUnique();
+            //modelBuilder.Entity<Player>()
+            //    .HasIndex(p => new { p.GameId, p.TurnOrder })
+            //    .IsUnique();
         }
     }
 }

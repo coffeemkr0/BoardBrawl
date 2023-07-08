@@ -122,8 +122,7 @@ namespace BoardBrawl.Data.Application.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameId", "TurnOrder")
-                        .IsUnique();
+                    b.HasIndex("GameId");
 
                     b.ToTable("Players");
                 });

@@ -200,5 +200,10 @@ namespace BoardBrawl.Services.Game
         {
             _repository.UpdatePlayerTurnOrder(gameId, playerIds);
         }
+
+        public bool IsPlayerInGame(int gameId, string userId)
+        {
+            return _repository.GetPlayers(gameId).Any(i => i.UserId == userId);
+        }
     }
 }

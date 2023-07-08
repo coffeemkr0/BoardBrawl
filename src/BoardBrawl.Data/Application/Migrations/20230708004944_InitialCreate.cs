@@ -100,10 +100,9 @@ namespace BoardBrawl.Data.Application.Migrations
                 column: "GameId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Players_GameId_TurnOrder",
+                name: "IX_Players_GameId",
                 table: "Players",
-                columns: new[] { "GameId", "TurnOrder" },
-                unique: true);
+                column: "GameId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

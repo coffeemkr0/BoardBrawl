@@ -166,28 +166,19 @@ namespace BoardBrawl.Repositories.Game
             if (playerIds.Count != playerEntities.Count()) throw new ArgumentException(
                 $"playerIds contains {playerIds.Count} while there were {playerEntities.Count()} players found for game Id {gameId}");
 
-            _applicationDbContext.ChangeTracker.AutoDetectChangesEnabled = false;
-
-            try
+            for (int i = 0; i < playerIds.Count; i++)
             {
-                for (int i = 0; i < playerIds.Count; i++)
+                var playerEntity = playerEntities.FirstOrDefault(p => p.Id == playerIds[i]);
+                if (playerEntity != null)
                 {
-                    var playerEntity = playerEntities.FirstOrDefault(p => p.Id == playerIds[i]);
-                    if (playerEntity != null)
-                    {
-                        playerEntity.TurnOrder = i;
-                    }
-                    else
-                    {
-                        throw new ArgumentException($"No player with Id {playerIds[i]} exists");
-                    }
+                    playerEntity.TurnOrder = i;
                 }
-                _applicationDbContext.SaveChanges();
+                else
+                {
+                    throw new ArgumentException($"No player with Id {playerIds[i]} exists");
+                }
             }
-            finally
-            {
-                _applicationDbContext.ChangeTracker.AutoDetectChangesEnabled = true;
-            }
+            _applicationDbContext.SaveChanges();
         }
     }
 }
