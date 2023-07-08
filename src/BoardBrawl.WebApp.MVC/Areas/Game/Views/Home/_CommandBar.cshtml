@@ -1,5 +1,5 @@
 ﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models
-@model PlayerBoard
+@model Model
 
 @*Inspired by https://www.codeply.com/p/WGCqYEiPBg*@
 
@@ -19,7 +19,7 @@
                         data-boundary="#main" aria-haspopup="true" aria-expanded="false">
                     <i class="bi bi-gear"></i>
                 </button>
-                @await Html.PartialAsync("CommandBar/_SettingsMenu")
+                @await Html.PartialAsync("CommandBar/_SettingsMenu", Model.SettingsMenu)
             </div>
         </li>
         <li class="nav-item">
@@ -30,4 +30,4 @@
     </ul>
 </div>
 
-@await Html.PartialAsync("CommandBar/_PlayerTurnOrderModal", Model)
+@await Html.PartialAsync("CommandBar/_PlayerTurnOrderModal")

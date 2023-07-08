@@ -172,6 +172,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 
             LoadPlayerBoardCommand.Execute(model, gameInfo, _mapper);
             LoadPlayerMenusCommand.Execute(model);
+            LoadSettingsMenuCommand.Execute(model);
             LoadCommanderDamageCommand.Execute(model);
             await LoadCardInfoCommand.Execute(model);
 

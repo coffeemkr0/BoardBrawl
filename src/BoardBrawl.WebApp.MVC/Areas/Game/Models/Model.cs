@@ -8,9 +8,12 @@
 
         public PlayerBoard PlayerBoard { get; }
 
+        public SettingsMenu SettingsMenu { get; }
+
         public Model()
         {
             PlayerBoard = new PlayerBoard();
+            SettingsMenu = new SettingsMenu();
         }
     }
 }

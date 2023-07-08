@@ -2,12 +2,9 @@
 @model PlayerMenu
 
 <ul class="dropdown-menu dropdown-menu-dark shadow no-arrow text-sm">
-    @if(Model.CanBeMadeGameOwner)
-    {
-        <li>
-            <button class="dropdown-item btnPromoteToGameOwner" data-player-id="@Model.PlayerId">
-                Promote to Game Owner
-            </button>
-        </li>
-    }
+    <li>
+        <button class="dropdown-item btnPromoteToGameOwner @(!Model.CanBeMadeGameOwner ? "disabled" : "")" data-player-id="@Model.PlayerId">
+            Promote to Game Owner
+        </button>
+    </li>
 </ul>

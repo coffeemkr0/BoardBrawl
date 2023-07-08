@@ -1,5 +1,8 @@
-﻿<ul class="dropdown-menu dropdown-menu-dark text-md shadow no-arrow">
-    <li><button class="dropdown-item" id="btnPlayerTurnOrder" data-bs-toggle="modal" data-bs-target="#playerTurnOrderModal">Player Turn Order</button></li>
+﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models;
+@model SettingsMenu
+
+<ul class="dropdown-menu dropdown-menu-dark text-md shadow no-arrow">
+    <li><button class="dropdown-item @(!Model.IsGameOwner ? "disabled" : "")" id="btnPlayerTurnOrder" data-bs-toggle="modal" data-bs-target="#playerTurnOrderModal">Player Turn Order</button></li>
     <li><button class="dropdown-item">Inputs</button></li>
     <li><button class="dropdown-item">Profile</button></li>
     <li>

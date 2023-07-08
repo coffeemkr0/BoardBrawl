@@ -42,7 +42,7 @@
 
 <div class="row bg-dark" style="height:100%;" id="main">
     <div class="col-1 h-100" style="overflow-y:auto; overflow-x:clip; min-width: 94px; max-width: 94px;">
-        @await Html.PartialAsync("_CommandBar", Model.PlayerBoard)
+        @await Html.PartialAsync("_CommandBar")
     </div>
 
     <div class="col h-100">
@@ -52,7 +52,7 @@
     </div>
 
     <div class="col-2 h-100" style="overflow-y:auto; overflow-x:clip;">
-        @await Html.PartialAsync("_GameHistoryPanel", null)
+        @await Html.PartialAsync("_GameHistoryPanel")
     </div>
 </div>
 
