@@ -34,17 +34,6 @@ namespace BoardBrawl.Repositories.Game
             playerInfo.GameId = gameId;
         }
 
-        public void CloseGame(GameInfo gameInfo)
-        {
-            var gameEntity = _applicationDbContext.Games.FirstOrDefault(i => i.Id == gameInfo.Id);
-
-            if (gameEntity != null)
-            {
-                _applicationDbContext.Games.Remove(gameEntity);
-                _applicationDbContext.SaveChanges();
-            }
-        }
-
         public GameInfo GetGameInfo(int id)
         {
             var gameEntity = _applicationDbContext.Games
@@ -186,6 +175,17 @@ namespace BoardBrawl.Repositories.Game
             var gameInfoEntity = _applicationDbContext.Games.First(i => i.Id == gameid);
             gameInfoEntity.OwnerUserId = userId;
             _applicationDbContext.SaveChanges();
+        }
+
+        public void DeleteGame(int gameId)
+        {
+            var gameEntity = _applicationDbContext.Games.FirstOrDefault(i => i.Id == gameId);
+
+            if (gameEntity != null)
+            {
+                _applicationDbContext.Games.Remove(gameEntity);
+                _applicationDbContext.SaveChanges();
+            }
         }
     }
 }

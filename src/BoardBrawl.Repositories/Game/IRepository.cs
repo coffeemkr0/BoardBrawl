@@ -6,7 +6,6 @@ namespace BoardBrawl.Repositories.Game
     {
         GameInfo GetGameInfo(int id);
         void UpdateGameInfo(GameInfo gameInfo);
-        void CloseGame(GameInfo gameInfo);
         void AddPlayerToGame(int gameId, PlayerInfo playerInfo);            
         List<PlayerInfo> GetPlayers(int gameId);
         PlayerInfo? GetPlayer(string userId);
@@ -19,5 +18,6 @@ namespace BoardBrawl.Repositories.Game
         void UpdateCommander(int playerId, int slot, string cardId);
         void UpdatePlayerTurnOrder(int gameId, List<int> playerIds);
         void UpdateGameOwner(int gameid, string userId);
+        void DeleteGame(int gameId);
     }
 }

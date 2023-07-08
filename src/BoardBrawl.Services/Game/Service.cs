@@ -216,5 +216,31 @@ namespace BoardBrawl.Services.Game
             var userId = _repository.GetPlayers(gameId).First(i => i.Id == playerId).UserId;
             _repository.UpdateGameOwner(gameId, userId);
         }
+
+        public void LeadGame(int gameId, int playerId)
+        {
+            var gameInfo = _repository.GetGameInfo(gameId);
+            var player = gameInfo.Players.First(i => i.Id == playerId);
+
+            if (gameInfo.OwnerUserId == player.UserId)
+            {
+                //If there are no more players, close the game
+                if (gameInfo.Players.Count == 1)
+                {
+                    CloseGame(gameId);
+                }
+                else
+                {
+                    //Otherwise, promote a player as the new owner
+                    var newOwner = gameInfo.Players.First(i => i.Id != player.Id);
+                    PromoteToGameOwner(gameId, newOwner.Id);
+                }
+            }
+        }
+
+        public void CloseGame(int gameId)
+        {
+            _repository.DeleteGame(gameId);
+        }
     }
 }

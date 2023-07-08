@@ -160,6 +160,12 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             return RedirectToAction("Index", new {id = playerTurnOrder.GameId});
         }
 
+        public IActionResult LeaveGame(int gameId, int playerId)
+        {
+            _service.LeadGame(gameId, playerId);
+            return Redirect("/Lobby");
+        }
+
         private async Task<Model> LoadModel(int gameId)
         {
             var userId = _userManager.GetUserId(User);
