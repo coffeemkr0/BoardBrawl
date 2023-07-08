@@ -7,21 +7,23 @@ namespace BoardBrawl.WebApp.MVC.Utils
 {
     public class DebugAuthHandlerOptions : AuthenticationSchemeOptions
     {
-
+        public string UserId { get; set; }
     }
 
     public class DebugAuthHandler : AuthenticationHandler<DebugAuthHandlerOptions>
     {
         public const string AuthenticationScheme = "Debug";
+
         public DebugAuthHandler(IOptionsMonitor<DebugAuthHandlerOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
         {
+
         }
 
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()
         {
             var claims = new List<Claim>
             {
-                new(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()),
+                new(ClaimTypes.NameIdentifier, Options.UserId),
                 new(ClaimTypes.Name, "Debug user"),
                 new(ClaimTypes.Email, "debug@example.com"),
                 new(ClaimTypes.Role, "Admin")

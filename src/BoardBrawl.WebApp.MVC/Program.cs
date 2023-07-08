@@ -51,7 +51,10 @@ builder.Services.AddAuthentication().AddGoogle(googleOptions =>
 
 #if DEBUG
 builder.Services.AddAuthentication(DebugAuthHandler.AuthenticationScheme)
-                .AddScheme<DebugAuthHandlerOptions, DebugAuthHandler>(DebugAuthHandler.AuthenticationScheme, options => { });
+                .AddScheme<DebugAuthHandlerOptions, DebugAuthHandler>(DebugAuthHandler.AuthenticationScheme, options => 
+                { 
+                    options.UserId = Guid.NewGuid().ToString();
+                });
 #endif
 
 // Add services to the container.

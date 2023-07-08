@@ -1,18 +1,27 @@
 ﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models
 @model PlayerInfo
 
+<style>
+    .btn-group-xs > .btn, .btn-xs {
+        padding: .25rem .4rem;
+        font-size: .875rem;
+        line-height: .5;
+        border-radius: .2rem;
+    }
+</style>
+
 <div class="d-flex align-items-center w-100">
-    <button class="shadow-none text-white btn btn-transparent btn-sm btnAdjustLifeTotal btn-player-counter"
+    <button type="button" class="btn btn-transparent btn-xs text-white shadow-none btnAdjustLifeTotal" 
             data-player-id="@Model.Id" data-amount="-1"
             style="@(!Model.IsSelf ? "visibility:hidden" : "")">
-        -
+        <i class="bi bi-dash"></i>
     </button>
 
     <span class="lifeTotal">@Model.LifeTotal</span>
 
-    <button class="shadow-none btn text-white btn-transparent btn-sm btnAdjustLifeTotal btn-player-counter"
+    <button type="button" class="btn btn-transparent btn-xs text-white shadow-none btnAdjustLifeTotal" 
             data-player-id="@Model.Id" data-amount="1"
             style="@(!Model.IsSelf ? "visibility:hidden" : "")">
-        +
+        <i class="bi bi-plus"></i>
     </button>
 </div>
