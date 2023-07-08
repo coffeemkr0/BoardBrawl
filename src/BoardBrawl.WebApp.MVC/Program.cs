@@ -49,6 +49,11 @@ builder.Services.AddAuthentication().AddGoogle(googleOptions =>
     googleOptions.ClientSecret = Environment.GetEnvironmentVariable("BoardBrawl_Google_ClientSecret");
 });
 
+#if DEBUG
+builder.Services.AddAuthentication(DebugAuthHandler.AuthenticationScheme)
+                .AddScheme<DebugAuthHandlerOptions, DebugAuthHandler>(DebugAuthHandler.AuthenticationScheme, options => { });
+#endif
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
