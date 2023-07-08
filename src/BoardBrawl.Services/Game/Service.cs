@@ -3,6 +3,7 @@ using BoardBrawl.Data.Application;
 using BoardBrawl.Data.Application.Models;
 using BoardBrawl.Repositories.Game;
 using BoardBrawl.Services.Game.Models;
+using System.Runtime.CompilerServices;
 
 namespace BoardBrawl.Services.Game
 {
@@ -25,6 +26,7 @@ namespace BoardBrawl.Services.Game
                 var gameInfo = _mapper.Map<GameInfo>(repoGameInfo);
 
                 LoadIsSelf(userId, gameInfo);
+                LoadIsGameOwner(userId, gameInfo);
                 LoadInfectPercentages(gameInfo);
                 LoadCommanderDamages(gameInfo, repoGameInfo.CommanderDamages);
 
@@ -131,6 +133,12 @@ namespace BoardBrawl.Services.Game
         {
             var myPlayer = gameInfo.Players.FirstOrDefault(i => i.UserId == userId);
             if (myPlayer != null) { myPlayer.IsSelf = true; }
+        }
+
+        private void LoadIsGameOwner(string userId, GameInfo gameInfo)
+        {
+            var myPlayer = gameInfo.Players.FirstOrDefault(i => i.UserId == userId);
+            if(myPlayer != null) { myPlayer.IsGameOwner = gameInfo.OwnerUserId == userId; }
         }
 
         private void LoadInfectPercentages(GameInfo gameInfo)

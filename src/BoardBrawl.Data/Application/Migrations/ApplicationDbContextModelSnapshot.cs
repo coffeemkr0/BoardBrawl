@@ -57,10 +57,6 @@ namespace BoardBrawl.Data.Application.Migrations
                     b.Property<int?>("ActivePlayerId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CreatedByUserId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
 
@@ -71,6 +67,10 @@ namespace BoardBrawl.Data.Application.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("OwnerUserId")
                         .IsRequired()
                         .HasColumnType("longtext");
 

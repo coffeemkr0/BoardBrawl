@@ -46,7 +46,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
             var userId = _userManager.GetUserId(User);
 
             var newGame = _mapper.Map<Services.Lobby.Models.GameInfo>(gameInfo);
-            newGame.CreatedByUserId = userId;
+            newGame.OwnerUserId = userId;
 
             _service.CreateGame(newGame);
             _testService.AddTestPlayersToGame(newGame.Id);

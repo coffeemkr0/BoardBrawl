@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public string CreatedByUserId { get; set; }
+        public string OwnerUserId { get; set; }
 
         public bool IsPublic { get; set; }
 

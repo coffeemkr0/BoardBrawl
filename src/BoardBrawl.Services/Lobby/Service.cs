@@ -33,7 +33,7 @@ namespace BoardBrawl.Services.Lobby
         {
             var games = new List<GameInfo>();
 
-            foreach (var repoGame in _repository.GetGames().Where(x => x.CreatedByUserId == userId))
+            foreach (var repoGame in _repository.GetGames().Where(x => x.OwnerUserId == userId))
             {
                 var game = _mapper.Map<GameInfo>(repoGame);
 

@@ -1,25 +1,27 @@
 ﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models;
 @model PlayerInfo
 
-@if (Model.Commander1 == null && Model.IsSelf)
-{
-    <span>click to add commander(s)</span>
-}
-else
-{
-    <span class="card-tooltip" data-toggle="tooltip" title="<img src='@Model.Commander1.ImageUri' alt='Commander Card Image' class='card-tooltip-image' />">
-        @Model.Commander1.Name
-    </span>
-}
+<div class="d-flex flex-wrap">
+    @if (Model.Commander1 == null && Model.IsSelf)
+    {
+        <span>click to add commander(s)</span>
+    }
+    else
+    {
+        <span class="card-tooltip" data-toggle="tooltip" title="<img src='@Model.Commander1.ImageUri' alt='Commander Card Image' class='card-tooltip-image' />">
+            @Model.Commander1.Name
+        </span>
+    }
 
-@if (Model.Commander2 != null)
-{
-    <span> / </span>
+    @if (Model.Commander2 != null)
+    {
+        <span> / </span>
 
-    <span class="card-tooltip" data-toggle="tooltip" title="<img src='@Model.Commander2.ImageUri' alt='Commander Card Image' class='card-tooltip-image' />">
-        @Model.Commander2.Name
-    </span>
-}
+        <span class="card-tooltip" data-toggle="tooltip" title="<img src='@Model.Commander2.ImageUri' alt='Commander Card Image' class='card-tooltip-image' />">
+            @Model.Commander2.Name
+        </span>
+    }
+</div>
 
 <div class="mt-1">
     @await Html.PartialAsync("_CardColors", Model.CommanderColors)

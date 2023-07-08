@@ -6,6 +6,7 @@
         public int GameId { get; set; }
         public string UserId { get; set; }
         public bool IsSelf { get; set; }
+        public bool IsGameOwner { get; set; }
         public int? FocusedPlayerId { get; set; }
         public Guid PeerId { get; set; }
         public string Name { get; set; }

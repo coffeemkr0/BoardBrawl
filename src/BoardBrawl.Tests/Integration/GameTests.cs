@@ -38,7 +38,7 @@ namespace BoardBrawl.Tests.Integration
             var lobbyGameInfo = new Services.Lobby.Models.GameInfo
             {
                 Name = "Test Game",
-                CreatedByUserId = userId
+                OwnerUserId = userId
             };
 
             _lobbyService.CreateGame(lobbyGameInfo);
@@ -69,7 +69,7 @@ namespace BoardBrawl.Tests.Integration
             var lobbyGameInfo = new Services.Lobby.Models.GameInfo
             {
                 Name = "Test Game",
-                CreatedByUserId = userId
+                OwnerUserId = userId
             };
 
             _lobbyService.CreateGame(lobbyGameInfo);
