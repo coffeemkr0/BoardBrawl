@@ -1,9 +1,6 @@
 ﻿using BoardBrawl.Core.AutoMapping;
-using BoardBrawl.Data.Application;
-using BoardBrawl.Data.Application.Models;
 using BoardBrawl.Repositories.Game;
 using BoardBrawl.Services.Game.Models;
-using System.Runtime.CompilerServices;
 
 namespace BoardBrawl.Services.Game
 {
@@ -26,7 +23,7 @@ namespace BoardBrawl.Services.Game
                 var gameInfo = _mapper.Map<GameInfo>(repoGameInfo);
 
                 LoadIsSelf(userId, gameInfo);
-                LoadIsGameOwner(userId, gameInfo);
+                LoadIsGameOwner(gameInfo);
                 LoadInfectPercentages(gameInfo);
                 LoadCommanderDamages(gameInfo, repoGameInfo.CommanderDamages);
 
@@ -135,10 +132,10 @@ namespace BoardBrawl.Services.Game
             if (myPlayer != null) { myPlayer.IsSelf = true; }
         }
 
-        private void LoadIsGameOwner(string userId, GameInfo gameInfo)
+        private void LoadIsGameOwner(GameInfo gameInfo)
         {
-            var myPlayer = gameInfo.Players.FirstOrDefault(i => i.UserId == userId);
-            if(myPlayer != null) { myPlayer.IsGameOwner = gameInfo.OwnerUserId == userId; }
+            var owner = gameInfo.Players.FirstOrDefault(i => i.UserId == gameInfo.OwnerUserId);
+            if (owner != null) owner.IsGameOwner = true;
         }
 
         private void LoadInfectPercentages(GameInfo gameInfo)
@@ -212,6 +209,12 @@ namespace BoardBrawl.Services.Game
         public bool IsPlayerInGame(int gameId, string userId)
         {
             return _repository.GetPlayers(gameId).Any(i => i.UserId == userId);
+        }
+
+        public void PromoteToGameOwner(int gameId, int playerId)
+        {
+            var userId = _repository.GetPlayers(gameId).First(i => i.Id == playerId).UserId;
+            _repository.UpdateGameOwner(gameId, userId);
         }
     }
 }

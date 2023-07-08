@@ -17,5 +17,6 @@ namespace BoardBrawl.Services.Game
         void AdjustCommanderDamage(int gameId, int playerId, int ownerPlayerId, string cardId, int amount);
         void UpdateCommander(int playerId, int slot, string cardId);
         void UpdatePlayerTurnOrder(int gameId, List<int> playerIds);
+        void PromoteToGameOwner(int gameId, int playerId);
     }
 }

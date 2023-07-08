@@ -180,5 +180,12 @@ namespace BoardBrawl.Repositories.Game
             }
             _applicationDbContext.SaveChanges();
         }
+
+        public void UpdateGameOwner(int gameid, string userId)
+        {
+            var gameInfoEntity = _applicationDbContext.Games.First(i => i.Id == gameid);
+            gameInfoEntity.OwnerUserId = userId;
+            _applicationDbContext.SaveChanges();
+        }
     }
 }
