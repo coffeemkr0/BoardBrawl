@@ -15,6 +15,7 @@
         public CardInfo? Commander2 { get; set; }
         public List<Colors> CommanderColors { get; }
         public bool IsSelf { get; set; }
+        public bool IsGameOwner { get; set; }
         public Dictionary<int, List<CommanderDamage>> CommanderDamages { get; }
 
         public PlayerInfo()

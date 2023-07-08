@@ -19,6 +19,13 @@
     .no-arrow::after {
         display: none !important;
     }
+
+    .btn-group-xs > .btn, .btn-xs {
+        padding: .25rem .4rem;
+        font-size: .875rem;
+        line-height: .5;
+        border-radius: .2rem;
+    }
 </style>
 
 <div class="row bg-dark" style="height:100%;" id="main">
@@ -50,7 +57,7 @@
         {
             InitializeGameHubConnection();
             InitializeUiEventHandlers();
-            InitializeTooltipsForCards();
+            InitializeTooltips();
             InitializePlayerInfoDropdowns();
             InitializeCommanderInputs();
             InitializePlayerTurnOrderDialog();
@@ -159,12 +166,18 @@
             $(document).on('click', '.btnAdjustCommanderDamage', btnAdjustCommanderDamage_Click);
         }
 
-        function InitializeTooltipsForCards()
+        function InitializeTooltips()
         {
-            $('.card-tooltip[data-toggle="tooltip"]').tooltip({
+            //Tooltips for card images
+            $('.card-tooltip').tooltip({
                 animated: 'fade',
                 placement: 'auto',
                 html: true
+            });
+
+            //All other tooltips
+            $('[data-bs-toggle="tooltip"]').each(function () {
+                $(this).tooltip();
             });
         }
 

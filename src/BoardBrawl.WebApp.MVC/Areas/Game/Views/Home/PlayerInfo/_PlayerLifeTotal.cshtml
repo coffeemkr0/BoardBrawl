@@ -1,15 +1,6 @@
 ﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models
 @model PlayerInfo
 
-<style>
-    .btn-group-xs > .btn, .btn-xs {
-        padding: .25rem .4rem;
-        font-size: .875rem;
-        line-height: .5;
-        border-radius: .2rem;
-    }
-</style>
-
 <div class="d-flex align-items-center w-100">
     <button type="button" class="btn btn-transparent btn-xs text-white shadow-none btnAdjustLifeTotal" 
             data-player-id="@Model.Id" data-amount="-1"

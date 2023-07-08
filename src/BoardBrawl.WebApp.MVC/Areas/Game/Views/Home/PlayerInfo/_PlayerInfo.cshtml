@@ -8,6 +8,10 @@
     </div>
     <div class="ml-2 flex-grow-1 " style="font-size: 12px;">
         <div>
+            @if (Model.IsGameOwner)
+            {
+                <i class="bi bi-star-fill pe-1" data-bs-toggle="tooltip" title="Game Owner"></i>
+            }
             <span>@Model.PlayerName</span>
         </div>
 
@@ -24,8 +28,8 @@
         </div>
     </div>
 
-    <div class="dropend">
-        <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle no-arrow" data-bs-toggle="dropdown"
+    <div class="dropdown">
+        <button type="button" class="btn btn-outline-secondary btn-xs dropdown-toggle no-arrow" data-bs-toggle="dropdown"
                 data-boundary="#main" aria-haspopup="true" aria-expanded="false">
             <i class="bi bi-gear"></i>
         </button>
