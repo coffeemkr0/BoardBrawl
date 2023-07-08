@@ -6,7 +6,7 @@
     <div class="playerLifeTotal align-self-center" data-player-id="@Model.Id">
         @await Html.PartialAsync("PlayerInfo/_PlayerLifeTotal", Model)
     </div>
-    <div class="ml-2 flex-grow-1 " style="font-size: 12px;">
+    <div class="ml-2 flex-grow-1 text-sm">
         <div>
             @if (Model.IsGameOwner)
             {
