@@ -7,8 +7,10 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
     {
         private static Dictionary<string, CardInfo> _cardInfoCache = new Dictionary<string, CardInfo>();
 
-        public static async Task Execute(List<PlayerInfo> players)
+        public static async Task Execute(Model model)
         {
+            var players = model.PlayerBoard.Players;
+
             foreach (var player in players)
             {
                 await LoadCommandersCardInfo(player);

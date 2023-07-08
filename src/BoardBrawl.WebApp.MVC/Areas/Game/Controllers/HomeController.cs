@@ -158,23 +158,15 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 
             var model = new Model
             {
-                GameId = gameId,
+                GameId = gameInfo.Id,
                 PlayerId = myPlayer.Id,
                 GameName = gameInfo.Name
             };
 
-            var focusedPlayer = gameInfo.Players.FirstOrDefault(i => i.Id == myPlayer.FocusedPlayerId);
-
-            model.PlayerBoard.GameId = gameId;
-            model.PlayerBoard.PlayerId = myPlayer.Id;
-            model.PlayerBoard.FocusedPlayerId = focusedPlayer?.Id ?? gameInfo.Players.First().Id;
-            model.PlayerBoard.ActivePlayerId = gameInfo.ActivePlayerId;
-
-            model.PlayerBoard.Players.AddRange(_mapper.Map<List<PlayerInfo>>(gameInfo.Players));
-
+            LoadPlayerBoardCommand.Execute(model, gameInfo, _mapper);
+            LoadPlayerMenusCommand.Execute(model);
             LoadCommanderDamageCommand.Execute(model);
-
-            await LoadCardInfoCommand.Execute(model.PlayerBoard.Players);
+            await LoadCardInfoCommand.Execute(model);
 
             return model;
         }

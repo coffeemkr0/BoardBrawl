@@ -1,9 +1,9 @@
-﻿<ul class="dropdown-menu dropdown-menu-dark text-small shadow no-arrow">
-    <li><button class="dropdown-item">Player Turn Order</button></li>
-    <li><button class="dropdown-item">Inputs</button></li>
-    <li><button class="dropdown-item">Profile</button></li>
-    <li>
-        <hr class="dropdown-divider">
-    </li>
-    <li><button class="dropdown-item bg-danger">Close Game</button></li>
+﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models
+@model PlayerMenu
+
+<ul class="dropdown-menu dropdown-menu-dark text-small shadow no-arrow">
+    @if(Model.CanBeMadeGameOwner)
+    {
+        <li><button class="dropdown-item">Promote to Game Owner</button></li>
+    }
 </ul>

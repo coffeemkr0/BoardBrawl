@@ -17,11 +17,13 @@
         public bool IsSelf { get; set; }
         public bool IsGameOwner { get; set; }
         public Dictionary<int, List<CommanderDamage>> CommanderDamages { get; }
+        public PlayerMenu PlayerMenu { get; }
 
         public PlayerInfo()
         {
             CommanderColors = new List<Colors>();
             CommanderDamages = new Dictionary<int, List<CommanderDamage>>();
+            PlayerMenu = new PlayerMenu();
         }
     }
 }
