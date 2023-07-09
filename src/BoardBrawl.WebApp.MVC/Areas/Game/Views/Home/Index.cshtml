@@ -78,6 +78,7 @@
 {
     <script>
         //Fields
+        var _localVideoStream;
         var _peerJsObject;
         var _peerJsConnectionId;
         var _gameHubConnection;
@@ -86,11 +87,13 @@
         $(document).ready(function () 
         {
             InitializeGameHub();
+            InitializeLocalVideoStream();
             InitializeUiEventHandlers();
             InitializeTooltips();
             InitializePlayerInfoDropdowns();
             InitializeCommanderInputs();
             InitializePlayerTurnOrderDialog();
+            InitializeFocusedPlayer();
 
             _peerJsObject = new Peer();
             _peerJsObject.on('open', id => {
@@ -113,7 +116,7 @@
                 AnswerCall(call);
             });
 
-            PlayerBoard_LoadRemoteStreams(_peerJsObject);
+            LoadRemoteStreams(_peerJsObject);
         }
 
         function InitializeGameHub() 
@@ -166,7 +169,7 @@
                 },
                 success: function (html) {
                     $('#playerBoardContainer').html(html);
-                    PlayerBoard_LoadRemoteStreams(_peerJsObject);
+                    LoadRemoteStreams(_peerJsObject);
                 }
             });
         }
@@ -198,9 +201,78 @@
                 },
                 success: function (html) {
                     $('#playerBoardContainer').html(html);
-                    PlayerBoard_LoadRemoteStreams(_peerJsObject);
+                    LoadRemoteStreams(_peerJsObject);
                 }
             });
+        }
+
+        function InitializeLocalVideoStream() 
+        {
+            var videoElement = $(".localVideo")[0];
+
+            navigator.mediaDevices.getUserMedia({
+                audio: true,
+                video: true
+            }).then(stream => {
+                _localVideoStream = stream;
+
+                videoElement.srcObject = stream;
+                $(videoElement).on('loadedmetadata', function() {
+                    videoElement.play();
+                });
+            })
+            .catch(error => {
+                if (videoElement) videoElement.style.display = "none";
+                var errorImageElement = $('.errorImage[data-player-id="@Model.PlayerId"]')[0];
+                errorImageElement.style.display = "block";
+            });
+        }
+
+        function InitializeFocusedPlayer() 
+        {
+            var focusedPlayerThumbnail = $('.focusedPlayer');
+
+            if(focusedPlayerThumbnail)
+            {
+                focusedPlayerThumbnail.find('.playerThumbnail').trigger('click');
+            }
+        }
+
+        function LoadRemoteStreams(peer) 
+        {
+            $(".remoteVideo").each(function () {
+                var peerId = $(this).attr("data-peerid");
+            
+                var call = peer.call(peerId, _localVideoStream);
+
+                if(!call){
+                    var videoElement = $('.playerVideo[data-peerid="' + peerId + '"]')[0];
+                    videoElement.style.display = "none";
+
+                    var errorImageElement = $('.errorImage[data-peerid="' + peerId +'"]')[0];
+                    errorImageElement.style.display = "block";
+                }
+                else{
+                    call.on("stream", (stream) => {
+                        this.srcObject = stream;
+                        this.addEventListener('loadedmetadata', () => {
+                            this.play();
+                        });
+                    });
+
+                    call.on("error", (err) => {
+                        console.log("Call error:" + err);
+                    });
+
+                    call.on('close', () => {
+                        Endcall(call);
+                    })
+                }
+            });
+        }
+
+        function EndCall(call) {
+            call.close();
         }
 
         function AnswerCall(call) 
@@ -458,7 +530,6 @@
                 }
             });
         }
-
 
         function playerThumbnail_Click() {
             var playerThumbnail = $(this);
