@@ -87,19 +87,26 @@
         $(document).ready(function () 
         {
             InitializeGameHub();
-            InitializeLocalVideoStream();
             InitializeUiEventHandlers();
             InitializeTooltips();
             InitializePlayerInfoDropdowns();
             InitializeCommanderInputs();
             InitializePlayerTurnOrderDialog();
-            InitializeFocusedPlayer();
+
+            InitializeAsync();
+        });
+
+        async function InitializeAsync()
+        {
+            await InitializeLocalVideoStream();
 
             _peerJsObject = new Peer();
             _peerJsObject.on('open', id => {
                 OnPeerJsOpen(id);
             });
-        });
+
+            InitializeFocusedPlayer();
+        }
 
         $(document).ajaxComplete(function () {
             //Re-initialize tooltips after any part of the board is reloaded
@@ -206,26 +213,25 @@
             });
         }
 
-        function InitializeLocalVideoStream() 
-        {
+        async function InitializeLocalVideoStream() {
             var videoElement = $(".localVideo")[0];
 
-            navigator.mediaDevices.getUserMedia({
-                audio: true,
-                video: true
-            }).then(stream => {
+            try 
+            {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    audio: true,
+                    video: true
+                });
+
                 _localVideoStream = stream;
 
                 videoElement.srcObject = stream;
-                $(videoElement).on('loadedmetadata', function() {
-                    videoElement.play();
-                });
-            })
-            .catch(error => {
+                await videoElement.play();
+            } catch (error) {
                 if (videoElement) videoElement.style.display = "none";
                 var errorImageElement = $('.errorImage[data-player-id="@Model.PlayerId"]')[0];
                 errorImageElement.style.display = "block";
-            });
+            }
         }
 
         function InitializeFocusedPlayer() 
