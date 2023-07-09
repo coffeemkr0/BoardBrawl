@@ -355,7 +355,10 @@
                     amount: amount
                 },
                 success: function () {
-                    lifeTotalElement.text(newLifeTotal);
+                    $('.lifeTotal[data-player-id=' + playerId + ']').each(function()
+                    {
+                        $(this).text(newLifeTotal);
+                    });
                 },
                 complete: function () {
                     button.prop('disabled', false);
