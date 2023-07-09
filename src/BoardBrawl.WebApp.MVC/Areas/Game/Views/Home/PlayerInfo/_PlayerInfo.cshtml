@@ -17,7 +17,8 @@
 
         <div>
             <div class="dropdown playerInfoDropdown">
-                <div id="commanderInfo@(Model.Id)" class="dropdown-toggle no-arrow shadow-none fst-italic" data-bs-auto-close="outside" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <div id="commanderInfo@(Model.Id)" class="dropdown-toggle no-arrow shadow-none fst-italic commanderInfo" 
+                        data-player-id="@Model.Id" data-bs-auto-close="outside" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     @await Html.PartialAsync("PlayerInfo/_CommanderInfo", Model)
                 </div>
 

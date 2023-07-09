@@ -317,8 +317,11 @@
                     success: function (result) 
                     {
                         //Update the commander info for the player
-                        var commanderInfoContainer = $('#commanderInfo' + playerId);
-                        commanderInfoContainer.html(result.commanderInfo);
+                        var commanderInfo = $('.commanderInfo[data-player-id=' + playerId + ']');
+                        commanderInfo.each(function ()
+                        {
+                            commanderInfo.html(result.commanderInfo);
+                        });
 
                         //Update commander damage trackers for all players
                         for (var key in result.commanderDamages) {
