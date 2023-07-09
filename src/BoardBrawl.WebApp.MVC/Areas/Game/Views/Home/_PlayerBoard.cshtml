@@ -18,10 +18,7 @@
         InitializeLocalVideoStream();
         SetFocusedVideo();
 
-        $(document).off('click', '.playerThumbnail');
-        $(document).on('click', '.playerThumbnail', function () {
-            OnPlayerThumbnailClicked($(this));
-        });
+        
     });
 
     function InitializeLocalVideoStream() 
@@ -100,35 +97,5 @@
 
     function EndCall(call) {
         call.close();
-    }
-
-    function OnPlayerThumbnailClicked(playerThumbnail) {
-        //Set the main video to the clicked player
-        var playerVideo = playerThumbnail.find('.playerVideo')[0];
-        var playerListPlayer = $(playerVideo).closest('.playerListPlayer');
-        var stream = playerVideo.srcObject;
-        var focusedPlayerVideo = $('#focusedPlayerVideo')[0];
-        focusedPlayerVideo.srcObject = stream;
-        focusedPlayerVideo.play();
-
-        //Set the focused player style on the clicked player
-        $('.playerListPlayer').not(playerListPlayer).removeClass('focusedPlayer');
-        $(playerListPlayer).addClass('focusedPlayer');
-
-        var newFocusedPlayerIndicator = $(playerListPlayer).find(".focusedPlayerIndicator").first();
-        $('.focusedPlayerIndicator').not(newFocusedPlayerIndicator).hide();
-        $(newFocusedPlayerIndicator).show();
-
-        //Tell the server to save the focused player state
-        var focusedPlayerId = $(playerListPlayer).data('playerid');
-        $.ajax({
-            url: '/Game/Home/UpdateFocusedPlayer',
-            data: {
-                playerId: @Model.PlayerId,
-                focusedPlayerId: focusedPlayerId
-            }
-        });
-
-        var playerInfoFromThumbnail = $(".playerInfo[data-player-id=' + ']")
     }
 </script>

@@ -1,8 +1,8 @@
 ﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models;
 @model PlayerBoard
 
-<div style="position: relative;">
-    <div class="playerInfo-focused overlay-top w-100" data-plyaer-id="">
+<div id="focusedPlayer" style="position: relative;">
+    <div class="playerInfo overlay-top w-100">
         @{
             var focusedPlayer = Model.Players.FirstOrDefault(i => i.Id == Model.FocusedPlayerId);
         }

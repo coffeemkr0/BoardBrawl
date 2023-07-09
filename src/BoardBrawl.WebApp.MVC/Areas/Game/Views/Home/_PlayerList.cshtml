@@ -28,19 +28,19 @@
             var focusedPlayerClass = Model.FocusedPlayerId == playerInfo.Id ? "focusedPlayer" : "";
             var activePlayerClass = Model.ActivePlayerId == playerInfo.Id ? "activePlayer" : "";
 
-            <div class="w-100 mb-3 playerListPlayer @(activePlayerClass) @(focusedPlayerClass)" data-playerid="@playerInfo.Id">
+            <div class="w-100 mb-3 playerListPlayer @(activePlayerClass) @(focusedPlayerClass)" data-player-id="@playerInfo.Id">
                 <div class="playerInfo" data-plyaer-id="@playerInfo.Id">
                     @await Html.PartialAsync("PlayerInfo/_PlayerInfo", playerInfo)
                 </div>
                 <div class="playerThumbnail" style="position:relative;">
                     @if (playerInfo.Id == Model.PlayerId)
                     {
-                        <video class="playerVideo localVideo" muted style="width:100%"></video>
+                        <video class="playerVideo localVideo w-100" muted></video>
                         <div class="errorImage container" data-player-id="@playerInfo.Id" style="display:none"><img class="img-fluid" src="~/images/game/error-image-generic.png" /></div>
                     }
                     else
                     {
-                        <video class="playerVideo remoteVideo" style="width:100%" data-player-id="@playerInfo.Id" data-peerid="@playerInfo.PeerId"></video>
+                        <video class="playerVideo remoteVideo w-100" data-player-id="@playerInfo.Id" data-peerid="@playerInfo.PeerId"></video>
                         <div class="errorImage container" data-player-id="@playerInfo.Id" data-peerid="@playerInfo.PeerId" style="display:none"><img class="img-fluid" src="~/images/game/error-image-generic.png" /></div>
                     }
 
