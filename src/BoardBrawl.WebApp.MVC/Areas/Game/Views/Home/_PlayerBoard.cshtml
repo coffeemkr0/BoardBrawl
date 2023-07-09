@@ -1,11 +1,13 @@
 ﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models;
 @model PlayerBoard
 
-<div class="col-4 h-100">
+<div class="col-3 h-100">
     @await Html.PartialAsync("_PlayerList", Model)
 </div>
-<div class="col h-100">
-    <video id="focusedPlayerVideo" style="width:100%;" muted></video>
+<div class="col h-100 d-flex">
+    <div class="flex-fill align-self-center">
+        <video id="focusedPlayerVideo" style="width:100%;" muted></video>
+    </div>
 </div>
 
 
