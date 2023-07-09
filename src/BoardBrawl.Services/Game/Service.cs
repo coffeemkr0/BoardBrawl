@@ -192,7 +192,7 @@ namespace BoardBrawl.Services.Game
                         if(repoCommanderDamage != null )
                         {
                             commanderDamage.Damage = repoCommanderDamage.Damage;
-                            commanderDamage.DamagePercentage = Convert.ToInt32(((float)commanderDamage.Damage / 20.0f) * 100);
+                            commanderDamage.DamagePercentage = Convert.ToInt32(((float)commanderDamage.Damage / 21.0f) * 100);
                         }
 
                         player.CommanderDamages[ownerPlayerId].Add(commanderDamage);
