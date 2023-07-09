@@ -466,6 +466,8 @@
             //Set the main video to the clicked player
             var playerVideo = playerThumbnail.find('.playerVideo')[0];
             var playerListPlayer = $(playerVideo).closest('.playerListPlayer');
+            var focusedPlayerId = $(playerListPlayer).data('player-id');
+
             var stream = playerVideo.srcObject;
             var focusedPlayerVideo = $('#focusedPlayerVideo')[0];
             focusedPlayerVideo.srcObject = stream;
@@ -480,7 +482,6 @@
             $(newFocusedPlayerIndicator).show();
 
             //Tell the server to save the focused player state
-            var focusedPlayerId = $(playerListPlayer).data('playerid');
             $.ajax({
                 url: '/Game/Home/UpdateFocusedPlayer',
                 data: {
@@ -489,7 +490,6 @@
                 }
             });
 
-            var focusedPlayerId = playerListPlayer.data('player-id');
             var playerInfoFromThumbnail = playerListPlayer.find('.playerInfo');
             var focusedPlayerInfo = $('#focusedPlayer').find('.playerInfo');
             focusedPlayerInfo.html(playerInfoFromThumbnail.html());
