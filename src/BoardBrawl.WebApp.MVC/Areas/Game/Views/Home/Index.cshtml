@@ -514,8 +514,13 @@
                         amount: amount
                     },
                     success: function () {
-                        damageCountElement.text(newCount);
-                        ChangeProgress(progressBar, amount);
+                        $('.damageCount[data-player-id=' + playerId + '][data-owner-player-id=' + ownerPlayerId + '][data-card-id=' + cardId + ']').each(function () {
+                            $(this).text(newCount);
+
+                            var tracker = $(this).closest('.commanderDamageTracker');
+                            var progressBar = tracker.find('.progress-bar').first();
+                            ChangeProgress(progressBar, amount);
+                        });
                     },
                     complete: function () {
                         button.prop('disabled', false);

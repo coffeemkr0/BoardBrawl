@@ -15,7 +15,9 @@
             </div>
 
             <div class="pt-2" style="min-width:20px; text-align:center">
-                <span class="damageCount">@Model.Damage</span>
+                <span class="damageCount" data-player-id="@Model.PlayerId" data-owner-player-id="@Model.OwnerPlayerId" data-card-id="@Model.CardId">
+                    @Model.Damage
+                </span>
             </div>
 
             <div class="btn btn-sm btnAdjustCommanderDamage" data-player-id="@Model.PlayerId"
