@@ -2,8 +2,14 @@
 @model PlayerBoard
 
 <div style="position: relative;">
-    <div class="playerInfo overlay-top w-100" data-plyaer-id="">
-        @await Html.PartialAsync("PlayerInfo/_PlayerInfo", Model.Players[1])
+    <div class="playerInfo-focused overlay-top w-100" data-plyaer-id="">
+        @{
+            var focusedPlayer = Model.Players.FirstOrDefault(i => i.Id == Model.FocusedPlayerId);
+        }
+        @if (focusedPlayer != null)
+        {
+            @await Html.PartialAsync("PlayerInfo/_PlayerInfo", focusedPlayer)
+        }
     </div>
     <div>
         <video id="focusedPlayerVideo" style="width:100%;" muted></video>

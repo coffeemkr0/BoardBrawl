@@ -18,9 +18,9 @@
         InitializeLocalVideoStream();
         SetFocusedVideo();
 
-        $(document).off('click', '.playerVideo');
-        $(document).on('click', '.playerVideo', function () {
-            OnPlayerVideoClicked(this);
+        $(document).off('click', '.playerThumbnail');
+        $(document).on('click', '.playerThumbnail', function () {
+            OnPlayerThumbnailClicked($(this));
         });
     });
 
@@ -102,8 +102,9 @@
         call.close();
     }
 
-    function OnPlayerVideoClicked(playerVideo) {
+    function OnPlayerThumbnailClicked(playerThumbnail) {
         //Set the main video to the clicked player
+        var playerVideo = playerThumbnail.find('.playerVideo')[0];
         var playerListPlayer = $(playerVideo).closest('.playerListPlayer');
         var stream = playerVideo.srcObject;
         var focusedPlayerVideo = $('#focusedPlayerVideo')[0];
@@ -127,5 +128,7 @@
                 focusedPlayerId: focusedPlayerId
             }
         });
+
+        var playerInfoFromThumbnail = $(".playerInfo[data-player-id=' + ']")
     }
 </script>
