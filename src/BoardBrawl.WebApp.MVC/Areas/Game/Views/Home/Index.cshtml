@@ -461,9 +461,6 @@
 
             if(newCount >= 0)
             {
-                var tracker = $(this).closest('.infectTracker');
-                var progressBar = tracker.find('.progress-bar').first();
-
                 $.ajax({
                     url: '/Game/Home/AdjustInfectCount',
                     data: {
@@ -472,8 +469,13 @@
                         amount: amount
                     },
                     success: function () {
-                        infectCountElement.text(newCount);
-                        ChangeProgress(progressBar, amount);
+                        $('.infectCount[data-player-id=' + playerId + ']').each(function () {
+                            $(this).text(newCount);
+
+                            var tracker = $(this).closest('.infectTracker');
+                            var progressBar = tracker.find('.progress-bar').first();
+                            ChangeProgress(progressBar, amount);
+                        });
                     },
                     complete: function () {
                         button.prop('disabled', false);
