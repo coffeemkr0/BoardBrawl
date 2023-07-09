@@ -100,10 +100,26 @@
         {
             await InitializeLocalVideoStream();
 
-            _peerJsObject = new Peer();
-            _peerJsObject.on('open', id => {
-                OnPeerJsOpen(id);
+            _peerJsConnectionId = await new Promise((resolve, reject) => {
+                _peerJsObject = new Peer();
+
+                _peerJsObject.on('open', id => {
+                    resolve(id);
+                });
+
+                _peerJsObject.on('error', error => {
+                    reject(error);
+                });
             });
+
+            await JoinGameHub();
+
+            _peerJsObject.on("call", (call) => {
+                AnswerCall(call);
+            });
+
+            //TODO:await this before initializing the focused player
+            LoadRemoteStreams(_peerJsObject);
 
             InitializeFocusedPlayer();
         }
@@ -112,19 +128,6 @@
             //Re-initialize tooltips after any part of the board is reloaded
             InitializeTooltips();
         });
-
-        async function OnPeerJsOpen(peerJsConnectionId) 
-        {
-            _peerJsConnectionId = peerJsConnectionId;
-
-            await JoinGameHub();
-
-            _peerJsObject.on("call", (call) => {
-                AnswerCall(call);
-            });
-
-            LoadRemoteStreams(_peerJsObject);
-        }
 
         function InitializeGameHub() 
         {
