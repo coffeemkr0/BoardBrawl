@@ -2,10 +2,10 @@
 @model PlayerBoard
 
 <div class="col-3 h-100">
-    @await Html.PartialAsync("_PlayerList", Model)
+    @await Html.PartialAsync("PlayerBoard/_PlayerList", Model)
 </div>
 <div class="col h-100 d-flex">
     <div class="flex-fill align-self-center">
-        @await Html.PartialAsync("_FocusedPlayer")
+        @await Html.PartialAsync("PlayerBoard/_FocusedPlayer")
     </div>
 </div>
