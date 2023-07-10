@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoardBrawl.Data.Application.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230708141004_InitialCreate")]
+    [Migration("20230710230905_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,32 @@ namespace BoardBrawl.Data.Application.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("BoardBrawl.Data.Application.Models.CardHistoryEntry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("CardId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("DateTimeAdded")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.ToTable("CardHistory");
+                });
 
             modelBuilder.Entity("BoardBrawl.Data.Application.Models.CommanderDamage", b =>
                 {
@@ -129,6 +155,17 @@ namespace BoardBrawl.Data.Application.Migrations
                     b.ToTable("Players");
                 });
 
+            modelBuilder.Entity("BoardBrawl.Data.Application.Models.CardHistoryEntry", b =>
+                {
+                    b.HasOne("BoardBrawl.Data.Application.Models.Game", "Game")
+                        .WithMany("CardHistory")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+                });
+
             modelBuilder.Entity("BoardBrawl.Data.Application.Models.CommanderDamage", b =>
                 {
                     b.HasOne("BoardBrawl.Data.Application.Models.Game", "Game")
@@ -153,6 +190,8 @@ namespace BoardBrawl.Data.Application.Migrations
 
             modelBuilder.Entity("BoardBrawl.Data.Application.Models.Game", b =>
                 {
+                    b.Navigation("CardHistory");
+
                     b.Navigation("CommanderDamages");
 
                     b.Navigation("Players");

@@ -20,5 +20,8 @@ namespace BoardBrawl.Services.Game
         void PromoteToGameOwner(int gameId, int playerId);
         void LeadGame(int gameId, int playerId);
         void CloseGame(int gameId);
+        void AddCardToCardHistory(int gameId, int playerId, string cardId);
+        List<CardHistoryEntry> GetCardHistory(int gameId, int playerId);
+        void RemoveCardFromCardHistory(int id);
     }
 }

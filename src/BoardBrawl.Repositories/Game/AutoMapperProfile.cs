@@ -10,6 +10,7 @@ namespace BoardBrawl.Repositories.Game
             CreateMap<GameInfo, Data.Application.Models.Game>();
             CreateMap<Data.Application.Models.Game, GameInfo>();
             CreateMap<Data.Application.Models.CommanderDamage, CommanderDamage>();
+            CreateMap<Data.Application.Models.CardHistoryEntry, CardHistoryEntry>();
 
             CreateMap<Data.Application.Models.Player, PlayerInfo>();
             CreateMap<PlayerInfo, Data.Application.Models.Player>();

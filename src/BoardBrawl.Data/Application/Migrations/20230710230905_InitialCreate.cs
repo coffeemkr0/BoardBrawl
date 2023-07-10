@@ -37,6 +37,30 @@ namespace BoardBrawl.Data.Application.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "CardHistory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    GameId = table.Column<int>(type: "int", nullable: false),
+                    PlayerId = table.Column<int>(type: "int", nullable: false),
+                    DateTimeAdded = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CardId = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CardHistory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CardHistory_Games_GameId",
+                        column: x => x.GameId,
+                        principalTable: "Games",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "CommanderDamages",
                 columns: table => new
                 {
@@ -95,6 +119,11 @@ namespace BoardBrawl.Data.Application.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CardHistory_GameId",
+                table: "CardHistory",
+                column: "GameId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CommanderDamages_GameId",
                 table: "CommanderDamages",
                 column: "GameId");
@@ -107,6 +136,9 @@ namespace BoardBrawl.Data.Application.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "CardHistory");
+
             migrationBuilder.DropTable(
                 name: "CommanderDamages");
 

@@ -1,6 +1,5 @@
 ﻿using BoardBrawl.Core.AutoMapping;
 using BoardBrawl.Data.Application;
-using BoardBrawl.Data.Application.Models;
 using BoardBrawl.Repositories.Game.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -193,6 +192,32 @@ namespace BoardBrawl.Repositories.Game
                 _applicationDbContext.Games.Remove(gameEntity);
                 _applicationDbContext.SaveChanges();
             }
+        }
+
+        public void AddCardToCardHistory(int gameId, int playerId, DateTime dateTimeAdded, string cardId)
+        {
+            _applicationDbContext.CardHistory.Add(new Data.Application.Models.CardHistoryEntry
+            {
+                GameId = gameId,
+                PlayerId = playerId,
+                DateTimeAdded = dateTimeAdded,
+                CardId = cardId
+            });
+
+            _applicationDbContext.SaveChanges();
+        }
+
+        public List<CardHistoryEntry> GetCardHistory(int gameId, int playerId)
+        {
+            var cardHistoryEntities = _applicationDbContext.CardHistory.Where(i => i.GameId == gameId && i.PlayerId == playerId).ToList();
+            return _mapper.Map<List<CardHistoryEntry>>(cardHistoryEntities);
+        }
+
+        public void RemoveCardFromCardHistory(int id)
+        {
+            var cardHistoryEntity = _applicationDbContext.CardHistory.First(i=>i.Id == id);
+            _applicationDbContext.CardHistory.Remove(cardHistoryEntity);
+            _applicationDbContext.SaveChanges();
         }
     }
 }

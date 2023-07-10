@@ -152,6 +152,13 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             return Json(new { commanderInfo, commanderDamages });
         }
 
+        public IActionResult AddCardToCardHistory(int gameId, int playerId, string cardId)
+        {
+            _service.AddCardToCardHistory(gameId, playerId, cardId);
+
+            return Ok();
+        }
+
         public async Task<IActionResult> AdjustPlayerTurnOrder([FromForm]PlayerTurnOrder playerTurnOrder)
         {
             _service.UpdatePlayerTurnOrder(playerTurnOrder.GameId, playerTurnOrder.Players.Select(i => i.Id).ToList());

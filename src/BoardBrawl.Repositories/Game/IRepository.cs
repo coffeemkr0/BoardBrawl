@@ -20,5 +20,8 @@ namespace BoardBrawl.Repositories.Game
         void UpdateGameOwner(int gameid, string userId);
         void DeletePlayer(int playerId);
         void DeleteGame(int gameId);
+        void AddCardToCardHistory(int gameId, int playerId, DateTime dateTimeAdded, string cardId);
+        List<CardHistoryEntry> GetCardHistory(int gameId, int playerId);
+        void RemoveCardFromCardHistory(int id);
     }
 }

@@ -21,5 +21,8 @@
         public ICollection<Player> Players { get; set; }
 
         public ICollection<CommanderDamage> CommanderDamages { get; set; }
+
+        public ICollection<CardHistoryEntry> CardHistory { get; set; }
+
     }
 }

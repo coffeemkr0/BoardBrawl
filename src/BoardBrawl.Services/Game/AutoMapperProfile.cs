@@ -9,6 +9,7 @@ namespace BoardBrawl.Services.Game
         {
             CreateMap<Models.GameInfo, Repositories.Game.Models.GameInfo>();
             CreateMap<Repositories.Game.Models.GameInfo, Models.GameInfo>();
+            CreateMap<Repositories.Game.Models.CardHistoryEntry, CardHistoryEntry>();
 
             CreateMap<Repositories.Game.Models.PlayerInfo, Models.PlayerInfo>();
             CreateMap<Models.PlayerInfo, Repositories.Game.Models.PlayerInfo>();
