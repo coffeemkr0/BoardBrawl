@@ -1,0 +1,22 @@
+﻿namespace BoardBrawl.WebApp.MVC.Areas.Game.Models
+{
+    public class CardHistoryEntry
+    {
+        public int Id { get; set; }
+
+        public int GameId { get; set; }
+
+        public int PlayerId { get; set; }
+
+        public DateTime DateTimeAdded { get; set; }
+
+        public string CardId { get; set; }
+
+        public CardInfo CardInfo { get; }
+
+        public CardHistoryEntry()
+        {
+            CardInfo = new CardInfo();
+        }
+    }
+}

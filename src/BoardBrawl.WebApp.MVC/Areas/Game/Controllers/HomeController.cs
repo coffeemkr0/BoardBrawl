@@ -152,7 +152,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             return Json(new { commanderInfo, commanderDamages });
         }
 
-        public IActionResult AddCardToCardHistory(int gameId, int playerId, string cardId)
+        public async Task<IActionResult> AddCardToCardHistory(int gameId, int playerId, string cardId)
         {
             _service.AddCardToCardHistory(gameId, playerId, cardId);
 

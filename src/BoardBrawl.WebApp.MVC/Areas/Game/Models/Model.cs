@@ -10,10 +10,13 @@
 
         public SettingsMenu SettingsMenu { get; }
 
+        public GamePanel GamePanel { get; }
+
         public Model()
         {
             PlayerBoard = new PlayerBoard();
             SettingsMenu = new SettingsMenu();
+            GamePanel = new GamePanel();
         }
     }
 }
