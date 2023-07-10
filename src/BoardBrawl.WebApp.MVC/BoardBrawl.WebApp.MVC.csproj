@@ -39,8 +39,4 @@
     <ProjectReference Include="..\BoardBrawl.Services\BoardBrawl.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Game\Views\Home\GamePanel\" />
-  </ItemGroup>
-
 </Project>

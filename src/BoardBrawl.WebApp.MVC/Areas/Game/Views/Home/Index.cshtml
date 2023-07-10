@@ -87,10 +87,10 @@
         $(document).ready(function () 
         {
             InitializeGameHub();
+            InitializeCardSearch();
             InitializeUiEventHandlers();
             InitializeTooltips();
             InitializePlayerInfoDropdowns();
-            InitializeCommanderInputs();
             InitializePlayerTurnOrderDialog();
 
             InitializeAsync();
@@ -302,6 +302,8 @@
             $(document).on('click', '.btnPromoteToGameOwner', btnPromoteToGameOwner_Click);
 
             $(document).on('click', '.playerThumbnail', playerThumbnail_Click);
+
+            $('body').on('change', '.commander-id', commanderId_Changed);
         }
 
         function InitializeTooltips()
@@ -337,12 +339,11 @@
             });
         }
 
-        function InitializeCommanderInputs()
+        function InitializeCardSearch()
         {
-            //Auto complete for commander inputs
             var cache = {};
 
-            $(document).on('focus', '.commander-search', function () {
+            $(document).on('focus', '.card-search', function () {
                 var input = $(this);
                 var hiddenInput = input.next("input[type='hidden']");
 
@@ -369,7 +370,7 @@
                         hiddenInput.val(ui.item.value).trigger('change');
                         return false;
                     },
-                    appendTo: input.closest('.commander-inputs')
+                    appendTo: input.parent()
                 });
 
                 input.on('input', function () {
@@ -378,41 +379,39 @@
                     }
                 });
             });
+        }
 
-            //When a player changes their commander, update the server
-            $('body').on('change', '.commander-id', function () {
-                var input = $(this);
-                var cardId = input.val();
-                var slot = input.data('slot');
-                var playerId = input.closest('.commander-inputs').data('player-id');
-     
-                //Update state when user selects a commander
-                $.ajax({
-                    url: '/Game/Home/UpdateCommander',
-                    data: {
-                        gameId: '@(Model.GameId)',
-                        playerId: playerId,
-                        slot: slot,
-                        cardId: cardId
-                    },
-                    success: function (result) 
-                    {
-                        //Update the commander info for the player
-                        var commanderInfo = $('.commanderInfo[data-player-id=' + playerId + ']');
-                        commanderInfo.each(function ()
-                        {
-                            commanderInfo.html(result.commanderInfo);
-                        });
+        function commanderId_Changed()
+        {
+            var input = $(this);
+            var cardId = input.val();
+            var slot = input.data('slot');
+            var playerId = input.closest('.commander-inputs').data('player-id');
 
-                        //Update commander damage trackers for all players
-                        for (var key in result.commanderDamages) {
-                            if (result.commanderDamages.hasOwnProperty(key)) {
-                                var commanderDamagesHtml = result.commanderDamages[key];
-                                $('.commanderDamages[data-player-id="' + key + '"]').html(commanderDamagesHtml);
-                            }
+            //Update state when user selects a commander
+            $.ajax({
+                url: '/Game/Home/UpdateCommander',
+                data: {
+                    gameId: '@(Model.GameId)',
+                    playerId: playerId,
+                    slot: slot,
+                    cardId: cardId
+                },
+                success: function (result) {
+                    //Update the commander info for the player
+                    var commanderInfo = $('.commanderInfo[data-player-id=' + playerId + ']');
+                    commanderInfo.each(function () {
+                        commanderInfo.html(result.commanderInfo);
+                    });
+
+                    //Update commander damage trackers for all players
+                    for (var key in result.commanderDamages) {
+                        if (result.commanderDamages.hasOwnProperty(key)) {
+                            var commanderDamagesHtml = result.commanderDamages[key];
+                            $('.commanderDamages[data-player-id="' + key + '"]').html(commanderDamagesHtml);
                         }
                     }
-                });
+                }
             });
         }
 

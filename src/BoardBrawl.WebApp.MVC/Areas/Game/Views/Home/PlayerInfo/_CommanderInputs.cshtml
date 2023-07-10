@@ -8,7 +8,7 @@
     <div class="col px-2">
         @if (Model.IsSelf)
         {
-            <input class="form-control commander-search text-xs" placeholder="Add Commander" value="@Model.Commander1?.Name">
+            <input class="form-control card-search text-xs" placeholder="Add Commander" value="@Model.Commander1?.Name">
             <input class="commander-id" type="hidden" data-slot="1" value="@Model.Commander1Id">
         }
         else
