@@ -17,12 +17,22 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
                 LoadCombinedCommanderColors(player);
                 await LoadCommanderDamageCardInfo(player);
             }
+
+            await LoadCardHistoryCardInfo(model.GamePanel.CardHistory);
         }
 
         private static async Task LoadCommandersCardInfo(PlayerInfo player)
         {
             player.Commander1 = await GetCardInfo(player.Commander1Id);
             player.Commander2 = await GetCardInfo(player.Commander2Id);
+        }
+
+        private static async Task LoadCardHistoryCardInfo(List<CardHistoryEntry> cardHistory)
+        {
+            foreach (var cardHistoryEntry in cardHistory)
+            {
+                cardHistoryEntry.CardInfo = await GetCardInfo(cardHistoryEntry.CardId);
+            }
         }
 
         private static async Task LoadCommanderDamageCardInfo(PlayerInfo player)

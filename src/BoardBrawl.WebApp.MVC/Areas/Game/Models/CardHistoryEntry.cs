@@ -12,11 +12,6 @@
 
         public string CardId { get; set; }
 
-        public CardInfo CardInfo { get; }
-
-        public CardHistoryEntry()
-        {
-            CardInfo = new CardInfo();
-        }
+        public CardInfo? CardInfo { get; set; }
     }
 }

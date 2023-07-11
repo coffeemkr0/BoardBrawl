@@ -1,11 +1,11 @@
 ﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models;
-@model GamePanel
+@model Model
 
 <div class="w-100">
     <input class="form-control card-search" placeholder="Search...">
     <input class="card-search-id" type="hidden">
 
-    <div class="card-search-last-card w-100">
-        @await Html.PartialAsync("GamePanel/_CardSearchLastCard");
+    <div class="card-search-card w-100">
+        @await Html.PartialAsync("GamePanel/_CardSearchCard")
     </div>
 </div>

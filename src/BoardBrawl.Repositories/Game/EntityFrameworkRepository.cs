@@ -37,10 +37,12 @@ namespace BoardBrawl.Repositories.Game
         {
             var gameEntity = _applicationDbContext.Games
                 .Include(i => i.Players)
-                .Include(i=>i.CommanderDamages)
+                .Include(i => i.CommanderDamages)
+                .Include(i => i.CardHistory)
                 .First(i => i.Id == id);
 
             gameEntity.Players = gameEntity.Players.OrderBy(i => i.TurnOrder).ToList();
+            gameEntity.CardHistory = gameEntity.CardHistory.OrderByDescending(i => i.DateTimeAdded).ToList();
             return _mapper.Map<GameInfo>(gameEntity);
         }
 
@@ -205,12 +207,6 @@ namespace BoardBrawl.Repositories.Game
             });
 
             _applicationDbContext.SaveChanges();
-        }
-
-        public List<CardHistoryEntry> GetCardHistory(int gameId, int playerId)
-        {
-            var cardHistoryEntities = _applicationDbContext.CardHistory.Where(i => i.GameId == gameId && i.PlayerId == playerId).ToList();
-            return _mapper.Map<List<CardHistoryEntry>>(cardHistoryEntities);
         }
 
         public void RemoveCardFromCardHistory(int id)

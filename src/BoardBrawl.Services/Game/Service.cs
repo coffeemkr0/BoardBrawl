@@ -250,11 +250,6 @@ namespace BoardBrawl.Services.Game
             _repository.AddCardToCardHistory(gameId, playerId, DateTime.Now, cardId);
         }
 
-        public List<CardHistoryEntry> GetCardHistory(int gameId, int playerId)
-        {
-            return _mapper.Map<List<CardHistoryEntry>>(_repository.GetCardHistory(gameId, playerId));
-        }
-
         public void RemoveCardFromCardHistory(int id)
         {
             _repository.RemoveCardFromCardHistory(id);

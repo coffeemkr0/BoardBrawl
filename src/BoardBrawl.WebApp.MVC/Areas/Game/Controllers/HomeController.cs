@@ -156,7 +156,9 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
         {
             _service.AddCardToCardHistory(gameId, playerId, cardId);
 
-            return Ok();
+            var model = await LoadModel(gameId);
+
+            return PartialView("_GamePanel", model);
         }
 
         public async Task<IActionResult> AdjustPlayerTurnOrder([FromForm]PlayerTurnOrder playerTurnOrder)
@@ -187,6 +189,8 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
                 PlayerId = myPlayer.Id,
                 GameName = gameInfo.Name
             };
+
+            model.GamePanel.CardHistory.AddRange(_mapper.Map<List<CardHistoryEntry>>(gameInfo.CardHistory));
 
             LoadPlayerBoardCommand.Execute(model, gameInfo, _mapper);
             LoadPlayerMenusCommand.Execute(model);

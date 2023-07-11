@@ -10,11 +10,14 @@
         public int? ActivePlayerId { get; set; }
         public List<PlayerInfo> Players{ get; }
         public List<CommanderDamage> CommanderDamages { get; }
+        public List<CardHistoryEntry> CardHistory { get; }
+
 
         public GameInfo()
         {
             Players = new List<PlayerInfo>();
             CommanderDamages = new List<CommanderDamage>();
+            CardHistory = new List<CardHistoryEntry>();
         }
     }
 }

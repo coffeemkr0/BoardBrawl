@@ -69,7 +69,7 @@
         </div>
     </div>
 
-    <div class="col-2 h-100" style="overflow-y:auto; overflow-x:clip;">
+    <div class="col-2 h-100 gamePanel" style="overflow-y:auto; overflow-x:clip;">
         @await Html.PartialAsync("_GamePanel")
     </div>
 </div>
@@ -304,6 +304,8 @@
             $(document).on('click', '.playerThumbnail', playerThumbnail_Click);
 
             $('body').on('change', '.commander-id', commanderId_Changed);
+
+            $('body').on('change', '.card-search-id', cardSearchId_Changed);
         }
 
         function InitializeTooltips()
@@ -411,6 +413,24 @@
                             $('.commanderDamages[data-player-id="' + key + '"]').html(commanderDamagesHtml);
                         }
                     }
+                }
+            });
+        }
+
+        function cardSearchId_Changed()
+        {
+            var input = $(this);
+            var cardId = input.val();
+
+            $.ajax({
+                url: '/Game/Home/AddCardToCardHistory',
+                data: {
+                    gameId: '@(Model.GameId)',
+                    playerId: '@(Model.PlayerId)',
+                    cardId: cardId
+                },
+                success: function (result) {
+                    $('.gamePanel').html(result);
                 }
             });
         }
