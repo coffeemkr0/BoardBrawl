@@ -190,12 +190,12 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
                 GameName = gameInfo.Name
             };
 
-            model.GamePanel.CardHistory.AddRange(_mapper.Map<List<CardHistoryEntry>>(gameInfo.CardHistory));
-
+            LoadGamePanelCommand.Execute(model, gameInfo, _mapper);
             LoadPlayerBoardCommand.Execute(model, gameInfo, _mapper);
             LoadPlayerMenusCommand.Execute(model);
             LoadSettingsMenuCommand.Execute(model);
             LoadCommanderDamageCommand.Execute(model);
+
             await LoadCardInfoCommand.Execute(model);
 
             return model;

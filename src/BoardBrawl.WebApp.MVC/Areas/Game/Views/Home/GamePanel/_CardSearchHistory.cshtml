@@ -1,6 +1,21 @@
 ﻿@using BoardBrawl.WebApp.MVC.Areas.Game.Models;
 @model Model
 
-<div>
+<style>
+    .image-stack {
+        position: relative;
+        overflow:auto;
+    }
 
+    .image-stack img {
+        margin-bottom: -85%;
+        display: block;
+    }
+</style>
+
+<div class="image-stack">
+    @foreach(var cardHistoryEntry in Model.GamePanel.CardHistory)
+    {
+        <img src="@cardHistoryEntry.CardInfo.ImageUri" class="w-100" />
+    }
 </div>

@@ -2,14 +2,10 @@
 @model Model
 
 <div class="">
-    <div class="text-center p-3">
+    <div class="text-center m-3">
         <span class="fst-italic">Last card</span>
     </div>
     <div>
-        @{
-            var lastCard = Model.GamePanel.CardHistory.FirstOrDefault();
-        }
-
-        <img src="@lastCard?.CardInfo.ImageUri" class="w-100" />
+        <img src="@Model.GamePanel.LastCard?.CardInfo?.ImageUri" class="w-100" />
     </div>
 </div>

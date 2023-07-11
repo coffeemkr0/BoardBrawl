@@ -18,7 +18,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
                 await LoadCommanderDamageCardInfo(player);
             }
 
-            await LoadCardHistoryCardInfo(model.GamePanel.CardHistory);
+            await LoadCardHistoryCardInfo(model.GamePanel);
         }
 
         private static async Task LoadCommandersCardInfo(PlayerInfo player)
@@ -27,9 +27,14 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             player.Commander2 = await GetCardInfo(player.Commander2Id);
         }
 
-        private static async Task LoadCardHistoryCardInfo(List<CardHistoryEntry> cardHistory)
+        private static async Task LoadCardHistoryCardInfo(GamePanel gamePanel)
         {
-            foreach (var cardHistoryEntry in cardHistory)
+            if(gamePanel.LastCard != null)
+            {
+                gamePanel.LastCard.CardInfo = await GetCardInfo(gamePanel.LastCard.CardId);
+            }
+
+            foreach (var cardHistoryEntry in gamePanel.CardHistory)
             {
                 cardHistoryEntry.CardInfo = await GetCardInfo(cardHistoryEntry.CardId);
             }
