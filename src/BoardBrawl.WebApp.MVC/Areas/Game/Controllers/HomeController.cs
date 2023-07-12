@@ -161,6 +161,13 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             return PartialView("_GamePanel", model);
         }
 
+        public IActionResult RemoveCardFromCardHistory(int id)
+        {
+            _service.RemoveCardFromCardHistory(id);
+
+            return Ok();
+        }
+
         public async Task<IActionResult> AdjustPlayerTurnOrder([FromForm]PlayerTurnOrder playerTurnOrder)
         {
             _service.UpdatePlayerTurnOrder(playerTurnOrder.GameId, playerTurnOrder.Players.Select(i => i.Id).ToList());

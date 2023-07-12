@@ -321,6 +321,8 @@
             $('body').on('change', '.commander-id', commanderId_Changed);
 
             $('body').on('change', '.card-search-id', cardSearchId_Changed);
+
+            $(document).on('click', '.btnRemoveCard', btnRemoveCard_Click);
         }
 
         function InitializeTooltips()
@@ -614,6 +616,28 @@
             var playerInfoFromThumbnail = playerListPlayer.find('.playerInfo');
             var focusedPlayerInfo = $('#focusedPlayer').find('.playerInfo');
             focusedPlayerInfo.html(playerInfoFromThumbnail.html());
+        }
+
+        function btnRemoveCard_Click()
+        {
+            var button = $(this);
+            button.prop('disabled', false);
+            var id = button.data('id');
+
+            $.ajax({
+                url: '/Game/Home/RemoveCardFromCardHistory',
+                data: {
+                    id: id
+                },
+                success: function ()
+                {
+                    button.closest('.card-history-item').remove();
+                },
+                complete: function () 
+                {
+                    button.prop('disabled', false);
+                }
+            });
         }
 
         function ChangeProgress(progressBar, amount) {
