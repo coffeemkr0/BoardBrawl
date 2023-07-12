@@ -6,6 +6,9 @@
         <span class="fst-italic">Last card</span>
     </div>
     <div>
-        <img src="@Model.GamePanel.LastCard?.CardInfo?.ImageUri" class="w-100" />
+        @{
+            var title = @Model.GamePanel.LastCard != null ? $"<img src='{Model.GamePanel.LastCard.CardInfo?.ImageUri}' alt='Card Image' class='card-tooltip-image' />" : "";
+        }
+        <img src="@Model.GamePanel.LastCard?.CardInfo?.ImageUri" class="w-100 card-tooltip" title="@title"  />
     </div>
 </div>

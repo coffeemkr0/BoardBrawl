@@ -35,7 +35,7 @@
     @foreach (var card in Model.GamePanel.CardHistory)
     {
         <div class="card-history-item">
-            <img src="@card.CardInfo.ImageUri" class="w-100" />
+            <img src="@card.CardInfo.ImageUri" class="w-100 card-tooltip" title="<img src='@card.CardInfo.ImageUri' alt='Card Image' class='card-tooltip-image' />" />
             <button class="btnRemoveCard btn btn-danger btn-xs bi-trash shadow-none" data-id="@card.Id"></button>
         </div>
     }
