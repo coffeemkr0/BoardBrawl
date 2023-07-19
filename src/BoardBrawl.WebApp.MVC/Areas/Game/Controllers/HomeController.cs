@@ -47,15 +47,6 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> PassTurn(int gameId)
-        {
-            _service.PassTurn(gameId);
-
-            var model = await LoadModel(gameId);
-
-            return PartialView("_PlayerBoard", model.PlayerBoard);
-        }
-
         public async Task<IActionResult> PlayerBoard(int gameId)
         {
             var model = await (LoadModel(gameId));
@@ -182,6 +173,15 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerLeftGame", playerId);
 
             return Redirect("/Lobby");
+        }
+
+        public async Task<IActionResult> PassTurn(int gameId)
+        {
+            _service.PassTurn(Convert.ToInt32(gameId));
+
+            var model = await LoadModel(gameId);
+
+            return Json(new { activePlayerId = model.PlayerBoard.ActivePlayerId });
         }
 
         private async Task<Model> LoadModel(int gameId)

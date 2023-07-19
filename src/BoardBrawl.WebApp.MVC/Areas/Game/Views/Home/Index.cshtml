@@ -145,8 +145,8 @@
                     gameId: '@Model.GameId'
                 },
                 success: function (html) {
-                    $('#playerBoardContainer').html(html);
-                    LoadRemoteStreams();
+                    //$('#playerBoardContainer').html(html);
+                    //LoadRemoteStreams();
                 }
             });
         }
@@ -496,7 +496,23 @@
 
         async function btnPassTurn_Click()
         {
-            await _gameHubConnection.invoke("PassTurn", '@Model.GameId');
+            var button = $(this);
+            button.prop('disabled', true);
+
+            $.ajax({
+                url: '/Game/Home/PassTurn',
+                data: {
+                    gameId: '@(Model.GameId)'
+                },
+                success: function (result) {
+                    var activePlayerListPlayer = $('.playerListPlayer[data-player-id=' + result.activePlayerId + ']');
+                    $('.playerListPlayer').not(activePlayerListPlayer).removeClass('activePlayer');
+                    $(activePlayerListPlayer).addClass('activePlayer');
+                },
+                complete: function () {
+                    button.prop('disabled', false);
+                }
+            });
         }
 
         function btnAdjustLifeTotal_Click()
