@@ -120,8 +120,7 @@
 
             await JoinGameHub();
 
-            //TODO:await this before initializing the focused player
-            LoadRemoteStreams(_peerJsObject);
+            await LoadRemoteStreams();
         }
 
         $(document).ajaxComplete(function () {
@@ -129,6 +128,47 @@
             InitializeTooltips();
         });
 
+        //Game hub events
+        function OnPlayerJoinedGame(playerId, peerId) 
+        {
+            if(playerId != '@Model.PlayerId')
+            {
+                RefreshPlayersList();
+            }
+        }
+
+        function OnPassTurn()
+        {
+            $.ajax({
+                url: '/Game/Home/PlayerBoard/@Model.GameId',
+                data: {
+                    gameId: '@Model.GameId'
+                },
+                success: function (html) {
+                    $('#playerBoardContainer').html(html);
+                    LoadRemoteStreams();
+                }
+            });
+        }
+
+        function OnPlayerLifeTotalChanged(playerId)
+        {
+            
+        }
+
+        function OnGameOwnerChanged(redirectUrl)
+        {
+            window.location.href = redirectUrl;
+        }
+
+        function OnPlayerLeftGame(playerId)
+        {
+            if (playerId != '@Model.PlayerId') {
+                RefreshPlayersList();
+            }
+        }
+
+        //Methods
         function InitializeGameHub() 
         {
             _gameHubConnection = new signalR.HubConnectionBuilder()
@@ -155,89 +195,6 @@
             });
         }
 
-        async function JoinGameHub()
-        {
-            await _gameHubConnection.start();
-            await _gameHubConnection.invoke("JoinGameHub", '@Model.GameId', '@Model.PlayerId', _peerJsObject.id);
-        }
-
-        async function InitializePeerJs()
-        {
-            //This method sets up a PeerJS connection by creating a new instance of the Peer object and establishing a connection with the signaling server. 
-            //It uses a promise-based approach to handle the asynchronous nature of the connection process
-
-            await new Promise((resolve, reject) => {
-                //initialize a PeerJS connection and establish communication with the default PeerJS signaling server.
-                _peerJsObject = new Peer();
-
-                //Sets up an event listener for the 'open' event
-                //This event is triggered when the connection with the signaling server is successfully established and the PeerJS object is assigned an ID.
-                //The id is not really needed at this point though, so nothing is done with it
-                _peerJsObject.on('open', id => {
-                    resolve(id);
-                });
-
-                //Sets up an event listener for the 'error' event
-                //This event is triggered if any error occurs during the connection process.
-                //The error is caught in the exception handler and a message is displayed to the user
-                _peerJsObject.on('error', error => {
-                    reject(error);
-                });
-            })
-            .catch(error => {
-                console.error('PeerJS connection error:', error);
-                alert('Could not connect to peer to peer server.');
-            });
-
-            //Sets up an event listener for the 'call' event
-            //This event is triggered when another user's client makes a call to this user
-            //the call is "answered" by sending this user's local video stream to the caller
-            _peerJsObject.on("call", (call) => {
-                call.answer(_localVideoStream);
-            });
-        }
-
-        //Game hub events
-        function OnPlayerJoinedGame(playerId, peerId) 
-        {
-            if(playerId != '@Model.PlayerId')
-            {
-                RefreshPlayersList();
-            }
-        }
-
-        function OnPassTurn()
-        {
-            $.ajax({
-                url: '/Game/Home/PlayerBoard/@Model.GameId',
-                data: {
-                    gameId: '@Model.GameId'
-                },
-                success: function (html) {
-                    $('#playerBoardContainer').html(html);
-                    LoadRemoteStreams(_peerJsObject);
-                }
-            });
-        }
-
-        function OnPlayerLifeTotalChanged(playerId)
-        {
-            
-        }
-
-        function OnGameOwnerChanged(redirectUrl)
-        {
-            window.location.href = redirectUrl;
-        }
-
-        function OnPlayerLeftGame(playerId)
-        {
-            if (playerId != '@Model.PlayerId') {
-                RefreshPlayersList();
-            }
-        }
-
-        //Methods
         function RefreshPlayersList() 
         {
             $.ajax({
@@ -247,9 +204,18 @@
                 },
                 success: function (html) {
                     $('#playerBoardContainer').html(html);
-                    LoadRemoteStreams(_peerJsObject);
+                    LoadRemoteStreams();
                 }
             });
+        }
+
+        function InitializeFocusedPlayer() 
+        {
+            var focusedPlayerThumbnail = $('.focusedPlayer');
+
+            if (focusedPlayerThumbnail) {
+                focusedPlayerThumbnail.find('.playerThumbnail').trigger('click');
+            }
         }
 
         async function InitializeLocalVideoStream() {
@@ -266,58 +232,118 @@
 
                 videoElement.srcObject = stream;
                 await videoElement.play();
-            } catch (error) {
+            } 
+            catch (error) 
+            {
                 if (videoElement) videoElement.style.display = "none";
                 var errorImageElement = $('.errorImage[data-player-id="@Model.PlayerId"]')[0];
                 errorImageElement.style.display = "block";
             }
         }
 
-        function InitializeFocusedPlayer() 
-        {
-            var focusedPlayerThumbnail = $('.focusedPlayer');
-
-            if(focusedPlayerThumbnail)
-            {
-                focusedPlayerThumbnail.find('.playerThumbnail').trigger('click');
-            }
+        async function JoinGameHub() {
+            await _gameHubConnection.start();
+            await _gameHubConnection.invoke("JoinGameHub", '@Model.GameId', '@Model.PlayerId', _peerJsObject.id);
         }
 
-        function LoadRemoteStreams(peer) 
+        async function InitializePeerJs() 
         {
-            $(".remoteVideo").each(function () {
-                var peerId = $(this).attr("data-peerid");
-            
-                var call = peer.call(peerId, _localVideoStream);
+            //This method sets up a PeerJS connection by creating a new instance of the Peer object and establishing a connection with the signaling server.
+            //It uses a promise-based approach to handle the asynchronous nature of the connection process
 
-                if(!call){
-                    var videoElement = $('.playerVideo[data-peerid="' + peerId + '"]')[0];
-                    videoElement.style.display = "none";
+            await new Promise((resolve, reject) => 
+            {
+                //initialize a PeerJS connection and establish communication with the default PeerJS signaling server.
+                _peerJsObject = new Peer();
 
-                    var errorImageElement = $('.errorImage[data-peerid="' + peerId +'"]')[0];
-                    errorImageElement.style.display = "block";
-                }
-                else{
-                    call.on("stream", (stream) => {
-                        this.srcObject = stream;
-                        this.addEventListener('loadedmetadata', () => {
-                            this.play();
-                        });
-                    });
+                //Sets up an event listener for the 'open' event
+                //This event is triggered when the connection with the signaling server is successfully established and the PeerJS object is assigned an ID.
+                //The id is not really needed at this point though, so nothing is done with it
+                _peerJsObject.on('open', id => {
+                    resolve(id);
+                });
+            });
 
-                    call.on("error", (err) => {
-                        console.log("Call error:" + err);
-                    });
-
-                    call.on('close', () => {
-                        Endcall(call);
-                    })
-                }
+            //Sets up an event listener for the 'call' event
+            //This event is triggered when another user's client makes a call to this user
+            //the call is "answered" by sending this user's local video stream to the caller
+            _peerJsObject.on("call", (call) => {
+                call.answer(_localVideoStream);
             });
         }
 
-        function EndCall(call) {
-            call.close();
+        async function LoadRemoteStreams() 
+        {
+            var remoteVideos = $(".remoteVideo");
+
+            for (let i = 0; i < remoteVideos.length; i++) 
+            {
+                var peerId = $(remoteVideos[i]).attr("data-peerid");
+                var playerId = $(remoteVideos[i]).attr("data-player-id");
+
+                try 
+                {
+                    await LoadRemoteStream(peerId, playerId);
+                } 
+                catch (error) 
+                {
+                    console.error('Could not load stream for playerId ' + playerId + ' ' + error);
+                }
+            }
+        }
+
+        async function LoadRemoteStream(peerId, playerId)
+        {
+            await new Promise((resolve, reject) => 
+            {
+                //If there is an error on the peer Js connection while using it, handle it here
+                _peerJsObject.on('error', error => {
+
+                    //Only handle errors one time
+                    _peerJsObject.off('error');
+
+                    ShowErrorThumbnail(peerId);
+
+                    reject(error);
+                });
+
+                const call = _peerJsObject.call(peerId, _localVideoStream);
+
+                if(!call)
+                {
+                    ShowErrorThumbnail(peerId);
+
+                    reject('Call error: Call not available');
+                }
+                else
+                {
+                    call.on('stream', (stream) => 
+                    {
+                        var remoteVideoElement = $('.remoteVideo[data-player-id=' + playerId + ']')[0];
+                        remoteVideoElement.srcObject = stream;
+                        remoteVideoElement.addEventListener('loadedmetadata', () => {
+                            remoteVideoElement.play();
+                            resolve(stream);
+                        });
+                    });
+
+                    call.on('close', () => {
+                        call.close();
+                    });
+                }
+            });
+
+            //Stop handling peer Js errors here
+            _peerJsObject.off('error');
+        }
+
+        function ShowErrorThumbnail(peerId)
+        {
+            const videoElement = $('.playerVideo[data-peerid="' + peerId + '"]')[0];
+            videoElement.style.display = 'none';
+
+            const errorImageElement = $('.errorImage[data-peerid="' + peerId + '"]')[0];
+            errorImageElement.style.display = 'block';
         }
 
         function InitializeUiEventHandlers()
