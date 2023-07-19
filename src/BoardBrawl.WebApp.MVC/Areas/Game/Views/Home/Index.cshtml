@@ -137,20 +137,11 @@
             }
         }
 
-        function OnPassTurn(playerId)
+        function OnPassTurn(activePlayerId) 
         {
-            if(playerId != '@Model.PlayerId')
-            {
-                $.ajax({
-                    url: '/Game/Home/GetActivePlayer',
-                    data: {
-                        gameId: '@Model.GameId'
-                    },
-                    success: function (result) {
-                        SetActivePlayer(result.activePlayerId);
-                    }
-                });
-            }
+            var activePlayerListPlayer = $('.playerListPlayer[data-player-id=' + activePlayerId + ']');
+            $('.playerListPlayer').not(activePlayerListPlayer).removeClass('activePlayer');
+            $(activePlayerListPlayer).addClass('activePlayer');
         }
 
         function OnPlayerLifeTotalChanged(playerId)
@@ -184,8 +175,8 @@
                 OnPlayerLifeTotalChanged(playerId);
             });
 
-            _gameHubConnection.on("OnPassTurn", function (playerId) {
-                OnPassTurn(playerId);
+            _gameHubConnection.on("OnPassTurn", function (activePlayerId) {
+                OnPassTurn(activePlayerId);
             });
 
             _gameHubConnection.on("OnGameOwnerChanged", function (redirectUrl) {
@@ -289,7 +280,7 @@
                 } 
                 catch (error) 
                 {
-                    console.error('Could not load stream for playerId ' + playerId + ' ' + error);
+                    console.warn('Could not load stream for playerId ' + playerId + ' ' + error);
                 }
             }
         }
@@ -505,9 +496,6 @@
                 url: '/Game/Home/PassTurn',
                 data: {
                     gameId: '@(Model.GameId)'
-                },
-                success: function (result) {
-                    SetActivePlayer(result.activePlayerId);
                 },
                 complete: function () {
                     button.prop('disabled', false);
@@ -731,13 +719,6 @@
                 inputId.attr('name', 'Players[' + index + '].Id');
                 inputPlayerName.attr('name', 'Players[' + index + '].PlayerName');
             });
-        }
-
-        function SetActivePlayer(playerId)
-        {
-            var activePlayerListPlayer = $('.playerListPlayer[data-player-id=' + playerId + ']');
-            $('.playerListPlayer').not(activePlayerListPlayer).removeClass('activePlayer');
-            $(activePlayerListPlayer).addClass('activePlayer');
         }
     </script>
 }

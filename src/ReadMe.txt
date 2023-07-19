@@ -27,7 +27,7 @@ Add-Migration InitialCreate -Context ApplicationDbContext -OutputDir Application
 
 Not sure what happens on the Digital Ocean droplet, but occasionally, .Net gets corrupted
 See this for correction - https://stackoverflow.com/questions/73753672/a-fatal-error-occurred-the-folder-usr-share-dotnet-host-fxr-does-not-exist
-
+Also see this - https://stackoverflow.com/questions/73312785/dotnet-sdk-is-installed-but-not-recognized-linux-ubuntu-popos-22-04
 sudo apt remove dotnet*
 sudo apt remove aspnetcore*
 sudo apt remove netstandard*

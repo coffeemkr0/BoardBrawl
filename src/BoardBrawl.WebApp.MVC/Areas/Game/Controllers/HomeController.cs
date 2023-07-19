@@ -181,18 +181,10 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             _service.PassTurn(Convert.ToInt32(gameId));
 
             var model = await LoadModel(gameId);
-            var myPlayer = model.PlayerBoard.Players.FirstOrDefault(i => i.IsSelf);
 
-            await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPassTurn", myPlayer.Id);
+            await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPassTurn", model.PlayerBoard.ActivePlayerId);
 
-            return Json(new { activePlayerId = model.PlayerBoard.ActivePlayerId });
-        }
-
-        public async Task<IActionResult> GetActivePlayer(int gameId)
-        {
-            var model = await LoadModel(gameId);
-
-            return Json(new { activePlayerId = model.PlayerBoard.ActivePlayerId });
+            return Ok();
         }
 
         private async Task<Model> LoadModel(int gameId)
