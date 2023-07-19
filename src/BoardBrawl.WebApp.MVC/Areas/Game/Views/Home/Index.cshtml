@@ -95,7 +95,6 @@
         //Fields
         var _localVideoStream;
         var _peerJsObject;
-        var _peerJsConnectionId;
         var _gameHubConnection;
 
         //Initialization
@@ -109,34 +108,20 @@
             InitializePlayerTurnOrderDialog();
 
             InitializeAsync();
+
+            InitializeFocusedPlayer();
         });
 
-        async function InitializeAsync()
+        async function InitializeAsync() 
         {
             await InitializeLocalVideoStream();
 
-            _peerJsConnectionId = await new Promise((resolve, reject) => {
-                _peerJsObject = new Peer();
-
-                _peerJsObject.on('open', id => {
-                    resolve(id);
-                });
-
-                _peerJsObject.on('error', error => {
-                    reject(error);
-                });
-            });
+            await InitializePeerJs();
 
             await JoinGameHub();
 
-            _peerJsObject.on("call", (call) => {
-                AnswerCall(call);
-            });
-
             //TODO:await this before initializing the focused player
             LoadRemoteStreams(_peerJsObject);
-
-            InitializeFocusedPlayer();
         }
 
         $(document).ajaxComplete(function () {
@@ -173,7 +158,43 @@
         async function JoinGameHub()
         {
             await _gameHubConnection.start();
-            await _gameHubConnection.invoke("JoinGameHub", '@Model.GameId', '@Model.PlayerId', _peerJsConnectionId);
+            await _gameHubConnection.invoke("JoinGameHub", '@Model.GameId', '@Model.PlayerId', _peerJsObject.id);
+        }
+
+        async function InitializePeerJs()
+        {
+            //This method sets up a PeerJS connection by creating a new instance of the Peer object and establishing a connection with the signaling server. 
+            //It uses a promise-based approach to handle the asynchronous nature of the connection process
+
+            await new Promise((resolve, reject) => {
+                //initialize a PeerJS connection and establish communication with the default PeerJS signaling server.
+                _peerJsObject = new Peer();
+
+                //Sets up an event listener for the 'open' event
+                //This event is triggered when the connection with the signaling server is successfully established and the PeerJS object is assigned an ID.
+                //The id is not really needed at this point though, so nothing is done with it
+                _peerJsObject.on('open', id => {
+                    resolve(id);
+                });
+
+                //Sets up an event listener for the 'error' event
+                //This event is triggered if any error occurs during the connection process.
+                //The error is caught in the exception handler and a message is displayed to the user
+                _peerJsObject.on('error', error => {
+                    reject(error);
+                });
+            })
+            .catch(error => {
+                console.error('PeerJS connection error:', error);
+                alert('Could not connect to peer to peer server.');
+            });
+
+            //Sets up an event listener for the 'call' event
+            //This event is triggered when another user's client makes a call to this user
+            //the call is "answered" by sending this user's local video stream to the caller
+            _peerJsObject.on("call", (call) => {
+                call.answer(_localVideoStream);
+            });
         }
 
         //Game hub events
@@ -297,11 +318,6 @@
 
         function EndCall(call) {
             call.close();
-        }
-
-        function AnswerCall(call) 
-        {
-            call.answer(_localVideoStream);
         }
 
         function InitializeUiEventHandlers()
