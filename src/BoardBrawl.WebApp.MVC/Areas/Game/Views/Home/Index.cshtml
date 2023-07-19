@@ -144,9 +144,9 @@
             $(activePlayerListPlayer).addClass('activePlayer');
         }
 
-        function OnPlayerLifeTotalChanged(playerId)
+        function OnPlayerLifeTotalChanged(playerId, newLifeTotal)
         {
-            
+            $('.lifeTotal[data-player-id=' + playerId + ']').text(newLifeTotal);
         }
 
         function OnGameOwnerChanged(redirectUrl)
@@ -171,8 +171,8 @@
                 OnPlayerJoinedGame(playerId, peerId);
             });
 
-            _gameHubConnection.on("OnPlayerLifeTotalChanged", function (playerId) {
-                OnPlayerLifeTotalChanged(playerId);
+            _gameHubConnection.on("OnPlayerLifeTotalChanged", function (playerId, newLifeTotal) {
+                OnPlayerLifeTotalChanged(playerId, newLifeTotal);
             });
 
             _gameHubConnection.on("OnPassTurn", function (activePlayerId) {
@@ -519,12 +519,6 @@
                     gameId: '@(Model.GameId)',
                     playerId: playerId,
                     amount: amount
-                },
-                success: function () {
-                    $('.lifeTotal[data-player-id=' + playerId + ']').each(function()
-                    {
-                        $(this).text(newLifeTotal);
-                    });
                 },
                 complete: function () {
                     button.prop('disabled', false);

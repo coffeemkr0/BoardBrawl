@@ -64,7 +64,10 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
         {
             _service.AdjustLifeTotal(playerId, amount);
 
-            await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerLifeTotalChanged", playerId);
+            var model = await LoadModel(gameId);
+            var newLifeTotal = model.PlayerBoard.Players.First(i=>i.Id == playerId).LifeTotal;
+
+            await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerLifeTotalChanged", playerId, newLifeTotal);
 
             return Ok();
         }
