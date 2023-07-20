@@ -636,15 +636,14 @@
                     //Only handle errors one time
                     _peerJsObject.off('error');
 
-                    ShowErrorThumbnail(peerId);
-
+                    //TODO:This rejects calls that come after a failed called because the peer object is still getting error events from the previous call
                     reject(error);
                 });
 
                 const call = _peerJsObject.call(peerId, _localVideoStream);
 
                 if (!call) {
-                    ShowErrorThumbnail(peerId);
+                    ShowErrorThumbnail(playerId);
 
                     reject('Call error: Call not available');
                 }
@@ -668,13 +667,15 @@
             _peerJsObject.off('error');
         }
 
-        function ShowErrorThumbnail(peerId) 
+        function ShowErrorThumbnail(playerId) 
         {
-            const videoElement = $('.playerVideo[data-peerid="' + peerId + '"]')[0];
-            videoElement.style.display = 'none';
+            var playerListPlayer = $('.playerListPlayer[data-player-id=' + playerId + ']');
 
-            const errorImageElement = $('.errorImage[data-peerid="' + peerId + '"]')[0];
-            errorImageElement.style.display = 'block';
+            const videoElement = playerListPlayer.find('.playerVideo');
+            videoElement.css('display', 'none');
+
+            const errorImageElement = playerListPlayer.find('.errorImage');
+            errorImageElement.css('display', 'block');
         }
 
         function RefreshPlayersList() 
