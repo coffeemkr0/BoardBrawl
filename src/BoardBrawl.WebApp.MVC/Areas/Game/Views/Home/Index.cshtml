@@ -234,22 +234,14 @@
         async function InitializeLocalVideoStream() {
             var videoElement = $(".localVideo")[0];
 
-            try 
-            {
-                _localVideoStream = await navigator.mediaDevices.getUserMedia({
-                    audio: true,
-                    video: true
-                });
+            _localVideoStream = await navigator.mediaDevices.getUserMedia({
+                audio: true,
+                video: true
+            });
 
-                videoElement.srcObject = _localVideoStream;
-                await videoElement.play();
-            } 
-            catch (error) 
-            {
-                if (videoElement) videoElement.style.display = "none";
-                var errorImageElement = $('.errorImage[data-player-id="@Model.PlayerId"]')[0];
-                errorImageElement.style.display = "block";
-            }
+            videoElement.srcObject = _localVideoStream;
+            await videoElement.play();
+            HideErrorThumbnail(@Model.PlayerId);
         }
 
         async function JoinGameHub() {
@@ -618,64 +610,34 @@
                 var peerId = $(remoteVideos[i]).attr("data-peerid");
                 var playerId = $(remoteVideos[i]).attr("data-player-id");
 
-                try {
-                    await LoadRemoteStream(peerId, playerId);
-                }
-                catch (error) {
-                    console.warn('Could not load stream for playerId ' + playerId + ' ' + error);
-                }
+                LoadRemoteStream(peerId, playerId);
             }
         }
 
-        async function LoadRemoteStream(peerId, playerId) 
+        function LoadRemoteStream(peerId, playerId) 
         {
-            await new Promise((resolve, reject) => {
-                //If there is an error on the peer Js connection while using it, handle it here
-                _peerJsObject.on('error', error => {
+            const call = _peerJsObject.call(peerId, _localVideoStream);
 
-                    //Only handle errors one time
-                    _peerJsObject.off('error');
-
-                    //TODO:This rejects calls that come after a failed called because the peer object is still getting error events from the previous call
-                    reject(error);
+            call.on('stream', (stream) => {
+                var remoteVideoElement = $('.remoteVideo[data-player-id=' + playerId + ']')[0];
+                remoteVideoElement.srcObject = stream;
+                remoteVideoElement.addEventListener('loadedmetadata', () => {
+                    remoteVideoElement.play();
                 });
 
-                const call = _peerJsObject.call(peerId, _localVideoStream);
-
-                if (!call) {
-                    ShowErrorThumbnail(playerId);
-
-                    reject('Call error: Call not available');
-                }
-                else {
-                    call.on('stream', (stream) => {
-                        var remoteVideoElement = $('.remoteVideo[data-player-id=' + playerId + ']')[0];
-                        remoteVideoElement.srcObject = stream;
-                        remoteVideoElement.addEventListener('loadedmetadata', () => {
-                            remoteVideoElement.play();
-                            resolve(stream);
-                        });
-                    });
-
-                    call.on('close', () => {
-                        call.close();
-                    });
-                }
+                HideErrorThumbnail(playerId);
             });
-
-            //Stop handling peer Js errors here
-            _peerJsObject.off('error');
         }
 
-        function ShowErrorThumbnail(playerId) 
+        function HideErrorThumbnail(playerId) 
         {
             var playerListPlayer = $('.playerListPlayer[data-player-id=' + playerId + ']');
 
             const videoElement = playerListPlayer.find('.playerVideo');
-            videoElement.css('display', 'none');
+            videoElement.show();
 
             const errorImageElement = playerListPlayer.find('.errorImage');
-            errorImageElement.css('display', 'block');
+            errorImageElement.hide();
         }
 
         function RefreshPlayersList() 

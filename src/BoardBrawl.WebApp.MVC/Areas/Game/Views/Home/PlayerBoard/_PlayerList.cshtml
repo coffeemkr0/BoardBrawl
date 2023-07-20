@@ -34,13 +34,13 @@
                 <div class="playerThumbnail" style="position:relative;">
                     @if (playerInfo.Id == Model.PlayerId)
                     {
-                        <video class="playerVideo localVideo w-100" muted></video>
-                        <div class="errorImage container" data-player-id="@playerInfo.Id" style="display:none"><img class="img-fluid" src="~/images/game/error-image-generic.png" /></div>
+                        <video class="playerVideo localVideo w-100" muted style="display:none"></video>
+                        <div class="errorImage container" data-player-id="@playerInfo.Id"><img class="img-fluid" src="~/images/game/error-image-generic.png" /></div>
                     }
                     else
                     {
-                        <video class="playerVideo remoteVideo w-100" data-player-id="@playerInfo.Id" data-peerid="@playerInfo.PeerId"></video>
-                        <div class="errorImage container" data-player-id="@playerInfo.Id" data-peerid="@playerInfo.PeerId" style="display:none"><img class="img-fluid" src="~/images/game/error-image-generic.png" /></div>
+                        <video class="playerVideo remoteVideo w-100" data-player-id="@playerInfo.Id" data-peerid="@playerInfo.PeerId" style="display:none"></video>
+                        <div class="errorImage container" data-player-id="@playerInfo.Id" data-peerid="@playerInfo.PeerId"><img class="img-fluid" src="~/images/game/error-image-generic.png" /></div>
                     }
 
                     @if (playerInfo.IsFocusedPlayer)
