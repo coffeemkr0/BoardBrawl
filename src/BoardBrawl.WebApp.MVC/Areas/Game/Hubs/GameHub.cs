@@ -16,14 +16,15 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Hubs
 
         public async Task JoinGameHub(string gameId, string playerId, Guid peerId)
         {
-            if (!_service.PlayerIsNewOrChanged(Convert.ToInt32(gameId),
-                Convert.ToInt32(playerId), peerId)) return;
-
             _logger.LogInformation($"Player joined game hub. gameId:{gameId}, playerId:{playerId}, peerId:{peerId}");
 
-            _service.UpdatePeerId(Convert.ToInt32(playerId), peerId);
             await Groups.AddToGroupAsync(Context.ConnectionId, gameId.ToString());
-            await Clients.GroupExcept(gameId.ToString(), Context.ConnectionId).SendAsync("OnPlayerJoined", playerId, peerId);
+
+            if (_service.PlayerIsNewOrChanged(Convert.ToInt32(gameId), Convert.ToInt32(playerId), peerId))
+            {
+                _service.UpdatePeerId(Convert.ToInt32(playerId), peerId);
+                await Clients.GroupExcept(gameId.ToString(), Context.ConnectionId).SendAsync("OnPlayerJoined", playerId, peerId);
+            }
         }
     }
 }
