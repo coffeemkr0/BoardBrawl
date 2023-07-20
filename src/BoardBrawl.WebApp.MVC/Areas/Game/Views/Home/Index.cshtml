@@ -149,6 +149,23 @@
             $('.lifeTotal[data-player-id=' + playerId + ']').text(newLifeTotal);
         }
 
+        function OnCommanderChanged(playerId)
+        {
+            if(playerId != @Model.PlayerId)
+            {
+                $.ajax({
+                    url: '/Game/Home/GetCommanders',
+                    data: {
+                        gameId: '@(Model.GameId)',
+                        playerId: playerId
+                    },
+                    success: function (result) {
+                        RefreshCommanders(result, playerId);
+                    }
+                });
+            }
+        }
+
         function OnGameOwnerChanged(redirectUrl)
         {
             window.location.href = redirectUrl;
@@ -173,6 +190,10 @@
 
             _gameHubConnection.on("OnPlayerLifeTotalChanged", function (playerId, newLifeTotal) {
                 OnPlayerLifeTotalChanged(playerId, newLifeTotal);
+            });
+
+            _gameHubConnection.on("OnCommanderChanged", function (playerId) {
+                OnCommanderChanged(playerId);
             });
 
             _gameHubConnection.on("OnPassTurn", function (activePlayerId) {
@@ -452,19 +473,7 @@
                     cardId: cardId
                 },
                 success: function (result) {
-                    //Update the commander info for the player
-                    var commanderInfo = $('.commanderInfo[data-player-id=' + playerId + ']');
-                    commanderInfo.each(function () {
-                        commanderInfo.html(result.commanderInfo);
-                    });
-
-                    //Update commander damage trackers for all players
-                    for (var key in result.commanderDamages) {
-                        if (result.commanderDamages.hasOwnProperty(key)) {
-                            var commanderDamagesHtml = result.commanderDamages[key];
-                            $('.commanderDamages[data-player-id="' + key + '"]').html(commanderDamagesHtml);
-                        }
-                    }
+                    RefreshCommanders(result, playerId);
                 }
             });
         }
@@ -678,6 +687,23 @@
                     button.prop('disabled', false);
                 }
             });
+        }
+
+        function RefreshCommanders(result, playerId)
+        {
+            //Update the commander info for the player
+            var commanderInfo = $('.commanderInfo[data-player-id=' + playerId + ']');
+            commanderInfo.each(function () {
+                commanderInfo.html(result.commanderInfo);
+            });
+
+            //Update commander damage trackers for all players
+            for (var key in result.commanderDamages) {
+                if (result.commanderDamages.hasOwnProperty(key)) {
+                    var commanderDamagesHtml = result.commanderDamages[key];
+                    $('.commanderDamages[data-player-id="' + key + '"]').html(commanderDamagesHtml);
+                }
+            }
         }
 
         function ChangeProgress(progressBar, amount) {

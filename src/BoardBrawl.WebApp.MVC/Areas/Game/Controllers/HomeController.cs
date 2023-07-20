@@ -130,14 +130,16 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 
             await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnCommanderChanged", playerId);
 
+            return await GetCommanders(gameId, playerId);
+        }
+
+        public async Task<IActionResult> GetCommanders(int gameId, int playerId)
+        {
             var model = await LoadModel(gameId);
 
-            //When the player changes a commander, several things need to be refreshed
-            //Refresh the commander info for the player
-            var myPlayer = model.PlayerBoard.Players.First(i => i.IsSelf);
-            var commanderInfo = await this.RenderViewAsync("PlayerInfo/_CommanderInfo", myPlayer, true);
+            var commanderInfoPlayer = model.PlayerBoard.Players.First(i => i.Id == playerId);
+            var commanderInfo = await this.RenderViewAsync("PlayerInfo/_CommanderInfo", commanderInfoPlayer, true);
 
-            //Refresh all the commander damage trackers
             var commanderDamages = new Dictionary<int, string>();
             foreach (var player in model.PlayerBoard.Players)
             {

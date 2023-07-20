@@ -1,11 +1,12 @@
 ﻿using BoardBrawl.WebApp.MVC.Areas.Game.Models;
 using Flurl.Http;
+using System.Collections.Concurrent;
 
 namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 {
     public static class LoadCardInfoCommand
     {
-        private static Dictionary<string, CardInfo> _cardInfoCache = new Dictionary<string, CardInfo>();
+        private static ConcurrentDictionary<string, CardInfo> _cardInfoCache = new ConcurrentDictionary<string, CardInfo>();
 
         public static async Task Execute(Model model)
         {
@@ -69,7 +70,10 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
         {
             if (string.IsNullOrEmpty(cardId)) return null;
 
-            if (_cardInfoCache.ContainsKey(cardId)) return _cardInfoCache[cardId];
+            if (_cardInfoCache.TryGetValue(cardId, out var cachedCardInfo))
+            {
+                return cachedCardInfo;
+            }
 
             var cardInfo = new CardInfo
             {
@@ -83,7 +87,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
             LoadImages(cardInfo, jsonResponse);
             LoadColors(cardInfo, jsonResponse);
 
-            _cardInfoCache.Add(cardId, cardInfo);
+            _cardInfoCache.TryAdd(cardId, cardInfo);
 
             return cardInfo;
         }
