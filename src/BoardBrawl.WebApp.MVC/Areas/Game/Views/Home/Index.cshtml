@@ -237,9 +237,10 @@
                 data:{
                     gameId : '@Model.GameId'
                 },
-                success: function (html) {
+                success: async function (html) {
                     $('#playerBoardContainer').html(html);
-                    RefreshStreams();
+                    await RefreshStreams();
+                    InitializeFocusedPlayer();
                 }
             });
         }
@@ -253,7 +254,6 @@
 
         function InitializeFocusedPlayer() 
         {
-            console.log('init focused');
             var focusedPlayerThumbnail = $('.focusedPlayer');
 
             if (focusedPlayerThumbnail) {
