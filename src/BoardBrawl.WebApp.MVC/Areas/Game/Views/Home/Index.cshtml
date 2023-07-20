@@ -239,9 +239,16 @@
                 },
                 success: function (html) {
                     $('#playerBoardContainer').html(html);
-                    LoadRemoteStreams();
+                    RefreshStreams();
                 }
             });
+        }
+
+        async function RefreshStreams()
+        {
+            await InitializeLocalVideoStream();
+
+            await LoadRemoteStreams();
         }
 
         function InitializeFocusedPlayer() 
