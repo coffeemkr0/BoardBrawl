@@ -107,21 +107,13 @@
             InitializePlayerInfoDropdowns();
             InitializePlayerTurnOrderDialog();
 
-            await InitializeAsync();
+            await InitializeLocalVideoStream();
+            await InitializePeerJs();
+            await JoinGameHub();
+            await LoadRemoteStreams();
 
             InitializeFocusedPlayer();
         });
-
-        async function InitializeAsync() 
-        {
-            await InitializeLocalVideoStream();
-
-            await InitializePeerJs();
-
-            await JoinGameHub();
-
-            await LoadRemoteStreams();
-        }
 
         $(document).ajaxComplete(function () {
             //Re-initialize tooltips after any part of the board is reloaded
