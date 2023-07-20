@@ -98,7 +98,7 @@
         var _gameHubConnection;
 
         //Initialization
-        $(document).ready(function () 
+        $(document).ready(async function () 
         {
             InitializeGameHub();
             InitializeCardSearch();
@@ -107,7 +107,7 @@
             InitializePlayerInfoDropdowns();
             InitializePlayerTurnOrderDialog();
 
-            InitializeAsync();
+            await InitializeAsync();
 
             InitializeFocusedPlayer();
         });
@@ -253,6 +253,7 @@
 
         function InitializeFocusedPlayer() 
         {
+            console.log('init focused');
             var focusedPlayerThumbnail = $('.focusedPlayer');
 
             if (focusedPlayerThumbnail) {
