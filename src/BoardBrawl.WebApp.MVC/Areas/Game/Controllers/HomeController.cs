@@ -85,7 +85,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
         {
             _service.AdjustCommanderDamage(gameId, playerId, ownerPlayerId, cardId, amount);
 
-            await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnCommanderDamageChanged", playerId);
+            await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnCommanderDamageChanged", playerId, ownerPlayerId, cardId, amount);
 
             return Ok();
         }

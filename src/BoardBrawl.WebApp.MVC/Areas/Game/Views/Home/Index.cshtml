@@ -166,6 +166,13 @@
             }
         }
 
+        function OnCommanderDamageChanged(playerId, ownerPlayerId, cardId, amount)
+        {
+            if(playerId != @Model.PlayerId){
+                UpdateCommanderDamage(playerId, ownerPlayerId, cardId, amount);
+            }
+        }
+
         function OnGameOwnerChanged(redirectUrl)
         {
             window.location.href = redirectUrl;
@@ -206,6 +213,10 @@
 
             _gameHubConnection.on("OnPlayerLeftGame", function (playerId) {
                 OnPlayerLeftGame(playerId);
+            });
+
+            _gameHubConnection.on("OnCommanderDamageChanged", function (playerId, ownerPlayerId, cardId, amount) {
+                OnCommanderDamageChanged(playerId, ownerPlayerId, cardId, amount);
             });
         }
 
@@ -583,9 +594,8 @@
             var cardId = button.data('card-id');
             var amount = parseFloat(button.data('amount'));
             var damageCountElement = button.parent().find('.damageCount').first();
-            var newCount = parseFloat(damageCountElement.text()) + amount;
 
-            if (newCount >= 0) {
+            if (parseFloat(damageCountElement.text()) >= 0) {
                 var tracker = $(this).closest('.commanderDamageTracker');
                 var progressBar = tracker.find('.progress-bar').first();
 
@@ -599,13 +609,7 @@
                         amount: amount
                     },
                     success: function () {
-                        $('.damageCount[data-player-id=' + playerId + '][data-owner-player-id=' + ownerPlayerId + '][data-card-id=' + cardId + ']').each(function () {
-                            $(this).text(newCount);
-
-                            var tracker = $(this).closest('.commanderDamageTracker');
-                            var progressBar = tracker.find('.progress-bar').first();
-                            ChangeProgress(progressBar, amount);
-                        });
+                        UpdateCommanderDamage(playerId, ownerPlayerId, cardId, amount);
                     },
                     complete: function () {
                         button.prop('disabled', false);
@@ -738,6 +742,18 @@
                 inputIndex.val(index);
                 inputId.attr('name', 'Players[' + index + '].Id');
                 inputPlayerName.attr('name', 'Players[' + index + '].PlayerName');
+            });
+        }
+
+        function UpdateCommanderDamage(playerId, ownerPlayerId, cardId, amount)
+        {
+            $('.damageCount[data-player-id=' + playerId + '][data-owner-player-id=' + ownerPlayerId + '][data-card-id=' + cardId + ']').each(function () {
+                var newCount = parseFloat($(this).text()) + amount;
+                $(this).text(newCount);
+
+                var tracker = $(this).closest('.commanderDamageTracker');
+                var progressBar = tracker.find('.progress-bar').first();
+                ChangeProgress(progressBar, amount);
             });
         }
     </script>
