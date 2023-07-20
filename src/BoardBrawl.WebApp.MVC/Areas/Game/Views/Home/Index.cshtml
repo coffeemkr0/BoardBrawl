@@ -294,11 +294,18 @@
             //This method sets up a PeerJS connection by creating a new instance of the Peer object and establishing a connection with the signaling server.
             //It uses a promise-based approach to handle the asynchronous nature of the connection process
 
-            await new Promise((resolve, reject) => 
+            var peerJsId = await new Promise((resolve, reject) => 
             {
-                //initialize a PeerJS connection and establish communication with the default PeerJS signaling server.
-                _peerJsObject = new Peer();
-
+                //Check to see if we have a peer Id already in local storage
+                const storedPeerJsId = sessionStorage.getItem('peerJsId');
+                if (storedPeerJsId) {
+                    //Initialize the the existing peer Js Id
+                    _peerJsObject = new Peer(storedPeerJsId);
+                } else {
+                    //initialize a PeerJS connection and establish communication with the default PeerJS signaling server.
+                    _peerJsObject = new Peer();
+                }
+                
                 //Sets up an event listener for the 'open' event
                 //This event is triggered when the connection with the signaling server is successfully established and the PeerJS object is assigned an ID.
                 //The id is not really needed at this point though, so nothing is done with it
@@ -306,6 +313,8 @@
                     resolve(id);
                 });
             });
+
+            sessionStorage.setItem('peerJsId', peerJsId);
 
             //Sets up an event listener for the 'call' event
             //This event is triggered when another user's client makes a call to this user

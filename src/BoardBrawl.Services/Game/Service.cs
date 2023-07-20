@@ -254,5 +254,11 @@ namespace BoardBrawl.Services.Game
         {
             _repository.RemoveCardFromCardHistory(id);
         }
+
+        public bool PlayerIsNewOrChanged(int gameId, int playerId, Guid peerId)
+        {
+            return !_repository.GetPlayers(gameId).Any(i => 
+            i.GameId == gameId && i.Id == playerId && i.PeerId == peerId);
+        }
     }
 }
