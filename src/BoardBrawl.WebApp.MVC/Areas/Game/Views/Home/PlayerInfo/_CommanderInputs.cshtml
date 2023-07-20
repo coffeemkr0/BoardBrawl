@@ -19,7 +19,7 @@
     <div class="col px-2">
         @if (Model.IsSelf)
         {
-            <input class="form-control commander-search text-xs" data-input-for="Commander2" placeholder="Add Commander" value="@Model.Commander2?.Name">
+            <input class="form-control card-search text-xs" data-input-for="Commander2" placeholder="Add Commander" value="@Model.Commander2?.Name">
             <input class="commander-id" type="hidden" data-slot="2" value="@Model.Commander2Id">
         }
         else
