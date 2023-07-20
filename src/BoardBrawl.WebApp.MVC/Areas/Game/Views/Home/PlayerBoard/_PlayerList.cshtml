@@ -24,9 +24,8 @@
     <div class="h-100 d-flex flex-column">
         @foreach (var playerInfo in Model.Players)
         {
-            var isFocusedPlayer = Model.FocusedPlayerId == playerInfo.Id;
-            var focusedPlayerClass = Model.FocusedPlayerId == playerInfo.Id ? "focusedPlayer" : "";
-            var activePlayerClass = Model.ActivePlayerId == playerInfo.Id ? "activePlayer" : "";
+            var focusedPlayerClass = playerInfo.IsFocusedPlayer ? "focusedPlayer" : "";
+            var activePlayerClass = playerInfo.IsActivePlayer ? "activePlayer" : "";
 
             <div class="w-100 mb-3 playerListPlayer @(activePlayerClass) @(focusedPlayerClass)" data-player-id="@playerInfo.Id">
                 <div class="playerInfo" data-plyaer-id="@playerInfo.Id">
@@ -44,7 +43,7 @@
                         <div class="errorImage container" data-player-id="@playerInfo.Id" data-peerid="@playerInfo.PeerId" style="display:none"><img class="img-fluid" src="~/images/game/error-image-generic.png" /></div>
                     }
 
-                    @if (isFocusedPlayer)
+                    @if (playerInfo.IsFocusedPlayer)
                     {
                         <i class="bi bi-eye m-2 focusedPlayerIndicator" style="position:absolute;bottom:0;right:0;"></i>
                     }

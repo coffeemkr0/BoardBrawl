@@ -8,10 +8,6 @@
 
         public List<PlayerInfo> Players { get; }
 
-        public int FocusedPlayerId { get; set; }
-
-        public int? ActivePlayerId { get; set; }
-
         public PlayerBoard()
         {
             Players = new List<PlayerInfo>();

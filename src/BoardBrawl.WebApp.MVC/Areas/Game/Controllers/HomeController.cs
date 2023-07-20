@@ -187,7 +187,8 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 
             var model = await LoadModel(gameId);
 
-            await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPassTurn", model.PlayerBoard.ActivePlayerId);
+            await _gameHubContext.Clients.Group(gameId.ToString()).
+                SendAsync("OnPassTurn", model.PlayerBoard.Players.First(i => i.IsActivePlayer).Id);
 
             return Ok();
         }

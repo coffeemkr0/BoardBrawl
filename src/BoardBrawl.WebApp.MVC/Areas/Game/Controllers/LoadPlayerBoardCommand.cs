@@ -12,10 +12,26 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
 
             model.PlayerBoard.GameId = gameInfo.Id;
             model.PlayerBoard.PlayerId = myPlayer.Id;
-            model.PlayerBoard.FocusedPlayerId = focusedPlayer?.Id ?? gameInfo.Players.First().Id;
-            model.PlayerBoard.ActivePlayerId = gameInfo.ActivePlayerId;
 
             model.PlayerBoard.Players.AddRange(mapper.Map<List<PlayerInfo>>(gameInfo.Players));
+
+            if (focusedPlayer != null)
+            {
+                var focusedPlayerViewModel = model.PlayerBoard.Players.FirstOrDefault(i => i.Id == focusedPlayer.Id);
+                if (focusedPlayerViewModel != null)
+                {
+                    focusedPlayerViewModel.IsFocusedPlayer = true;
+                }
+            }
+
+            if (gameInfo.ActivePlayerId > 0)
+            {
+                var activePlayerViewModel = model.PlayerBoard.Players.FirstOrDefault(i => i.Id == gameInfo.ActivePlayerId);
+                if (activePlayerViewModel != null)
+                {
+                    activePlayerViewModel.IsActivePlayer = true;
+                }
+            }
         }
     }
 }
