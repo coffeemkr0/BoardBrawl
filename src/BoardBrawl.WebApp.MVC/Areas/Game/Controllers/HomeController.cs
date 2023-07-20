@@ -76,7 +76,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
         {
             _service.AdjustInfectCount(playerId, amount);
 
-            await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfectCountChanged", playerId);
+            await _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerInfectCountChanged", playerId, amount);
 
             return Ok();
         }
