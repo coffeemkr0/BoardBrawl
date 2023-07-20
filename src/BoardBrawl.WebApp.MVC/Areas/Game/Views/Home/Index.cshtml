@@ -183,7 +183,7 @@
             }
         }
 
-        //Methods
+        //Initialization Methods
         function InitializeGameHub() 
         {
             _gameHubConnection = new signalR.HubConnectionBuilder()
@@ -222,28 +222,6 @@
             });
         }
 
-        function RefreshPlayersList() 
-        {
-            $.ajax({
-                url: '/Game/Home/PlayerBoard/@Model.GameId',
-                data:{
-                    gameId : '@Model.GameId'
-                },
-                success: async function (html) {
-                    $('#playerBoardContainer').html(html);
-                    await RefreshStreams();
-                    InitializeFocusedPlayer();
-                }
-            });
-        }
-
-        async function RefreshStreams()
-        {
-            await InitializeLocalVideoStream();
-
-            await LoadRemoteStreams();
-        }
-
         function InitializeFocusedPlayer() 
         {
             var focusedPlayerThumbnail = $('.focusedPlayer');
@@ -258,14 +236,12 @@
 
             try 
             {
-                const stream = await navigator.mediaDevices.getUserMedia({
+                _localVideoStream = await navigator.mediaDevices.getUserMedia({
                     audio: true,
                     video: true
                 });
 
-                _localVideoStream = stream;
-
-                videoElement.srcObject = stream;
+                videoElement.srcObject = _localVideoStream;
                 await videoElement.play();
             } 
             catch (error) 
@@ -314,80 +290,6 @@
             _peerJsObject.on("call", (call) => {
                 call.answer(_localVideoStream);
             });
-        }
-
-        async function LoadRemoteStreams() 
-        {
-            var remoteVideos = $(".remoteVideo");
-
-            for (let i = 0; i < remoteVideos.length; i++) 
-            {
-                var peerId = $(remoteVideos[i]).attr("data-peerid");
-                var playerId = $(remoteVideos[i]).attr("data-player-id");
-
-                try 
-                {
-                    await LoadRemoteStream(peerId, playerId);
-                } 
-                catch (error) 
-                {
-                    console.warn('Could not load stream for playerId ' + playerId + ' ' + error);
-                }
-            }
-        }
-
-        async function LoadRemoteStream(peerId, playerId)
-        {
-            await new Promise((resolve, reject) => 
-            {
-                //If there is an error on the peer Js connection while using it, handle it here
-                _peerJsObject.on('error', error => {
-
-                    //Only handle errors one time
-                    _peerJsObject.off('error');
-
-                    ShowErrorThumbnail(peerId);
-
-                    reject(error);
-                });
-
-                const call = _peerJsObject.call(peerId, _localVideoStream);
-
-                if(!call)
-                {
-                    ShowErrorThumbnail(peerId);
-
-                    reject('Call error: Call not available');
-                }
-                else
-                {
-                    call.on('stream', (stream) => 
-                    {
-                        var remoteVideoElement = $('.remoteVideo[data-player-id=' + playerId + ']')[0];
-                        remoteVideoElement.srcObject = stream;
-                        remoteVideoElement.addEventListener('loadedmetadata', () => {
-                            remoteVideoElement.play();
-                            resolve(stream);
-                        });
-                    });
-
-                    call.on('close', () => {
-                        call.close();
-                    });
-                }
-            });
-
-            //Stop handling peer Js errors here
-            _peerJsObject.off('error');
-        }
-
-        function ShowErrorThumbnail(peerId)
-        {
-            const videoElement = $('.playerVideo[data-peerid="' + peerId + '"]')[0];
-            videoElement.style.display = 'none';
-
-            const errorImageElement = $('.errorImage[data-peerid="' + peerId + '"]')[0];
-            errorImageElement.style.display = 'block';
         }
 
         function InitializeUiEventHandlers()
@@ -486,6 +388,7 @@
             });
         }
 
+        //UI Event Handlers
         function commanderId_Changed()
         {
             var input = $(this);
@@ -704,6 +607,95 @@
                     button.prop('disabled', false);
                 }
             });
+        }
+
+        //Methods
+        async function LoadRemoteStreams() 
+        {
+            var remoteVideos = $(".remoteVideo");
+
+            for (let i = 0; i < remoteVideos.length; i++) {
+                var peerId = $(remoteVideos[i]).attr("data-peerid");
+                var playerId = $(remoteVideos[i]).attr("data-player-id");
+
+                try {
+                    await LoadRemoteStream(peerId, playerId);
+                }
+                catch (error) {
+                    console.warn('Could not load stream for playerId ' + playerId + ' ' + error);
+                }
+            }
+        }
+
+        async function LoadRemoteStream(peerId, playerId) 
+        {
+            await new Promise((resolve, reject) => {
+                //If there is an error on the peer Js connection while using it, handle it here
+                _peerJsObject.on('error', error => {
+
+                    //Only handle errors one time
+                    _peerJsObject.off('error');
+
+                    ShowErrorThumbnail(peerId);
+
+                    reject(error);
+                });
+
+                const call = _peerJsObject.call(peerId, _localVideoStream);
+
+                if (!call) {
+                    ShowErrorThumbnail(peerId);
+
+                    reject('Call error: Call not available');
+                }
+                else {
+                    call.on('stream', (stream) => {
+                        var remoteVideoElement = $('.remoteVideo[data-player-id=' + playerId + ']')[0];
+                        remoteVideoElement.srcObject = stream;
+                        remoteVideoElement.addEventListener('loadedmetadata', () => {
+                            remoteVideoElement.play();
+                            resolve(stream);
+                        });
+                    });
+
+                    call.on('close', () => {
+                        call.close();
+                    });
+                }
+            });
+
+            //Stop handling peer Js errors here
+            _peerJsObject.off('error');
+        }
+
+        function ShowErrorThumbnail(peerId) 
+        {
+            const videoElement = $('.playerVideo[data-peerid="' + peerId + '"]')[0];
+            videoElement.style.display = 'none';
+
+            const errorImageElement = $('.errorImage[data-peerid="' + peerId + '"]')[0];
+            errorImageElement.style.display = 'block';
+        }
+
+        function RefreshPlayersList() 
+        {
+            $.ajax({
+                url: '/Game/Home/PlayerBoard/@Model.GameId',
+                data: {
+                    gameId: '@Model.GameId'
+                },
+                success: async function (html) {
+                    $('#playerBoardContainer').html(html);
+                    await RefreshStreams();
+                    InitializeFocusedPlayer();
+                }
+            });
+        }
+
+        async function RefreshStreams() 
+        {
+            await InitializeLocalVideoStream();
+            await LoadRemoteStreams();
         }
 
         function RefreshCommanders(result, playerId)
