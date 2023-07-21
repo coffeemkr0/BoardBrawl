@@ -95,10 +95,13 @@ namespace BoardBrawl.Repositories.Game
 
         public void UpdatePeerId(int playerId, Guid peerId)
         {
-            var playerEntity = _applicationDbContext.Players.First(i => i.Id == playerId);
+            var playerEntity = _applicationDbContext.Players.FirstOrDefault(i => i.Id == playerId);
 
-            playerEntity.PeerId = peerId;
-            _applicationDbContext.SaveChanges();
+            if(playerEntity != null)
+            {
+                playerEntity.PeerId = peerId;
+                _applicationDbContext.SaveChanges();
+            }
         }
 
         public void UpdateCommander(int playerId, int slot, string cardId)

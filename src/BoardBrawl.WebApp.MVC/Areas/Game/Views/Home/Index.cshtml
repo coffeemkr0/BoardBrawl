@@ -107,7 +107,15 @@
             InitializePlayerInfoDropdowns();
             InitializePlayerTurnOrderDialog();
 
-            await InitializeLocalVideoStream();
+            try
+            {
+                await InitializeLocalVideoStream();
+            }
+            catch (error) 
+            {
+                console.warn('Error loading local video stream:', error);
+            }
+            
             await InitializePeerJs();
             await JoinGameHub();
             await LoadRemoteStreams();
@@ -183,6 +191,11 @@
             }
         }
 
+        function OnPlayerDisconnected(playerId)
+        {
+            console.warn('Player disconnected, playerId - ' + playerId);
+        }
+
         //Initialization Methods
         function InitializeGameHub() 
         {
@@ -220,6 +233,10 @@
             _gameHubConnection.on("OnPlayerInfectCountChanged", function (playerId, amount) {
                 OnPlayerInfectCountChanged(playerId, amount);
             });
+
+            _gameHubConnection.on("OnPlayerDisconnected", function (playerId) {
+                OnPlayerDisconnected(playerId);
+            });
         }
 
         function InitializeFocusedPlayer() 
@@ -254,7 +271,7 @@
             //This method sets up a PeerJS connection by creating a new instance of the Peer object and establishing a connection with the signaling server.
             //It uses a promise-based approach to handle the asynchronous nature of the connection process
 
-            var peerJsId = await new Promise((resolve, reject) => 
+            await new Promise((resolve, reject) => 
             {
                 //Check to see if we have a peer Id already in local storage
                 const storedPeerJsId = sessionStorage.getItem('peerJsId');
@@ -265,23 +282,24 @@
                     //initialize a PeerJS connection and establish communication with the default PeerJS signaling server.
                     _peerJsObject = new Peer();
                 }
+
+                if(!_peerJsObject) reject();
                 
                 //Sets up an event listener for the 'open' event
                 //This event is triggered when the connection with the signaling server is successfully established and the PeerJS object is assigned an ID.
                 //The id is not really needed at this point though, so nothing is done with it
                 _peerJsObject.on('open', id => {
-                    resolve(id);
+                    sessionStorage.setItem('peerJsId', id);
+                    resolve();
                 });
-            });
 
-            sessionStorage.setItem('peerJsId', peerJsId);
-
-            //Sets up an event listener for the 'call' event
-            //This event is triggered when another user's client makes a call to this user
-            //the call is "answered" by sending this user's local video stream to the caller
-            _peerJsObject.on("call", (call) => {
-                call.answer(_localVideoStream);
-            });
+                //Sets up an event listener for the 'call' event
+                //This event is triggered when another user's client makes a call to this user
+                //the call is "answered" by sending this user's local video stream to the caller
+                _peerJsObject.on("call", (call) => {
+                    call.answer(_localVideoStream);
+                });
+            });         
         }
 
         function InitializeUiEventHandlers()
@@ -618,15 +636,18 @@
         {
             const call = _peerJsObject.call(peerId, _localVideoStream);
 
-            call.on('stream', (stream) => {
-                var remoteVideoElement = $('.remoteVideo[data-player-id=' + playerId + ']')[0];
-                remoteVideoElement.srcObject = stream;
-                remoteVideoElement.addEventListener('loadedmetadata', () => {
-                    remoteVideoElement.play();
-                });
+            if(call)
+            {
+                call.on('stream', (stream) => {
+                    var remoteVideoElement = $('.remoteVideo[data-player-id=' + playerId + ']')[0];
+                    remoteVideoElement.srcObject = stream;
+                    remoteVideoElement.addEventListener('loadedmetadata', () => {
+                        remoteVideoElement.play();
+                    });
 
-                HideErrorThumbnail(playerId);
-            });
+                    HideErrorThumbnail(playerId);
+                });
+            }
         }
 
         function HideErrorThumbnail(playerId) 
@@ -649,6 +670,7 @@
                 },
                 success: async function (html) {
                     $('#playerBoardContainer').html(html);
+
                     await RefreshStreams();
                     InitializeFocusedPlayer();
                 }
@@ -657,8 +679,23 @@
 
         async function RefreshStreams() 
         {
-            await InitializeLocalVideoStream();
-            await LoadRemoteStreams();
+            try
+            {
+                await InitializeLocalVideoStream();
+            }
+            catch(error)
+            {
+                console.warn('Problem loading local video stream:' + error);
+            }
+
+            try 
+            {
+                await LoadRemoteStreams();
+            }
+            catch (error) 
+            {
+                console.warn('Problem loading remote video streams:' + error);
+            }
         }
 
         function RefreshCommanders(result, playerId)

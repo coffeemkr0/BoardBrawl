@@ -16,6 +16,10 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Hubs
 
         public async Task JoinGameHub(string gameId, string playerId, Guid peerId)
         {
+            Context.Items.Add("GameId", gameId);
+            Context.Items.Add("PlayerId", playerId);
+            Context.Items.Add("PeerId", peerId);
+
             _logger.LogInformation($"Player joined game hub. gameId:{gameId}, playerId:{playerId}, peerId:{peerId}");
 
             await Groups.AddToGroupAsync(Context.ConnectionId, gameId.ToString());
@@ -25,6 +29,18 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Hubs
                 _service.UpdatePeerId(Convert.ToInt32(playerId), peerId);
                 await Clients.GroupExcept(gameId.ToString(), Context.ConnectionId).SendAsync("OnPlayerJoined", playerId, peerId);
             }
+        }
+
+        public override Task OnDisconnectedAsync(Exception? exception)
+        {
+            var gameId = Context.Items["GameId"]?.ToString();
+            var playerId = Context.Items["PlayerId"]?.ToString();
+            var peerId = Context.Items["PeerId"]?.ToString();
+
+            _service.UpdatePeerId(Convert.ToInt32(playerId), Guid.Empty);
+            Clients.GroupExcept(gameId.ToString(), Context.ConnectionId).SendAsync("OnPlayerDisconnected", playerId);
+
+            return base.OnDisconnectedAsync(exception);
         }
     }
 }
