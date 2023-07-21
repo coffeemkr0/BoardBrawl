@@ -193,7 +193,9 @@
 
         function OnPlayerDisconnected(playerId)
         {
-            console.warn('Player disconnected, playerId - ' + playerId);
+            RemovePlayer(playerId);
+
+
         }
 
         //Initialization Methods
@@ -563,6 +565,8 @@
         }
 
         function playerThumbnail_Click() {
+            console.log('clicked');
+
             var playerThumbnail = $(this);
 
             //Set the main video to the clicked player
@@ -620,6 +624,19 @@
         }
 
         //Methods
+        function RemovePlayer(playerId)
+        {
+            var playerListPlayer = $('.playerListPlayer[data-player-id=' + playerId + ']');
+
+            if (playerListPlayer.hasClass('focusedPlayer')) {
+                var focusedPlayerVideo = $('#focusedPlayerVideo')[0];
+                focusedPlayerVideo.pause();
+                focusedPlayerVideo.srcObject = null;
+            }
+            
+            playerListPlayer.remove();
+        }
+
         async function LoadRemoteStreams() 
         {
             var remoteVideos = $(".remoteVideo");
@@ -628,26 +645,46 @@
                 var peerId = $(remoteVideos[i]).attr("data-peerid");
                 var playerId = $(remoteVideos[i]).attr("data-player-id");
 
-                LoadRemoteStream(peerId, playerId);
+                await LoadRemoteStream(peerId, playerId);
             }
         }
 
-        function LoadRemoteStream(peerId, playerId) 
+        async function LoadRemoteStream(peerId, playerId) 
         {
-            const call = _peerJsObject.call(peerId, _localVideoStream);
-
-            if(call)
+            await new Promise((resolve, reject) =>
             {
-                call.on('stream', (stream) => {
-                    var remoteVideoElement = $('.remoteVideo[data-player-id=' + playerId + ']')[0];
-                    remoteVideoElement.srcObject = stream;
-                    remoteVideoElement.addEventListener('loadedmetadata', () => {
-                        remoteVideoElement.play();
-                    });
+                const call = _peerJsObject.call(peerId, _localVideoStream);
 
-                    HideErrorThumbnail(playerId);
+                _peerJsObject.on('error', err => {
+                    if(err.message.includes(peerId))
+                    {
+                        _peerJsObject.off('error');
+                        reject(err.message);
+                    }
                 });
-            }
+
+                if (call) {
+                    call.on('stream', (stream) => {
+                        _peerJsObject.off('error');
+
+                        var remoteVideoElement = $('.remoteVideo[data-player-id=' + playerId + ']')[0];
+                        remoteVideoElement.srcObject = stream;
+                        remoteVideoElement.addEventListener('loadedmetadata', () => {
+                            remoteVideoElement.play();
+                            HideErrorThumbnail(playerId);
+                            resolve();
+                        });
+                    });
+                }
+                else
+                {
+                    reject('Call did not go through');
+                }
+            })
+            .catch(error =>
+            {
+                console.warn('Problem loading remote stream:' + error);
+            });
         }
 
         function HideErrorThumbnail(playerId) 
