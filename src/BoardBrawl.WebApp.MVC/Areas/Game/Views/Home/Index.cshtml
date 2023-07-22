@@ -95,7 +95,6 @@
     <script>
         //Fields
         var _localVideoStream;
-        var _peerJsObject;
         var _gameHubConnection;
         var _playerManager;
 
@@ -118,8 +117,8 @@
             {
                 console.warn('Error loading local video stream:', error);
             }
-            
-            await InitializePeerJs();
+
+            await _playerManager.InitializePeerJs();
             await JoinGameHub();
             await LoadRemoteStreams();
 
@@ -234,7 +233,6 @@
         function InitializePlayerManager()
         {
             _playerManager = new PlayerManager(_gameHubConnection);
-            _playerManager.Load();
         }
 
         function InitializeFocusedPlayer() 
@@ -261,43 +259,7 @@
 
         async function JoinGameHub() {
             await _gameHubConnection.start();
-            await _gameHubConnection.invoke("JoinGameHub", '@Model.GameId', '@Model.PlayerId', _peerJsObject.id);
-        }
-
-        async function InitializePeerJs() 
-        {
-            //This method sets up a PeerJS connection by creating a new instance of the Peer object and establishing a connection with the signaling server.
-            //It uses a promise-based approach to handle the asynchronous nature of the connection process
-
-            await new Promise((resolve, reject) => 
-            {
-                //Check to see if we have a peer Id already in local storage
-                const storedPeerJsId = sessionStorage.getItem('peerJsId');
-                if (storedPeerJsId) {
-                    //Initialize the the existing peer Js Id
-                    _peerJsObject = new Peer(storedPeerJsId);
-                } else {
-                    //initialize a PeerJS connection and establish communication with the default PeerJS signaling server.
-                    _peerJsObject = new Peer();
-                }
-
-                if(!_peerJsObject) reject();
-                
-                //Sets up an event listener for the 'open' event
-                //This event is triggered when the connection with the signaling server is successfully established and the PeerJS object is assigned an ID.
-                //The id is not really needed at this point though, so nothing is done with it
-                _peerJsObject.on('open', id => {
-                    sessionStorage.setItem('peerJsId', id);
-                    resolve();
-                });
-
-                //Sets up an event listener for the 'call' event
-                //This event is triggered when another user's client makes a call to this user
-                //the call is "answered" by sending this user's local video stream to the caller
-                _peerJsObject.on("call", (call) => {
-                    call.answer(_localVideoStream);
-                });
-            });         
+            await _gameHubConnection.invoke("JoinGameHub", '@Model.GameId', '@Model.PlayerId', _playerManager.GetPeerJsObject().id);
         }
 
         function InitializeUiEventHandlers()
@@ -645,21 +607,23 @@
 
         async function LoadRemoteStream(peerId, playerId) 
         {
+            var peerJsObjet = _playerManager.GetPeerJsObject();
+
             await new Promise((resolve, reject) =>
             {
-                const call = _peerJsObject.call(peerId, _localVideoStream);
+                const call = peerJsObjet.call(peerId, _localVideoStream);
 
-                _peerJsObject.on('error', err => {
+                peerJsObjet.on('error', err => {
                     if(err.message.includes(peerId))
                     {
-                        _peerJsObject.off('error');
+                        peerJsObjet.off('error');
                         reject(err.message);
                     }
                 });
 
                 if (call) {
                     call.on('stream', (stream) => {
-                        _peerJsObject.off('error');
+                        peerJsObjet.off('error');
 
                         var remoteVideoElement = $('.remoteVideo[data-player-id=' + playerId + ']')[0];
                         remoteVideoElement.srcObject = stream;
