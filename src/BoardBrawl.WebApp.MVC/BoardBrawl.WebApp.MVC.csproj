@@ -39,4 +39,8 @@
     <ProjectReference Include="..\BoardBrawl.Services\BoardBrawl.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\js\Game\PlayerManager.js" />
+  </ItemGroup>
+
 </Project>

@@ -49,7 +49,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Lobby.Controllers
             newGame.OwnerUserId = userId;
 
             _service.CreateGame(newGame);
-            _testService.AddTestPlayersToGame(newGame.Id);
+            //_testService.AddTestPlayersToGame(newGame.Id);
 
             return RedirectToAction("Index", "Home", new { area = "Game", id = newGame.Id });
         }
