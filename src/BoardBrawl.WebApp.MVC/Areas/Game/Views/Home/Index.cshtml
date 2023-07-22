@@ -132,8 +132,8 @@
         });
 
         //Game hub events
-        function OnPlayerJoinedGame(playerId, peerId) 
-        {
+        function OnPlayerJoined(playerId, peerId) {
+            console.log(`Index OnPlayerJoined: playerId ${playerId}`);
             if(playerId != '@Model.PlayerId')
             {
                 RefreshPlayersList();
@@ -187,18 +187,9 @@
             window.location.href = redirectUrl;
         }
 
-        function OnPlayerLeftGame(playerId)
-        {
-            if (playerId != '@Model.PlayerId') {
-                RefreshPlayersList();
-            }
-        }
-
         function OnPlayerDisconnected(playerId)
         {
             RemovePlayer(playerId);
-
-
         }
 
         //Initialization Methods
@@ -208,7 +199,7 @@
                 .withUrl("/GameHub").build();
 
             _gameHubConnection.on("OnPlayerJoined", function (playerId, peerId) {
-                OnPlayerJoinedGame(playerId, peerId);
+                OnPlayerJoined(playerId, peerId);
             });
 
             _gameHubConnection.on("OnPlayerLifeTotalChanged", function (playerId, newLifeTotal) {
@@ -225,10 +216,6 @@
 
             _gameHubConnection.on("OnGameOwnerChanged", function (redirectUrl) {
                 OnGameOwnerChanged(redirectUrl);
-            });
-
-            _gameHubConnection.on("OnPlayerLeftGame", function (playerId) {
-                OnPlayerLeftGame(playerId);
             });
 
             _gameHubConnection.on("OnCommanderDamageChanged", function (playerId, ownerPlayerId, cardId, amount) {

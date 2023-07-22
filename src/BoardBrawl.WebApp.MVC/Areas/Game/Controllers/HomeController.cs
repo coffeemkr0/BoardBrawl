@@ -176,7 +176,7 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Controllers
         public IActionResult LeaveGame(int gameId, int playerId)
         {
             _service.LeadGame(gameId, playerId);
-            _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerLeftGame", playerId);
+            _gameHubContext.Clients.Group(gameId.ToString()).SendAsync("OnPlayerDisconnected", playerId);
 
             return Redirect("/Lobby");
         }
