@@ -1,15 +1,15 @@
 class PlayerManager {
 
-    _peerJsObject;
+    _myPeer;
     _localStream;
-    _peers;
+    _remotePeers;
 
     _streamStartedCallback;
     _streamEndedCallback;
 
     constructor(localStream, streamStarted, streamEnded) {
         this._localStream = localStream;
-        this._peers = [];
+        this._remotePeers = [];
 
         this._streamStartedCallback = streamStarted;
         this._streamEndedCallback = streamEnded;
@@ -32,31 +32,27 @@ class PlayerManager {
         this.OnCallDisrupted(peerId, playerId);
     }
 
-    GetPeerJsObject() {
-        return this._peerJsObject;
-    }
-
     GetPeerId() {
-        return this._peerJsObject.id;
+        return this._myPeer.id;
     }
 
     async InitializePeerJs() {
         await new Promise((resolve, reject) => {
             const storedPeerJsId = sessionStorage.getItem('peerJsId');
             if (storedPeerJsId) {
-                this._peerJsObject = new Peer(storedPeerJsId);
+                this._myPeer = new Peer(storedPeerJsId);
             } else {
-                this._peerJsObject = new Peer();
+                this._myPeer = new Peer();
             }
 
-            if (!this._peerJsObject) reject('Peer Js object did not initialize.');
+            if (!this._myPeer) reject('Peer Js object did not initialize.');
 
-            this._peerJsObject.on('open', id => {
+            this._myPeer.on('open', id => {
                 sessionStorage.setItem('peerJsId', id);
                 resolve();
             });
 
-            this._peerJsObject.on("call", (call) => {
+            this._myPeer.on("call", (call) => {
                 call.answer(this._localStream);
             });
         });
@@ -64,14 +60,14 @@ class PlayerManager {
 
     async Call(peerId, playerId) {
         var call = await new Promise((resolve, reject) => {
-            const call = this._peerJsObject.call(peerId, _localVideoStream);
+            const peer = await GetRemotePeer();
 
-            this._peerJsObject.on('error', err => {
-                if (err.message.includes(peerId)) {
-                    this._peerJsObject.off('error');
-                    reject(err.message);
-                }
+            peer.on('error', err => {
+                peer.off('error');
+                reject(err.message);
             });
+
+            const call = peer.call(peer.id, _localVideoStream);
 
             if (call) {
                 call.on('close', () => {
@@ -85,7 +81,7 @@ class PlayerManager {
                 });
 
                 call.on('stream', (stream) => {
-                    this._peerJsObject.off('error');
+                    peer.off('error');
 
                     const e = {
                         peerId: peerId,
@@ -101,6 +97,21 @@ class PlayerManager {
                 reject('Call did not go through');
             }
         });
+    }
+
+    async GetRemotePeer() {
+        const remotePeer = await new Promise((resolve, reject) => {
+            const peer = new Peer();
+            if (!peer) reject('Peer Js object did not initialize.');
+
+            peer.on('open', id => {
+                resolve(peer);
+            });
+
+            //TODO:Setup error handling for the peer (should be better now that there is a dedicated peer for the other player)
+        });
+
+        return remotePeer;
     }
 
     OnCallDisrupted(peerId, playerId) {

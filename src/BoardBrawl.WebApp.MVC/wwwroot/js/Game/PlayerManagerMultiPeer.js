@@ -33,10 +33,6 @@ class PlayerManagerMultiPeer {
         this.OnCallDisrupted(peerId, playerId);
     }
 
-    GetPeerJsObject() {
-        return this._peerJsObject;
-    }
-
     GetPeerId() {
         return this._peerJsObject.id;
     }
