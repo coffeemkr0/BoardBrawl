@@ -21,11 +21,13 @@ class PlayerManager {
         this.Call(peerId);
     }
 
-    RemovePlayer(peerId) {
+    RemovePlayer(peerId, playerId) {
         const index = this._peers.indexOf(peerId);
         if (index !== -1) {
             this._peers.splice(index, 1);
         }
+
+        this.OnCallDisrupted(peerId, playerId);
     }
 
     GetPeerJsObject() {
@@ -70,6 +72,16 @@ class PlayerManager {
             });
 
             if (call) {
+                call.on('close', () => {
+                    OnCallDisrupted(peerId, playerId);
+                });
+
+                call.on('error', err => {
+                    console.warn('Call error ' + err);
+
+                    OnCallDisrupted(peerId, playerId);
+                });
+
                 call.on('stream', (stream) => {
                     this._peerJsObject.off('error');
 
@@ -87,5 +99,14 @@ class PlayerManager {
                 reject('Call did not go through');
             }
         });
+    }
+
+    OnCallDisrupted(peerId, playerId) {
+        const e = {
+            peerId: peerId,
+            playerId: playerId
+        };
+
+        OnPlayerStreamEnded(e);
     }
 }
