@@ -1,7 +1,8 @@
-class PlayerManager {
+class PlayerManagerMultiPeer {
 
     _peerJsObject;
     _localStream;
+    _peerIds;
     _peers;
 
     _streamStartedCallback;
@@ -9,22 +10,22 @@ class PlayerManager {
 
     constructor(localStream, streamStarted, streamEnded) {
         this._localStream = localStream;
-        this._peers = [];
+        this._peerIds = [];
 
         this._streamStartedCallback = streamStarted;
         this._streamEndedCallback = streamEnded;
     }
 
     AddPlayer(peerId) {
-        this._peers.push(peerId);
+        this._peerIds.push(peerId);
 
         this.Call(peerId);
     }
 
     RemovePlayer(peerId, playerId) {
-        const index = this._peers.indexOf(peerId);
+        const index = this._peerIds.indexOf(peerId);
         if (index !== -1) {
-            this._peers.splice(index, 1);
+            this._peerIds.splice(index, 1);
         }
 
         //TODO:close call, dispose stuff etc.

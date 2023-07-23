@@ -4,6 +4,7 @@
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
 <script src="~/js/game/playermanager.js"></script>
+<script src="~/js/game/playermanagermultipeer.js"></script>
 
 @{
     ViewData["Title"] = Model.GameName;
@@ -232,7 +233,7 @@
 
         function InitializePlayerManager()
         {
-            _playerManager = new PlayerManager(_localVideoStream, OnPlayerStreamStarted, OnPlayerStreamEnded);
+            _playerManager = new PlayerManagerMultiPeer(_localVideoStream, OnPlayerStreamStarted, OnPlayerStreamEnded);
         }
 
         function InitializeFocusedPlayer() 
