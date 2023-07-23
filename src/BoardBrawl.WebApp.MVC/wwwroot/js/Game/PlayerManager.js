@@ -59,7 +59,7 @@ class PlayerManager {
     }
 
     async Call(peerId, playerId) {
-        var call = await new Promise((resolve, reject) => {
+        var call = await new Promise(async (resolve, reject) => {
             const peer = await GetRemotePeer();
 
             peer.on('error', err => {
