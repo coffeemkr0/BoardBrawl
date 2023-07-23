@@ -1,27 +1,39 @@
 class PlayerManager {
-    _gameHubConnection;
+
     _peerJsObject;
     _localStream;
+    _peers;
 
-    constructor(gameHubConnection, localStream) {
-        this._gameHubConnection = gameHubConnection;
+    _streamStartedCallback;
+    _streamEndedCallback;
+
+    constructor(localStream, streamStarted, streamEnded) {
         this._localStream = localStream;
+        this._peers = [];
 
-        this._gameHubConnection.on("OnPlayerJoined", this.OnPlayerJoined);
-        this._gameHubConnection.on("OnPlayerDisconnected", this.OnPlayerDisconnected);
+        this._streamStartedCallback = streamStarted;
+        this._streamEndedCallback = streamEnded;
     }
 
-    //Event handlers
-    OnPlayerJoined(playerId, peerId) {
-        console.log(`Player Manager OnPlayerJoined: playerId:${playerId}, peerId:${peerId}`);
+    AddPlayer(peerId) {
+        this._peers.push(peerId);
+
+        this.Call(peerId);
     }
 
-    OnPlayerDisconnected(playerId) {
-        console.log(`Player Manager OnPlayerDisconnected: playerId:${playerId}`);
+    RemovePlayer(peerId) {
+        const index = this._peers.indexOf(peerId);
+        if (index !== -1) {
+            this._peers.splice(index, 1);
+        }
     }
 
     GetPeerJsObject() {
         return this._peerJsObject;
+    }
+
+    GetPeerId() {
+        return this._peerJsObject.id;
     }
 
     async InitializePeerJs() {
@@ -43,6 +55,37 @@ class PlayerManager {
             this._peerJsObject.on("call", (call) => {
                 call.answer(this._localStream);
             });
+        });
+    }
+
+    async Call(peerId, playerId) {
+        var call = await new Promise((resolve, reject) => {
+            const call = this._peerJsObject.call(peerId, _localVideoStream);
+
+            this._peerJsObject.on('error', err => {
+                if (err.message.includes(peerId)) {
+                    this._peerJsObject.off('error');
+                    reject(err.message);
+                }
+            });
+
+            if (call) {
+                call.on('stream', (stream) => {
+                    this._peerJsObject.off('error');
+
+                    const e = {
+                        peerId: peerId,
+                        playerId: playerId,
+                        stream: stream
+                    };
+                    this._streamStartedCallback(e);
+
+                    resolve(call);
+                });
+            }
+            else {
+                reject('Call did not go through');
+            }
         });
     }
 }

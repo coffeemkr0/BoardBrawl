@@ -102,7 +102,6 @@
         $(document).ready(async function () 
         {
             InitializeGameHub();
-            InitializePlayerManager();
             InitializeCardSearch();
             InitializeUiEventHandlers();
             InitializeTooltips();
@@ -117,6 +116,8 @@
             {
                 console.warn('Error loading local video stream:', error);
             }
+
+            InitializePlayerManager();
 
             await _playerManager.InitializePeerJs();
             await JoinGameHub();
@@ -232,7 +233,7 @@
 
         function InitializePlayerManager()
         {
-            _playerManager = new PlayerManager(_gameHubConnection);
+            _playerManager = new PlayerManager(_localVideoStream, OnPlayerStreamStarted, OnPlayerStreamEnded);
         }
 
         function InitializeFocusedPlayer() 
@@ -259,7 +260,7 @@
 
         async function JoinGameHub() {
             await _gameHubConnection.start();
-            await _gameHubConnection.invoke("JoinGameHub", '@Model.GameId', '@Model.PlayerId', _playerManager.GetPeerJsObject().id);
+            await _gameHubConnection.invoke("JoinGameHub", '@Model.GameId', '@Model.PlayerId', _playerManager.GetPeerId());
         }
 
         function InitializeUiEventHandlers()
@@ -580,6 +581,19 @@
         }
 
         //Methods
+        function OnPlayerStreamStarted(e){
+            var remoteVideoElement = $('.remoteVideo[data-player-id=' + e.playerId + ']')[0];
+            remoteVideoElement.srcObject = e.stream;
+            remoteVideoElement.addEventListener('loadedmetadata', () => {
+                remoteVideoElement.play();
+                HideErrorThumbnail(e.playerId);
+            });
+        }
+
+        function OnPlayerStreamEnded(e){
+            console.log('stream ended');
+        }
+
         function RemovePlayer(playerId)
         {
             var playerListPlayer = $('.playerListPlayer[data-player-id=' + playerId + ']');
@@ -607,42 +621,7 @@
 
         async function LoadRemoteStream(peerId, playerId) 
         {
-            var peerJsObjet = _playerManager.GetPeerJsObject();
-
-            await new Promise((resolve, reject) =>
-            {
-                const call = peerJsObjet.call(peerId, _localVideoStream);
-
-                peerJsObjet.on('error', err => {
-                    if(err.message.includes(peerId))
-                    {
-                        peerJsObjet.off('error');
-                        reject(err.message);
-                    }
-                });
-
-                if (call) {
-                    call.on('stream', (stream) => {
-                        peerJsObjet.off('error');
-
-                        var remoteVideoElement = $('.remoteVideo[data-player-id=' + playerId + ']')[0];
-                        remoteVideoElement.srcObject = stream;
-                        remoteVideoElement.addEventListener('loadedmetadata', () => {
-                            remoteVideoElement.play();
-                            HideErrorThumbnail(playerId);
-                            resolve();
-                        });
-                    });
-                }
-                else
-                {
-                    reject('Call did not go through');
-                }
-            })
-            .catch(error =>
-            {
-                console.warn('Problem loading remote stream:' + error);
-            });
+            _playerManager.Call(peerId, playerId);
         }
 
         function HideErrorThumbnail(playerId) 
