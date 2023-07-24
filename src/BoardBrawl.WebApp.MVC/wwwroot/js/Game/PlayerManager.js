@@ -3,6 +3,7 @@ class PlayerManager {
     _myPeer;
     _localStream;
     _remotePeers;
+    _peerConfigOptions;
 
     _streamStartedCallback;
     _streamEndedCallback;
@@ -13,6 +14,36 @@ class PlayerManager {
 
         this._streamStartedCallback = streamStarted;
         this._streamEndedCallback = streamEnded;
+
+        this._peerConfigOptions = {
+            config: {
+                "iceServers": [
+                    {
+                        "urls": "stun:stun.relay.metered.ca:80"
+                    },
+                    {
+                        "credential": "JrO10hPpURmM0epS",
+                        "urls": "turn:a.relay.metered.ca:80",
+                        "username": "27f97c611a2020a66ea4d282"
+                    },
+                    {
+                        "credential": "JrO10hPpURmM0epS",
+                        "urls": "turn:a.relay.metered.ca:80?transport=tcp",
+                        "username": "27f97c611a2020a66ea4d282"
+                    },
+                    {
+                        "credential": "JrO10hPpURmM0epS",
+                        "urls": "turn:a.relay.metered.ca:443",
+                        "username": "27f97c611a2020a66ea4d282"
+                    },
+                    {
+                        "credential": "JrO10hPpURmM0epS",
+                        "urls": "turn:a.relay.metered.ca:443?transport=tcp",
+                        "username": "27f97c611a2020a66ea4d282"
+                    }
+                ]
+            }
+        };
     }
 
     AddPlayer(peerId) {
@@ -40,9 +71,9 @@ class PlayerManager {
         await new Promise((resolve, reject) => {
             const storedPeerJsId = sessionStorage.getItem('peerJsId');
             if (storedPeerJsId) {
-                this._myPeer = new Peer(storedPeerJsId);
+                this._myPeer = new Peer(storedPeerJsId, this._peerConfigOptions);
             } else {
-                this._myPeer = new Peer();
+                this._myPeer = new Peer(this._peerConfigOptions);
             }
 
             if (!this._myPeer) reject('Peer Js object did not initialize.');
@@ -60,14 +91,14 @@ class PlayerManager {
 
     async Call(peerId, playerId) {
         var call = await new Promise(async (resolve, reject) => {
-            const peer = await GetRemotePeer();
+            const peer = await this.GetRemotePeer();
 
             peer.on('error', err => {
                 peer.off('error');
                 reject(err.message);
             });
 
-            const call = peer.call(peer.id, _localVideoStream);
+            const call = peer.call(peerId, _localVideoStream);
 
             if (call) {
                 call.on('close', () => {
@@ -88,6 +119,7 @@ class PlayerManager {
                         playerId: playerId,
                         stream: stream
                     };
+
                     this._streamStartedCallback(e);
 
                     resolve(call);
@@ -101,7 +133,7 @@ class PlayerManager {
 
     async GetRemotePeer() {
         const remotePeer = await new Promise((resolve, reject) => {
-            const peer = new Peer();
+            const peer = new Peer(this._peerConfigOptions);
             if (!peer) reject('Peer Js object did not initialize.');
 
             peer.on('open', id => {

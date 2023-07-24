@@ -40,7 +40,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\js\Game\PlayerManagerMultiPeer.js" />
     <None Include="wwwroot\js\Game\PlayerManager.js" />
   </ItemGroup>
 

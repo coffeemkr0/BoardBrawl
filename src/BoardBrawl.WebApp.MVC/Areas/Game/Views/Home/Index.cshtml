@@ -3,7 +3,7 @@
 
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
-<script src="~/js/game/PlayerManagerMultiPeer.js"></script>
+<script src="~/js/game/PlayerManager.js"></script>
 
 @{
     ViewData["Title"] = Model.GameName;
@@ -117,9 +117,7 @@
                 console.warn('Error loading local video stream:', error);
             }
 
-            InitializePlayerManager();
-
-            await _playerManager.InitializePeerJs();
+            await InitializePlayerManager();
             await JoinGameHub();
             await LoadRemoteStreams();
 
@@ -230,9 +228,10 @@
             });
         }
 
-        function InitializePlayerManager()
+        async function InitializePlayerManager()
         {
-            _playerManager = new PlayerManagerMultiPeer(_localVideoStream, OnPlayerStreamStarted, OnPlayerStreamEnded);
+            _playerManager = new PlayerManager(_localVideoStream, OnPlayerStreamStarted, OnPlayerStreamEnded);
+            await _playerManager.InitializePeerJs();
         }
 
         function InitializeFocusedPlayer() 
