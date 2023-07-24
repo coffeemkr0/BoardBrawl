@@ -38,6 +38,10 @@
         "dist/themes/base/jquery-ui.min.css",
         "dist/themes/base/theme.css"
       ]
+    },
+    {
+      "library": "simple-peer@9.11.1",
+      "destination": "wwwroot/lib/simple-peer/"
     }
   ]
 }
