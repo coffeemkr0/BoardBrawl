@@ -39,11 +39,41 @@ class PlayerManagerMultiPeer {
 
     async InitializePeerJs() {
         await new Promise((resolve, reject) => {
+            const options = {
+                config: {
+                    "iceServers": [
+                        {
+                            "urls": "stun:stun.relay.metered.ca:80"
+                        },
+                        {
+                            "credential": "JrO10hPpURmM0epS",
+                            "urls": "turn:a.relay.metered.ca:80",
+                            "username": "27f97c611a2020a66ea4d282"
+                        },
+                        {
+                            "credential": "JrO10hPpURmM0epS",
+                            "urls": "turn:a.relay.metered.ca:80?transport=tcp",
+                            "username": "27f97c611a2020a66ea4d282"
+                        },
+                        {
+                            "credential": "JrO10hPpURmM0epS",
+                            "urls": "turn:a.relay.metered.ca:443",
+                            "username": "27f97c611a2020a66ea4d282"
+                        },
+                        {
+                            "credential": "JrO10hPpURmM0epS",
+                            "urls": "turn:a.relay.metered.ca:443?transport=tcp",
+                            "username": "27f97c611a2020a66ea4d282"
+                        }
+                    ]
+                }
+            };
             const storedPeerJsId = sessionStorage.getItem('peerJsId');
+
             if (storedPeerJsId) {
-                this._peerJsObject = new Peer(storedPeerJsId);
+                this._peerJsObject = new Peer(storedPeerJsId, options);
             } else {
-                this._peerJsObject = new Peer();
+                this._peerJsObject = new Peer(options);
             }
 
             if (!this._peerJsObject) reject('Peer Js object did not initialize.');
