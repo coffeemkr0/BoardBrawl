@@ -94,7 +94,7 @@ class PlayerManager {
             const peer = await this.GetRemotePeer();
 
             peer.on('error', err => {
-                peer.off('error');
+                console.log('Peer error with playerId ' + playerId + ' ' + err);
                 reject(err.message);
             });
 
@@ -102,11 +102,13 @@ class PlayerManager {
 
             if (call) {
                 call.on('close', () => {
+                    console.warn('Call closed to playerId ' +playerId);
+
                     OnCallDisrupted(peerId, playerId);
                 });
 
                 call.on('error', err => {
-                    console.warn('Call error ' + err);
+                    console.warn('Call error with playerId ' + playerId + ' ' + err);
 
                     OnCallDisrupted(peerId, playerId);
                 });
