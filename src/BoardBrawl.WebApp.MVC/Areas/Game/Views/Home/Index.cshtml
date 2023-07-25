@@ -226,11 +226,19 @@
             _gameHubConnection.on("OnPlayerDisconnected", function (playerId) {
                 OnPlayerDisconnected(playerId);
             });
+
+            _gameHubConnection.on("OnNewPeerRequested", function (requestingPlayerId) {
+                console.log('OnNewPeerRequested call from playerId:' + requestingPlayerId);
+            });
+
+            _gameHubConnection.on("OnNewPeerReceived", function (playerId, peerId) {
+                console.log("OnNewPeerReceived called from playerId: " + playerId + ' peerId:' + peerId);
+            });
         }
 
         async function InitializePlayerManager()
         {
-            _playerManager = new PlayerManager(_localVideoStream, OnPlayerStreamStarted, OnPlayerStreamEnded);
+            _playerManager = new PlayerManager(_gameHubConnection, _localVideoStream, OnPlayerStreamStarted, OnPlayerStreamEnded);
             await _playerManager.InitializePeerJs();
         }
 

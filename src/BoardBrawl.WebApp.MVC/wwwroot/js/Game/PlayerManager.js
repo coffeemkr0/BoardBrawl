@@ -4,11 +4,13 @@ class PlayerManager {
     _localStream;
     _remotePeers;
     _peerConfigOptions;
+    _gameHubConnection;
 
     _streamStartedCallback;
     _streamEndedCallback;
 
-    constructor(localStream, streamStarted, streamEnded) {
+    constructor(gameHubConnection, localStream, streamStarted, streamEnded) {
+        this._gameHubConnection = gameHubConnection;
         this._localStream = localStream;
         this._remotePeers = [];
 
@@ -90,6 +92,9 @@ class PlayerManager {
     }
 
     async Call(peerId, playerId) {
+
+        await this._gameHubConnection.invoke("RequestPeer", parseFloat(playerId));
+
         var call = await new Promise(async (resolve, reject) => {
             const peer = await this.GetRemotePeer();
 
