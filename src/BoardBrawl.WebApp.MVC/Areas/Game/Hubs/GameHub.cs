@@ -3,7 +3,7 @@ using BoardBrawl.Services.Game;
 
 namespace BoardBrawl.WebApp.MVC.Areas.Game.Hubs
 {
-    public class GameHub : Hub
+    public class GameHub : Hub<IGameHub>
     {
         private readonly ILogger<GameHub> _logger;
         private readonly IService _service;
@@ -27,18 +27,17 @@ namespace BoardBrawl.WebApp.MVC.Areas.Game.Hubs
             if (_service.PlayerIsNewOrChanged(Convert.ToInt32(gameId), Convert.ToInt32(playerId), peerId))
             {
                 _service.UpdatePeerId(Convert.ToInt32(playerId), peerId);
-                await Clients.GroupExcept(gameId.ToString(), Context.ConnectionId).SendAsync("OnPlayerJoined", playerId, peerId);
+                await Clients.GroupExcept(gameId.ToString(), Context.ConnectionId).OnPlayerJoined(playerId, peerId);
             }
         }
 
         public override Task OnDisconnectedAsync(Exception? exception)
         {
-            var gameId = Context.Items["GameId"]?.ToString();
-            var playerId = Context.Items["PlayerId"]?.ToString();
-            var peerId = Context.Items["PeerId"]?.ToString();
+            var gameId = Context.Items["GameId"].ToString();
+            var playerId = Convert.ToInt32(Context.Items["PlayerId"]);
 
             _service.UpdatePeerId(Convert.ToInt32(playerId), Guid.Empty);
-            Clients.GroupExcept(gameId.ToString(), Context.ConnectionId).SendAsync("OnPlayerDisconnected", playerId);
+            Clients.GroupExcept(gameId, Context.ConnectionId).OnPlayerDisconnected(playerId);
 
             return base.OnDisconnectedAsync(exception);
         }
