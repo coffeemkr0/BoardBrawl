@@ -258,7 +258,7 @@
 
         async function JoinGameHub() {
             await _gameHubConnection.start();
-            await _gameHubConnection.invoke("JoinGameHub", '@Model.GameId', '@Model.PlayerId', _playerManager.GetPeerId());
+            await _gameHubConnection.invoke("JoinGameHub", @Model.GameId, @Model.PlayerId, _playerManager.GetPeerId());
         }
 
         function InitializeUiEventHandlers()

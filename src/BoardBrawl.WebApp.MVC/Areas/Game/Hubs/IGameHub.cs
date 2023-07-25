@@ -2,7 +2,7 @@
 {
     public interface IGameHub
     {
-        Task OnPlayerJoined(string playerId, Guid peerId);
+        Task OnPlayerJoined(int playerId, Guid peerId);
         Task OnPlayerDisconnected(int playerId);
     }
 }
