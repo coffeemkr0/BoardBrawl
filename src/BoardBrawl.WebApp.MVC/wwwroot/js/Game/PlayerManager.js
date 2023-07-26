@@ -4,13 +4,11 @@ class PlayerManager {
     _localStream;
     _remotePeers;
     _peerConfigOptions;
-    _gameHubConnection;
 
     _streamStartedCallback;
     _streamEndedCallback;
 
-    constructor(gameHubConnection, localStream, streamStarted, streamEnded) {
-        this._gameHubConnection = gameHubConnection;
+    constructor(localStream, streamStarted, streamEnded) {
         this._localStream = localStream;
         this._remotePeers = [];
 
@@ -92,9 +90,6 @@ class PlayerManager {
     }
 
     async Call(peerId, playerId) {
-
-        await this._gameHubConnection.invoke("RequestPeer", parseFloat(playerId));
-
         var call = await new Promise(async (resolve, reject) => {
             const peer = await this.GetRemotePeer();
 
@@ -107,7 +102,7 @@ class PlayerManager {
 
             if (call) {
                 call.on('close', () => {
-                    console.warn('Call closed to playerId ' +playerId);
+                    console.warn('Call closed to playerId ' + playerId);
 
                     OnCallDisrupted(peerId, playerId);
                 });
