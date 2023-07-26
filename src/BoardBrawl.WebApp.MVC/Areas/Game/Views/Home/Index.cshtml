@@ -238,7 +238,7 @@
 
         async function InitializePlayerManager()
         {
-            _playerManager = new PlayerManager(_gameHubConnection, _localVideoStream, OnPlayerStreamStarted, OnPlayerStreamEnded);
+            _playerManager = new PlayerManager(_localVideoStream, OnPlayerStreamStarted, OnPlayerStreamEnded);
             await _playerManager.InitializePeerJs();
         }
 

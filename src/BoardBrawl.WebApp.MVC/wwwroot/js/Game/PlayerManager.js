@@ -98,7 +98,12 @@ class PlayerManager {
                 reject(err.message);
             });
 
-            const call = peer.call(peerId, _localVideoStream);
+            const myStream = await navigator.mediaDevices.getUserMedia({
+                audio: true,
+                video: true
+            });
+
+            const call = peer.call(peerId, myStream);
 
             if (call) {
                 call.on('close', () => {
